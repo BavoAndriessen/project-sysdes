@@ -1,0 +1,47 @@
+@startuml aanmelding van een binnenvaart
+
+actor Scheepsagent
+Scheepsagent ->> "API Gateway": createOffer
+"API Gateway" ->> Kapiteinsdienst: createOffer
+activate Kapiteinsdienst
+
+Kapiteinsdienst ->> "Ligplaats en dokbeheer": checkBethAvailability
+activate "Ligplaats en dokbeheer"
+Kapiteinsdienst ->> "loods- en sleepbootdienst": reserveTowing/Pilotage
+activate "loods- en sleepbootdienst"
+Kapiteinsdienst ->> onderhoudsdienst: reserveService
+activate "onderhoudsdienst"
+Kapiteinsdienst ->> Administratie: createOffer
+activate "Administratie"
+
+Kapiteinsdienst <<-- "Ligplaats en dokbeheer": bethReserved
+deactivate "Ligplaats en dokbeheer"
+Kapiteinsdienst <<-- "loods- en sleepbootdienst": towing/PilotageReserved
+deactivate "loods- en sleepbootdienst"
+Kapiteinsdienst <<-- onderhoudsdienst: serviceReserved
+deactivate "onderhoudsdienst"
+Kapiteinsdienst <<-- Administratie: offerCreated
+deactivate "Administratie"
+
+alt Reservations and offer creation succeeded
+    Kapiteinsdienst ->> "API Gateway": acceptOffer
+    "API Gateway" -->> Scheepsagent: acceptOffer
+else failure during reservation or offer creation
+    Kapiteinsdienst ->> "API Gateway": refuseOffer
+    "API Gateway" -->> Scheepsagent: refuseOffer
+    Kapiteinsdienst ->> "Ligplaats en dokbeheer": undoReservation
+    activate "Ligplaats en dokbeheer"
+    deactivate "Ligplaats en dokbeheer"
+    Kapiteinsdienst ->> "loods- en sleepbootdienst": undoReservation
+    activate "loods- en sleepbootdienst"
+    deactivate "loods- en sleepbootdienst"
+    Kapiteinsdienst ->> "onderhoudsdienst": undoReservation
+    activate "onderhoudsdienst"
+    deactivate "onderhoudsdienst"
+    Kapiteinsdienst ->> "Administratie": deleteOffer
+    activate "Administratie"
+    deactivate "Administratie"
+end
+
+
+@enduml
