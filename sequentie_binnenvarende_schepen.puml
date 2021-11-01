@@ -2,19 +2,31 @@
 
 autonumber 
 actor Kapitein
-actor Dokwerker
+actor "Dokwerker bruggen en sluizen" as dw1 
 actor Dokwerker as dw2
-Kapitein -> "Vessel Traffic Control": Adjust arrival time
-activate "Vessel Traffic Control"
-"Vessel Traffic Control" -> "Ligplaats en dokbeheer": shipArriving
-activate "Ligplaats en dokbeheer"
-"Ligplaats en dokbeheer" -> dw2: arrivalTimeChanged
-deactivate "Ligplaats en dokbeheer"
-"Vessel Traffic Control" -> Dokwerker: newTimesheduleOpenHarbourLocksBridges
-"Vessel Traffic Control" -> "Loods- en sleepbootdienst": arrivalTimeChanged
-activate "Loods- en sleepbootdienst"
-deactivate "Loods- en sleepbootdienst"
-deactivate "Vessel Traffic Control"
+
+Kapitein -> "Vessel Traffic Control" as VTC: arrivalUpdate
+activate VTC
+VTC -> Kapitein : confirmUpdate
+group routing
+VTC -> "Loods- en sleepbootdienst" as les: arrivalTimeChanged
+activate les
+"Ligplaats- en dokbeheer" as led -> VTC: dockReady
+activate led
+VTC -> VTC : calculate route
+VTC -> dw1 : bridgeHarbourlockOpenClose
+dw1 -> VTC : gateStateChanged
+VTC -> led : shipArriving
+led -> dw2: arrivalTimeChanged
+end
+opt arrival time changed
+Kapitein -> VTC: arrivalUpdate
+VTC -> dw1: newTimesheduleOpenHarbourLocksBridges
+VTC -> les: arrivalTimeChanged
+VTC -> led : shipArriving
+led -> dw2: arrivalTimeChanged
+end
+deactivate VTC
 
 
 @enduml
