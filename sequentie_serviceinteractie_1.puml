@@ -5,7 +5,7 @@ Scheepsagent ->> "API Gateway": createOffer
 "API Gateway" ->> Kapiteinsdienst: createOffer
 activate Kapiteinsdienst
 
-Kapiteinsdienst ->> "Ligplaats en dokbeheer": checkBethAvailability
+Kapiteinsdienst ->> "Ligplaats en dokbeheer": reserveBerth
 activate "Ligplaats en dokbeheer"
 Kapiteinsdienst ->> "loods- en sleepbootdienst": reserveTowing/Pilotage
 activate "loods- en sleepbootdienst"
@@ -14,7 +14,7 @@ activate "onderhoudsdienst"
 Kapiteinsdienst ->> Administratie: createOffer
 activate "Administratie"
 
-Kapiteinsdienst <<-- "Ligplaats en dokbeheer": bethReserved
+Kapiteinsdienst <<-- "Ligplaats en dokbeheer": berthReserved
 deactivate "Ligplaats en dokbeheer"
 Kapiteinsdienst <<-- "loods- en sleepbootdienst": towing/PilotageReserved
 deactivate "loods- en sleepbootdienst"
