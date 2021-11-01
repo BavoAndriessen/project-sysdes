@@ -23,12 +23,39 @@ deactivate "onderhoudsdienst"
 Kapiteinsdienst <<-- Administratie: offerCreated
 deactivate "Administratie"
 
+
+
 alt Reservations and offer creation succeeded
-    Kapiteinsdienst ->> "API Gateway": acceptOffer
-    "API Gateway" -->> Scheepsagent: acceptOffer
+    Kapiteinsdienst -->> "API Gateway": offerProposal (success)
+    "API Gateway" -->> Scheepsagent: offerProposal (success)
+
+    
+
+    alt Scheepsagent accepts offer
+        Scheepsagent ->> "API Gateway": acceptOffer
+        "API Gateway" ->> Kapiteinsdienst: acceptOffer
+        
+    else Scheepsagent rejects offer
+        Scheepsagent ->> "API Gateway": refuseOffer
+        "API Gateway" ->> Kapiteinsdienst: refuseOffer
+        Kapiteinsdienst ->> "Ligplaats en dokbeheer": undoReservation
+        activate "Ligplaats en dokbeheer"
+        deactivate "Ligplaats en dokbeheer"
+        Kapiteinsdienst ->> "loods- en sleepbootdienst": undoReservation
+        activate "loods- en sleepbootdienst"
+        deactivate "loods- en sleepbootdienst"
+        Kapiteinsdienst ->> "onderhoudsdienst": undoReservation
+        activate "onderhoudsdienst"
+        deactivate "onderhoudsdienst"
+    end
+
 else failure during reservation or offer creation
-    Kapiteinsdienst ->> "API Gateway": refuseOffer
-    "API Gateway" -->> Scheepsagent: refuseOffer
+    Kapiteinsdienst -->> "API Gateway": offerProposal (failure)
+    "API Gateway" -->> Scheepsagent: offerProposal (failure)
+    
+    Kapiteinsdienst ->> "Administratie": deleteOffer
+    activate "Administratie"
+    deactivate "Administratie"
     Kapiteinsdienst ->> "Ligplaats en dokbeheer": undoReservation
     activate "Ligplaats en dokbeheer"
     deactivate "Ligplaats en dokbeheer"
@@ -38,9 +65,6 @@ else failure during reservation or offer creation
     Kapiteinsdienst ->> "onderhoudsdienst": undoReservation
     activate "onderhoudsdienst"
     deactivate "onderhoudsdienst"
-    Kapiteinsdienst ->> "Administratie": deleteOffer
-    activate "Administratie"
-    deactivate "Administratie"
 end
 
 
