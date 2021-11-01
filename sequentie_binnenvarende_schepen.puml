@@ -1,0 +1,20 @@
+@startuml Binnenvarende_schepen
+
+autonumber 
+actor Kapitein
+actor Dokwerker
+actor Dokwerker as dw2
+Kapitein -> "Vessel Traffic Control": Adjust arrival time
+activate "Vessel Traffic Control"
+"Vessel Traffic Control" -> "Ligplaats en dokbeheer": shipArriving
+activate "Ligplaats en dokbeheer"
+"Ligplaats en dokbeheer" -> dw2: arrivalTimeChanged
+deactivate "Ligplaats en dokbeheer"
+"Vessel Traffic Control" -> Dokwerker: newTimesheduleOpenHarbourLocksBridges
+"Vessel Traffic Control" -> "Loods- en sleepbootdienst": arrivalTimeChanged
+activate "Loods- en sleepbootdienst"
+deactivate "Loods- en sleepbootdienst"
+deactivate "Vessel Traffic Control"
+
+
+@enduml
