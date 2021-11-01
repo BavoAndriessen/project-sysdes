@@ -1,0 +1,24 @@
+@startuml
+
+actor havenarbeider
+actor "douane en voedselinspectie" as douane
+
+group per schip
+administratie <- kapiteinsdienst: requestOffer
+administratie -> kapiteinsdienst: offerCreated
+activate administratie
+opt deleteOffer
+kapiteinsdienst -> administratie: deleteOffer
+destroy kapiteinsdienst
+end
+end 
+
+administratie <- douane: getDocuments
+"containerbeheer en -transport" -> administratie: getContainerList
+
+group per havenarbeider
+administratie <- havenarbeider: timeBadging
+administratie -> administratie: calculate salaris
+end
+
+@enduml
