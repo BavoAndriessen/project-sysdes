@@ -1,0 +1,27 @@
+@startuml
+
+actor havenarbeider
+actor "douane en voedselinspectie" as douane
+actor administratie
+actor "containerbeheer en -transport" as cet
+actor kapiteinsdienst
+
+group per schip
+administratie <- kapiteinsdienst: requestOffer
+administratie -> kapiteinsdienst: offerCreated
+activate administratie
+opt deleteOffer
+kapiteinsdienst -> administratie: deleteOffer
+destroy kapiteinsdienst
+end
+end 
+
+administratie <- douane: getDocuments
+administratie <- cet: getContainerList
+
+group per havenarbeider
+administratie <- havenarbeider: timeBadging
+administratie -> administratie: calculate salaris
+end
+
+@enduml
