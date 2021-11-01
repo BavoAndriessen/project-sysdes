@@ -1,0 +1,33 @@
+@startuml laden van containers
+actor "Extern Vervoersbedrijf"
+actor Dokwerker
+actor Havenarbeider
+
+== Lossen van de containers van een extern vervoersbedrijf ==
+
+    "Extern Vervoersbedrijf" ->> "Containerbeheer en -transport": arrivedWithContainers
+    activate "Containerbeheer en -transport"
+    "Containerbeheer en -transport" ->> Havenarbeider: transferContainers(from train/truck to transit)
+    loop for all container on containerlist
+        Havenarbeider ->> "Containerbeheer en -transport": scanContainer
+    end
+
+== Laden van de containers op het schip ==
+
+
+    
+    loop for all container on containerlist
+        Dokwerker ->> "Containerbeheer en -transport": scanContainer
+    end
+    "Containerbeheer en -transport" ->> Havenarbeider: transferContainers(from transit to dock)
+    
+    loop for all container on containerlist
+        Havenarbeider ->> "Containerbeheer en -transport": scanContainer
+    end
+    ' activate "Ligplaats en Dokbeheer"
+    "Containerbeheer en -transport" ->> "Ligplaats en Dokbeheer" ++: containersReadyAtDock
+    deactivate "Containerbeheer en -transport"
+    "Ligplaats en Dokbeheer" ->> Dokwerker --: loadContainers
+    ' deactivate "Ligplaats en Dokbeheer"
+
+@enduml
