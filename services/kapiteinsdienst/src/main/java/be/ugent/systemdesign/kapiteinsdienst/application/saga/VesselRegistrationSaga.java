@@ -3,6 +3,7 @@ package be.ugent.systemdesign.kapiteinsdienst.application.saga;
 import be.ugent.systemdesign.kapiteinsdienst.application.ResponseStatus;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
+import be.ugent.systemdesign.kapiteinsdienst.domain.ReservationServices;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselStatus;
@@ -21,7 +22,7 @@ public class VesselRegistrationSaga {
     CommandDispatcher commandDispatcher;
 
     public void startVesselRegistration(Vessel vessel){
-        vessel.setStatus(VesselStatus.OFFER_REQUESTED);
+        vessel.newRegistration();
         vesselRepo.save(vessel);
 
         ReserveBerthCommand reserveBerthCommand = new ReserveBerthCommand(vessel.getVesselNumber(),vessel.getVesselSize(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
@@ -46,13 +47,10 @@ public class VesselRegistrationSaga {
     }
 
     public void onReservationFail(Vessel vessel){
-        vessel.setStatus(VesselStatus.RESERVATION_FAIL);
+        vessel.failedReservation();
         vesselRepo.save(vessel);
 
-        UndoReservationCommand undoReservationCommand = new UndoReservationCommand(vessel.getVesselNumber());
-        commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
-        commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
-        commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);
+        sendUndoReservationToAllServices(vessel.getVesselNumber());
 
         //TODO is offerId wel beschikbaar? kan dit met enkel vesselnumber?
         DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vessel.getVesselNumber(), vessel.getOfferId());
@@ -63,22 +61,43 @@ public class VesselRegistrationSaga {
 
     }
 
-    public void onOfferCreatedByAdministration(Vessel vessel, Integer offerId, Double price){
-        vessel.setOfferId(offerId);
-        vessel.setPrice(price);
+    public void onReservationSuccess(Vessel vessel, ReservationServices service){
+        vessel.updateReservationStatus(service);
         vesselRepo.save(vessel);
+        if(vessel.checkOfferAvailability()){
+            onRegistrationComplete(vessel);
+        }
+    }
+
+    public void onOfferCreatedByAdministration(Vessel vessel, Integer offerId, Double price){
+        vessel.updateOfferInfo(offerId, price);
+        vesselRepo.save(vessel);
+        if(vessel.checkOfferAvailability()){
+            onRegistrationComplete(vessel);
+        }
 
     }
-    //TODO oproepen(*) bij methodes in saga die worden aangeroepen wanneer reservatie lukt; binnen die oproep(*) controleren of andere reservaties gelukt zien, indien ja dan onRegistrationComplete oproepen
-    //check of offerId aanwezig is
-    public void onRegistrationComplete(Vessel vessel){
-        vessel.setStatus(VesselStatus.OFFER_CREATED);
+
+    public void onOfferConfirmation(Vessel vessel, Boolean isConfirmed){
+        vessel.offerConfirmation(isConfirmed);
         vesselRepo.save(vessel);
 
+        if(!isConfirmed){
+            sendUndoReservationToAllServices(vessel.getVesselNumber());
+        }
+    }
+
+    private void onRegistrationComplete(Vessel vessel){
         OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.SUCCESS,"",vessel.getVesselNumber(),vessel.getPrice(),vessel.getOfferId());
         commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
     }
 
+    private void sendUndoReservationToAllServices(Integer vesselNumber){
+        UndoReservationCommand undoReservationCommand = new UndoReservationCommand(vesselNumber);
+        commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
+        commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
+        commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);
+    }
 
 
 

@@ -38,6 +38,9 @@ public class VesselRepositoryImpl implements VesselRepository {
                 vessel.getAmountOfWaste(),
                 vessel.getOfferId(),
                 vessel.getPrice(),
+                vessel.getBerthReserved(),
+                vessel.getTowingPilotageReserved(),
+                vessel.getServiceReserved(),
                 vessel.getAdditionalServices(),
                 vessel.getContainerList(),
                 vessel.getCrewList());
@@ -55,6 +58,9 @@ public class VesselRepositoryImpl implements VesselRepository {
                     .additionalServices(vessel.getAdditionalServices())
                     .offerId(vessel.getOfferId())
                     .price(vessel.getPrice())
+                    .berthReserved(vessel.getBerthReserved())
+                    .towingPilotageReserved((vessel.getTowingPilotageReserved()))
+                    .serviceReserved(vessel.getServiceReserved())
                     .containerList(vessel.getContainerList()
                                     .stream()
                                     .map(e -> Container.builder()

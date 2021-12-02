@@ -23,11 +23,21 @@ public class Vessel {
     private Double amountOfWaste;
     private Integer offerId;
     private Double price;
+    private Boolean berthReserved;
+    private Boolean towingPilotageReserved;
+    private Boolean serviceReserved;
     private List<String> additionalServices;
     private List<Container> containerList;
     private List<Crew> crewList;
 
-    public Vessel(Integer vesselNumber, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, Double vesselSize, Double amountOfWaste, List<String> additionalServices, List<Container> containerList, List<Crew> crewList) {
+    public Vessel(Integer vesselNumber,
+                  LocalDateTime arrivalDateTime,
+                  LocalDateTime departureDateTime,
+                  Double vesselSize,
+                  Double amountOfWaste,
+                  List<String> additionalServices,
+                  List<Container> containerList,
+                  List<Crew> crewList) {
         this.vesselNumber = vesselNumber;
         this.status = null;
         this.arrivalDateTime = arrivalDateTime;
@@ -36,8 +46,60 @@ public class Vessel {
         this.amountOfWaste = amountOfWaste;
         this.offerId = null;
         this.price = null;
+        this.berthReserved = false;
+        this.towingPilotageReserved = false;
+        this.serviceReserved = false;
         this.additionalServices = additionalServices;
         this.containerList = containerList;
         this.crewList = crewList;
     }
+
+    public void updateOfferInfo(Integer offerId, Double price){
+        this.offerId = offerId;
+        this.price = price;
+        this.status = VesselStatus.OFFER_CREATED;
+    }
+
+    public void newRegistration(){
+        this.status = VesselStatus.OFFER_REQUESTED;
+    }
+
+    public boolean checkOfferAvailability(){
+        if(berthReserved && towingPilotageReserved && serviceReserved && status==VesselStatus.OFFER_CREATED){
+            return false;
+        }
+        return true;
+    }
+
+    public void updateReservationStatus(ReservationServices service){
+        if(service == ReservationServices.BERTH){
+            this.berthReserved = true;
+        } else if (service == ReservationServices.TOWINGPILOTAGE){
+            this.towingPilotageReserved = true;
+        } else {
+            this.serviceReserved = true;
+        }
+    }
+
+    public void failedReservation(){
+        this.status = VesselStatus.RESERVATION_FAIL;
+        unsetServiceReservationStatus();
+
+    }
+
+    public void offerConfirmation(Boolean isConfirmed){
+        if(isConfirmed){
+            this.status = VesselStatus.ACCEPTED;
+        } else {
+            this.status = VesselStatus.REFUSED;
+            unsetServiceReservationStatus();
+        }
+    }
+
+    private void unsetServiceReservationStatus(){
+        this.berthReserved = false;
+        this.towingPilotageReserved = false;
+        this.serviceReserved = false;
+    }
+
 }

@@ -8,8 +8,7 @@ import org.springframework.messaging.SubscribableChannel;
 public interface Channels {
     static final String CREATE_OFFER = "create_offer";
     static final String OFFER_PROPOSAL = "offer_proposal";
-    static final String ACCEPT_OFFER =  "accept_offer";
-    static final String REFUSE_OFFER = "refuse_offer";
+    static final String OFFER_CONFIRMATION =  "offer_confirmation";
     static final String RESERVE_BERTH = "reserve_berth";
     static final String BERTH_RESERVED = "berth_reserved";
     static final String RESERVE_SERVICE = "reserve_service";
@@ -27,11 +26,8 @@ public interface Channels {
     @Input(CREATE_OFFER)
     SubscribableChannel createOffer();
 
-    @Input(ACCEPT_OFFER)
-    SubscribableChannel acceptOffer();
-
-    @Input(REFUSE_OFFER)
-    SubscribableChannel refuseOffer();
+    @Input(OFFER_CONFIRMATION)
+    SubscribableChannel offerConfirmation();
 
     @Input(BERTH_RESERVED)
     SubscribableChannel berthReserved();

@@ -1,9 +1,8 @@
 package be.ugent.systemdesign.kapiteinsdienst.API;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.AcceptOfferCommand;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.client.CreateOfferCommand;
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.RefuseOfferCommand;
+import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferConfirmationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
@@ -20,15 +19,9 @@ public class MessageInputGateway {
         commandHandler.handleCreateOfferCommand(command);
     }
     //Scheepsagent
-    @StreamListener(Channels.ACCEPT_OFFER)
-    public void consumeAcceptOfferCommand(AcceptOfferCommand command){
-        commandHandler.handleAcceptOfferCommand(command);
-    }
-
-    //Scheepsagent
-    @StreamListener(Channels.REFUSE_OFFER)
-    public void consumeRefuseOfferCommand(RefuseOfferCommand command){
-        commandHandler.handleRefuseOfferCommand(command);
+    @StreamListener(Channels.OFFER_CONFIRMATION)
+    public void consumeAcceptOfferCommand(OfferConfirmationCommand command){
+        commandHandler.handleOfferConfirmation(command);
     }
 
     @StreamListener(Channels.BERTH_RESERVED)
