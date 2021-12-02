@@ -4,6 +4,7 @@ import com.projectsysdes.containermanagement.domain.Container;
 import com.projectsysdes.containermanagement.domain.ContainerLocation;
 import com.projectsysdes.containermanagement.domain.ContainerLocationType;
 import com.projectsysdes.containermanagement.domain.ContainerRepository;
+import com.projectsysdes.containermanagement.infrastructure.ContainerDataModelRepository;
 import com.projectsysdes.containermanagement.infrastructure.ContainerNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +26,10 @@ public class ContainermanagementApplication {
     }
 
     @Bean
-    CommandLineRunner testContainerRepo(ContainerRepository repo) {
+    CommandLineRunner testContainerRepo(ContainerRepository repo, ContainerDataModelRepository cdmrepo) {
         return (args) -> {
             logger.info(">Save new container with id {} to database.", 0);
-            repo.save(new Container(0, new ContainerLocation(ContainerLocationType.SHIP, "WR057")));
+            repo.save(new Container(0, "hash", new ContainerLocation(ContainerLocationType.SHIP, "WR057")));
 
             logger.info(">Find one container by id {} from database.", 0);
             try {
@@ -39,6 +40,7 @@ public class ContainermanagementApplication {
             }
             List<Container> containers = repo.findAll();
             logger.info(String.valueOf(containers.size()));
+            cdmrepo.findAll();
 
         };
     }

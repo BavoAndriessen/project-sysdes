@@ -37,6 +37,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
     private Container toContainer(ContainerDataModel cdm) {
         return Container.builder()
                 .containerId(cdm.getContainerId())
+                .contents(cdm.getContents())
                 .state(ContainerState.valueOf(cdm.getState()))
                 .currentLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getCurrentLocationType()), cdm.getCurrentLocationIdentifier()))
                 .destinationLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getDestinationLocationType()), cdm.getDestinationLocationIdentifier()))
@@ -46,6 +47,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
     private ContainerDataModel toContainerDataModel(Container c) {
         return ContainerDataModel.builder()
                 .containerId(c.getContainerId())
+                .contents(c.getContents())
                 .state(c.getState().name())
                 .currentLocationType(c.getCurrentLocation().getLocationType().name())
                 .currentLocationIdentifier(c.getCurrentLocation().getLocationIdentifier())

@@ -17,14 +17,16 @@ public class ContainerDataModel {
     @Id
 //    @GeneratedValue
     private Integer containerId;
+    private String contents;
     private String state;
     private String currentLocationType;
     private String currentLocationIdentifier;
     private String destinationLocationType;
     private String destinationLocationIdentifier;
 
-    public ContainerDataModel(int containerId, ContainerLocation destinationLocation) {
+    public ContainerDataModel(int containerId,String contents, ContainerLocation destinationLocation) {
         this.containerId = containerId;
+        this.contents = contents;
         this.currentLocationType = ContainerLocationType.UNKNOWN.name();
         this.currentLocationIdentifier = "";
         this.state = ContainerState.REGISTERED.name();
