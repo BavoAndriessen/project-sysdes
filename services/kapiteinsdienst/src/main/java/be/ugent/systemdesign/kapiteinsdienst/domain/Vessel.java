@@ -48,9 +48,9 @@ public class Vessel {
         this.berthReserved = false;
         this.towingPilotageReserved = false;
         this.serviceReserved = false;
-        this.additionalServices = new ArrayList<>();
-        this.containerList = new ArrayList<>();
-        this.crewList = new ArrayList<>();
+        this.additionalServices = new ArrayList<String>();
+        this.containerList = new ArrayList<Container>();
+        this.crewList = new ArrayList<Crew>();
     }
 
     public void addContainerList(List<Container> containerList){
