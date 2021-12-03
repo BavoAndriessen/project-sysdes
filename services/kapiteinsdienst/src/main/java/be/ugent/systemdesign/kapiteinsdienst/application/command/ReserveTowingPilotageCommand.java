@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReserveTowingPilotageCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
 
     private String responseDestination;
 
-    public ReserveTowingPilotageCommand(Integer vesselNumber, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime) {
-        this.vesselNumber = vesselNumber;
+    public ReserveTowingPilotageCommand(String vesselId, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime) {
+        this.vesselId = vesselId;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;
     }

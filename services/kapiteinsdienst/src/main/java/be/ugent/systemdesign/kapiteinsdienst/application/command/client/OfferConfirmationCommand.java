@@ -7,6 +7,6 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OfferConfirmationCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private Boolean confirmed;
 }

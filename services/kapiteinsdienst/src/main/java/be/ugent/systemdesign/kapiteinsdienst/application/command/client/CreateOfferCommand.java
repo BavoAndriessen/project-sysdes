@@ -14,7 +14,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateOfferCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
     private Double vesselSize;

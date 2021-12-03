@@ -10,15 +10,15 @@ import java.util.List;
 @AllArgsConstructor
 public class ReserveServiceCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
     private List<String> additionalServices;
 
     private String responseDestination;
 
-    public ReserveServiceCommand(Integer vesselNumber, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, List<String> additionalServices) {
-        this.vesselNumber = vesselNumber;
+    public ReserveServiceCommand(String vesselId, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, List<String> additionalServices) {
+        this.vesselId = vesselId;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;
         this.additionalServices = additionalServices;

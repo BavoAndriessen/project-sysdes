@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Vessel {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private VesselStatus status;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
@@ -30,15 +31,13 @@ public class Vessel {
     private List<Container> containerList;
     private List<Crew> crewList;
 
-    public Vessel(Integer vesselNumber,
+    public Vessel(String vesselId,
                   LocalDateTime arrivalDateTime,
                   LocalDateTime departureDateTime,
                   Double vesselSize,
-                  Double amountOfWaste,
-                  List<String> additionalServices,
-                  List<Container> containerList,
-                  List<Crew> crewList) {
-        this.vesselNumber = vesselNumber;
+                  Double amountOfWaste
+        ) {
+        this.vesselId = vesselId;
         this.status = null;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;
@@ -49,9 +48,21 @@ public class Vessel {
         this.berthReserved = false;
         this.towingPilotageReserved = false;
         this.serviceReserved = false;
-        this.additionalServices = additionalServices;
+        this.additionalServices = new ArrayList<String>();
+        this.containerList = new ArrayList<Container>();
+        this.crewList = new ArrayList<Crew>();
+    }
+
+    public void addContainerList(List<Container> containerList){
         this.containerList = containerList;
+    }
+
+    public void addCrewList(List<Crew> crewList){
         this.crewList = crewList;
+    }
+
+    public void addAdditionalServices(List<String> additionalServices){
+        this.additionalServices = additionalServices;
     }
 
     public void updateOfferInfo(Integer offerId, Double price){

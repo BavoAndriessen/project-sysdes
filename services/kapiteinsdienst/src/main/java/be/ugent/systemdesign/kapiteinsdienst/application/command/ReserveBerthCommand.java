@@ -9,15 +9,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReserveBerthCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private Double vesselSize;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
 
     private String responseDestination;
 
-    public ReserveBerthCommand(Integer vesselNumber, Double vesselSize, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime) {
-        this.vesselNumber = vesselNumber;
+    public ReserveBerthCommand(String vesselId, Double vesselSize, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime) {
+        this.vesselId = vesselId;
         this.vesselSize = vesselSize;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;

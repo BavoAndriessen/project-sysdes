@@ -4,6 +4,6 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UndoReservationCommand {
-    private Integer vesselNumber;
+    private String vesselId;
 
 }

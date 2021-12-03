@@ -22,14 +22,14 @@ public class CommandHandler {
     public void handleCreateOfferCommand(CreateOfferCommand command){
         try {
             Vessel vessel = new Vessel(
-                    command.getVesselNumber(),
+                    command.getVesselId(),
                     command.getArrivalDateTime(),
                     command.getDepartureDateTime(),
                     command.getVesselSize(),
-                    command.getAmountOfWaste(),
-                    command.getAdditionalServices(),
-                    command.getContainerList(),
-                    command.getCrewList());
+                    command.getAmountOfWaste());
+            vessel.addAdditionalServices(command.getAdditionalServices());
+            vessel.addContainerList(command.getContainerList());
+            vessel.addCrewList(command.getCrewList());
 
             synchronized (vesselRegistrationSaga){
                 vesselRegistrationSaga.startVesselRegistration(vessel);
@@ -44,7 +44,7 @@ public class CommandHandler {
     //TODO aanvullen
     public void handleOfferConfirmation(OfferConfirmationCommand command){
         try {
-            Vessel vessel = vesselRepo.findById(command.getVesselNumber());
+            Vessel vessel = vesselRepo.findById(command.getVesselId());
             synchronized (vesselRegistrationSaga){
                 vesselRegistrationSaga.onOfferConfirmation(vessel, command.getConfirmed());
             }
@@ -64,7 +64,7 @@ public class CommandHandler {
     */
     public void handleReserveBerthResponse(ReserveBerthResponse response){
         try{
-            Vessel vessel = vesselRepo.findById(response.getVesselNumber());
+            Vessel vessel = vesselRepo.findById(response.getVesselId());
             if(response.getStatus() == ResponseStatus.FAIL){
                 synchronized (vesselRegistrationSaga){
                     vesselRegistrationSaga.onReservationFail(vessel);
@@ -81,7 +81,7 @@ public class CommandHandler {
 
     public void handleReserveServiceResponse(ReserveServiceResponse response){
         try{
-            Vessel vessel = vesselRepo.findById(response.getVesselNumber());
+            Vessel vessel = vesselRepo.findById(response.getVesselId());
             if(response.getStatus() == ResponseStatus.FAIL){
                 synchronized (vesselRegistrationSaga){
                     vesselRegistrationSaga.onReservationFail(vessel);
@@ -98,7 +98,7 @@ public class CommandHandler {
 
     public void handleReserveTowingPilotageResponse(ReserveTowingPilotageResponse response){
         try{
-            Vessel vessel = vesselRepo.findById(response.getVesselNumber());
+            Vessel vessel = vesselRepo.findById(response.getVesselId());
             if(response.getStatus() == ResponseStatus.FAIL){
                 synchronized (vesselRegistrationSaga){
                     vesselRegistrationSaga.onReservationFail(vessel);
@@ -115,7 +115,7 @@ public class CommandHandler {
 
     public void handleOfferCreatedResponse(OfferCreatedResponse response) {
         try {
-            Vessel vessel = vesselRepo.findById(response.getVesselNumber());
+            Vessel vessel = vesselRepo.findById(response.getVesselId());
             if (response.getStatus() == ResponseStatus.SUCCESS){
                 synchronized (vesselRegistrationSaga){
                     vesselRegistrationSaga.onOfferCreatedByAdministration(vessel, response.getOfferId(), response.getPrice());
