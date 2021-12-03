@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,10 +35,8 @@ public class Vessel {
                   LocalDateTime arrivalDateTime,
                   LocalDateTime departureDateTime,
                   Double vesselSize,
-                  Double amountOfWaste,
-                  List<String> additionalServices,
-                  List<Container> containerList,
-                  List<Crew> crewList) {
+                  Double amountOfWaste
+        ) {
         this.vesselNumber = vesselNumber;
         this.status = null;
         this.arrivalDateTime = arrivalDateTime;
@@ -49,9 +48,21 @@ public class Vessel {
         this.berthReserved = false;
         this.towingPilotageReserved = false;
         this.serviceReserved = false;
-        this.additionalServices = additionalServices;
+        this.additionalServices = new ArrayList<>();
+        this.containerList = new ArrayList<>();
+        this.crewList = new ArrayList<>();
+    }
+
+    public void addContainerList(List<Container> containerList){
         this.containerList = containerList;
+    }
+
+    public void addCrewList(List<Crew> crewList){
         this.crewList = crewList;
+    }
+
+    public void addAdditionalServices(List<String> additionalServices){
+        this.additionalServices = additionalServices;
     }
 
     public void updateOfferInfo(Integer offerId, Double price){

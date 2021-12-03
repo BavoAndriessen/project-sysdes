@@ -26,10 +26,10 @@ public class CommandHandler {
                     command.getArrivalDateTime(),
                     command.getDepartureDateTime(),
                     command.getVesselSize(),
-                    command.getAmountOfWaste(),
-                    command.getAdditionalServices(),
-                    command.getContainerList(),
-                    command.getCrewList());
+                    command.getAmountOfWaste());
+            vessel.addAdditionalServices(command.getAdditionalServices());
+            vessel.addContainerList(command.getContainerList());
+            vessel.addCrewList(command.getCrewList());
 
             synchronized (vesselRegistrationSaga){
                 vesselRegistrationSaga.startVesselRegistration(vessel);
