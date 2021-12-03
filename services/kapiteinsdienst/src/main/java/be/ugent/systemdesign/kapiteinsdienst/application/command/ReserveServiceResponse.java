@@ -9,10 +9,10 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReserveServiceResponse extends Response {
 
-    private Integer vesselNumber;
+    private String vesselId;
 
-    public ReserveServiceResponse(ResponseStatus status, String message, Integer vesselNumber) {
+    public ReserveServiceResponse(ResponseStatus status, String message, String vesselId) {
         super(status, message);
-        this.vesselNumber = vesselNumber;
+        this.vesselId = vesselId;
     }
 }

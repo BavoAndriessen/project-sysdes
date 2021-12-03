@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Vessel {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private VesselStatus status;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
@@ -31,13 +31,13 @@ public class Vessel {
     private List<Container> containerList;
     private List<Crew> crewList;
 
-    public Vessel(Integer vesselNumber,
+    public Vessel(String vesselId,
                   LocalDateTime arrivalDateTime,
                   LocalDateTime departureDateTime,
                   Double vesselSize,
                   Double amountOfWaste
         ) {
-        this.vesselNumber = vesselNumber;
+        this.vesselId = vesselId;
         this.status = null;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;

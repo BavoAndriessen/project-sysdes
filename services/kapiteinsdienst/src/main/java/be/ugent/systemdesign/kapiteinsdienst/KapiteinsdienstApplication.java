@@ -34,10 +34,13 @@ public class KapiteinsdienstApplication {
         return (args) -> {
             DMrepo.deleteAll();
 
-            Vessel vessel = new Vessel(12, LocalDateTime.now(),LocalDateTime.now(),125.0,10.5);
+            Vessel vessel = new Vessel("12", LocalDateTime.now(),LocalDateTime.now(),125.0,10.5);
             Container container1 = new Container(1,"bananas");
             Container container2 = new Container(2,"bananas");
             Container container3 = new Container(3,"bananas");
+            /*Container container1 = new Container("bananas");
+            Container container2 = new Container("bananas");
+            Container container3 = new Container("bananas");*/
             List<Container> containerList = new ArrayList<>();
             containerList.add(container1);
             containerList.add(container2);
@@ -58,8 +61,8 @@ public class KapiteinsdienstApplication {
 
             repo.save(vessel);
 
-            Vessel vesselInRepo = repo.findById(12);
-            log.warn("Saved new vessel {} with crewmemeber {} and service {}", vesselInRepo.getVesselNumber(),vesselInRepo.getCrewList().get(1).getFirstName(), vesselInRepo.getAdditionalServices().get(0));
+            Vessel vesselInRepo = repo.findById("12");
+            log.warn("Saved new vessel {} with crewmemeber {} and service {} and container {} and {}", vesselInRepo.getVesselId(),vesselInRepo.getCrewList().get(1).getFirstName(), vesselInRepo.getAdditionalServices().get(0),vesselInRepo.getContainerList().get(0).getContainerId(),vesselInRepo.getContainerList().get(1).getContainerId());
         };
     }
 

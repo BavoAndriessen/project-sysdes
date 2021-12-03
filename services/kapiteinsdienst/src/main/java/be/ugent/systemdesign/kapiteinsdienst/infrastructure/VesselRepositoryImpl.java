@@ -22,15 +22,15 @@ public class VesselRepositoryImpl implements VesselRepository {
     }
 
     @Override
-    public Vessel findById(Integer vesselNumber) {
-        VesselDataModel vessel = vesselRepo.findById(vesselNumber).orElseThrow(VesselNotFoundException::new);
+    public Vessel findById(String vesselId) {
+        VesselDataModel vessel = vesselRepo.findById(vesselId).orElseThrow(VesselNotFoundException::new);
         return mapToVessel(vessel);
     }
 
 
     private VesselDataModel mapToVesselDataModel(Vessel vessel){
         return new VesselDataModel(
-                vessel.getVesselNumber(),
+                vessel.getVesselId(),
                 vessel.getStatus(),
                 vessel.getArrivalDateTime(),
                 vessel.getDepartureDateTime(),
@@ -49,7 +49,7 @@ public class VesselRepositoryImpl implements VesselRepository {
 
     private Vessel mapToVessel(VesselDataModel vessel){
         return Vessel.builder()
-                    .vesselNumber(vessel.getVesselNumber())
+                    .vesselId(vessel.getVesselId())
                     .status(vessel.getStatus())
                     .arrivalDateTime(vessel.getArrivalDateTime())
                     .departureDateTime(vessel.getDepartureDateTime())

@@ -10,13 +10,13 @@ import lombok.Getter;
 public class OfferCreatedResponse extends Response {
 
     private Integer offerId;
-    private Integer vesselNumber;
+    private String vesselId;
     private Double price;
 
-    public OfferCreatedResponse(ResponseStatus status, String message, Integer offerId, Integer vesselNumber, Double price){
+    public OfferCreatedResponse(ResponseStatus status, String message, Integer offerId, String vesselId, Double price){
         super(status, message);
         this.offerId = offerId;
-        this.vesselNumber = vesselNumber;
+        this.vesselId = vesselId;
         this.price = price;
     }
 

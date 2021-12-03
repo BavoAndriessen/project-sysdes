@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class VesselDataModel {
 
     @Id
-    private Integer vesselNumber;
+    private String vesselId;
     private VesselStatus status;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
@@ -56,7 +56,7 @@ public class VesselDataModel {
         this.crewList = crewList.stream().map(e -> new CrewDataModel(e.getCrewId(),e.getFirstName(),e.getLastName(),e.getDateOfBirth(),e.getType())).collect(Collectors.toList());
     }
     */
-    public VesselDataModel(Integer vesselNumber,
+    public VesselDataModel(String vesselId,
                            VesselStatus status,
                            LocalDateTime arrivalDateTime,
                            LocalDateTime departureDateTime,
@@ -70,7 +70,7 @@ public class VesselDataModel {
                            List<String> additionalServices,
                            List<Container> containerList,
                            List<Crew> crewList) {
-        this.vesselNumber = vesselNumber;
+        this.vesselId = vesselId;
         this.status = status;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;

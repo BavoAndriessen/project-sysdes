@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DeleteOfferCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private Integer offerId;
 
 }

@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 public class OfferProposalResponse extends Response {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private Double price;
     private Integer offerId;
 
-    public OfferProposalResponse(ResponseStatus status, String message, Integer vesselNumber, Double price, Integer offerId) {
+    public OfferProposalResponse(ResponseStatus status, String message, String vesselId, Double price, Integer offerId) {
         super(status, message);
-        this.vesselNumber = vesselNumber;
+        this.vesselId = vesselId;
         this.price = price;
         this.offerId = offerId;
     }

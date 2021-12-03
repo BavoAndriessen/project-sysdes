@@ -25,17 +25,17 @@ public class VesselRegistrationSaga {
         vessel.newRegistration();
         vesselRepo.save(vessel);
 
-        ReserveBerthCommand reserveBerthCommand = new ReserveBerthCommand(vessel.getVesselNumber(),vessel.getVesselSize(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
+        ReserveBerthCommand reserveBerthCommand = new ReserveBerthCommand(vessel.getVesselId(),vessel.getVesselSize(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
         commandDispatcher.sendReserveBerthCommand(reserveBerthCommand);
 
-        ReserveServiceCommand reserveServiceCommand = new ReserveServiceCommand(vessel.getVesselNumber(),vessel.getArrivalDateTime(), vessel.getDepartureDateTime(),vessel.getAdditionalServices());
+        ReserveServiceCommand reserveServiceCommand = new ReserveServiceCommand(vessel.getVesselId(),vessel.getArrivalDateTime(), vessel.getDepartureDateTime(),vessel.getAdditionalServices());
         commandDispatcher.sendReserveServiceCommand(reserveServiceCommand);
 
-        ReserveTowingPilotageCommand towingPilotageCommand = new ReserveTowingPilotageCommand(vessel.getVesselNumber(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
+        ReserveTowingPilotageCommand towingPilotageCommand = new ReserveTowingPilotageCommand(vessel.getVesselId(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
         commandDispatcher.sendReserveTowingPilotageCommand(towingPilotageCommand);
 
         RequestOfferCommand requestOfferCommand = new RequestOfferCommand(
-                vessel.getVesselNumber(),
+                vessel.getVesselId(),
                 vessel.getArrivalDateTime(),
                 vessel.getDepartureDateTime(),
                 vessel.getVesselSize(),
@@ -50,13 +50,13 @@ public class VesselRegistrationSaga {
         vessel.failedReservation();
         vesselRepo.save(vessel);
 
-        sendUndoReservationToAllServices(vessel.getVesselNumber());
+        sendUndoReservationToAllServices(vessel.getVesselId());
 
-        //TODO is offerId wel beschikbaar? kan dit met enkel vesselnumber?
-        DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vessel.getVesselNumber(), vessel.getOfferId());
+        //TODO is offerId wel beschikbaar? kan dit met enkel vesselId?
+        DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vessel.getVesselId(), vessel.getOfferId());
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
 
-        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.FAIL,"",vessel.getVesselNumber(),vessel.getPrice(),vessel.getOfferId());
+        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.FAIL,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
         commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
 
     }
@@ -83,17 +83,17 @@ public class VesselRegistrationSaga {
         vesselRepo.save(vessel);
 
         if(!isConfirmed){
-            sendUndoReservationToAllServices(vessel.getVesselNumber());
+            sendUndoReservationToAllServices(vessel.getVesselId());
         }
     }
 
     private void onRegistrationComplete(Vessel vessel){
-        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.SUCCESS,"",vessel.getVesselNumber(),vessel.getPrice(),vessel.getOfferId());
+        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.SUCCESS,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
         commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
     }
 
-    private void sendUndoReservationToAllServices(Integer vesselNumber){
-        UndoReservationCommand undoReservationCommand = new UndoReservationCommand(vesselNumber);
+    private void sendUndoReservationToAllServices(String vesselId){
+        UndoReservationCommand undoReservationCommand = new UndoReservationCommand(vesselId);
         commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);

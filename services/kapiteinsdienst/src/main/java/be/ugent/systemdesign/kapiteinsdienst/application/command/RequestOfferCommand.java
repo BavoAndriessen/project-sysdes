@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RequestOfferCommand {
 
-    private Integer vesselNumber;
+    private String vesselId;
     private LocalDateTime arrivalDateTime;
     private LocalDateTime departureDateTime;
     private Double vesselSize;
@@ -22,8 +22,8 @@ public class RequestOfferCommand {
 
     private String responseDestination;
 
-    public RequestOfferCommand(Integer vesselNumber, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, Double vesselSize, Double amountOfWaste, List<Container> containerList, List<Crew> crewList) {
-        this.vesselNumber = vesselNumber;
+    public RequestOfferCommand(String vesselId, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, Double vesselSize, Double amountOfWaste, List<Container> containerList, List<Crew> crewList) {
+        this.vesselId = vesselId;
         this.arrivalDateTime = arrivalDateTime;
         this.departureDateTime = departureDateTime;
         this.vesselSize = vesselSize;
