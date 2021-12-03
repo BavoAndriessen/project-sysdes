@@ -17,15 +17,20 @@ public class Container {
     private ContainerLocation currentLocation;
     private final ContainerLocation destinationLocation;
 
-    private static final Map<ContainerState, EnumSet<ContainerState>> allowedStateChanges = new EnumMap<>(ContainerState.class);
-    static {
-        allowedStateChanges.put(REGISTERED, EnumSet.of(ARRIVED));
-        allowedStateChanges.put(ARRIVED, EnumSet.of(TRANSIT_NOT_APPROVED));
-        allowedStateChanges.put(TRANSIT_NOT_APPROVED, EnumSet.of(TRANSIT_APPROVED));
-        allowedStateChanges.put(TRANSIT_APPROVED, EnumSet.of(READY_TO_LOAD));
-        allowedStateChanges.put(READY_TO_LOAD, EnumSet.of(LOADED));
-        allowedStateChanges.put(LOADED, EnumSet.of(RELEASED));
-    }
+//    private static final Map<ContainerState, EnumSet<ContainerState>> allowedStateChanges = new EnumMap<>(ContainerState.class);
+//    static {
+//        allowedStateChanges.put(REGISTERED, EnumSet.of(ARRIVED));
+//        allowedStateChanges.put(ARRIVED, EnumSet.of(TRANSIT_NOT_APPROVED));
+//        allowedStateChanges.put(TRANSIT_NOT_APPROVED, EnumSet.of(TRANSIT_APPROVED));
+//        allowedStateChanges.put(TRANSIT_APPROVED, EnumSet.of(READY_TO_LOAD));
+//        allowedStateChanges.put(READY_TO_LOAD, EnumSet.of(LOADED));
+//        allowedStateChanges.put(LOADED, EnumSet.of(RELEASED));
+//    }
+
+//    private static final Map<ContainerState, Boolean> requiresNewLocation = new EnumMap<>(ContainerState.class);
+//    static {
+//        requiresNewLocation.put(RE)
+//    }
 
     public Container(int containerId, String contents, ContainerLocation destinationLocation) {
         this.containerId = containerId;
@@ -85,11 +90,17 @@ public class Container {
 //    }
 
     // alternative methods for all previous methods to change state
-    public void progressState(ContainerState newState) {
-        if (!allowedStateChanges.get(state).contains(newState)) {
+    public void progressState(ContainerState newState, ContainerLocation newLocation) throws ContainerLocationNotProvidedException, IllegalContainerStateChangeException {
+        if (!getAllowedStateChanges().get(state).contains(newState)) {
             throw new IllegalContainerStateChangeException();
         }
         state = newState;
+        if (getRequiresNewLocation().get(newState)) {
+            if (newLocation == null) {
+                throw new ContainerLocationNotProvidedException();
+            }
+            this.currentLocation = newLocation;
+        }
     }
 
     @Override

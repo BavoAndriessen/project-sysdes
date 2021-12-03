@@ -15,8 +15,8 @@ import java.util.List;
 @RequestMapping(path = "api/containers")
 public class ContainerRESTController {
 
-//    @Autowired
-//    private ContainerService service;
+    @Autowired
+    private ContainerService service;
 
     @Autowired
     private ContainerQuery query;
