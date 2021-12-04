@@ -1,11 +1,13 @@
 package com.projectsysdes.containermanagement;
 
 import com.projectsysdes.containermanagement.API.messaging.Channels;
+import com.projectsysdes.containermanagement.application.command.CommandDispatcher;
 import com.projectsysdes.containermanagement.application.event.EventDispatcher;
 import com.projectsysdes.containermanagement.domain.Container;
 import com.projectsysdes.containermanagement.domain.ContainerLocation;
 import com.projectsysdes.containermanagement.domain.ContainerLocationType;
 import com.projectsysdes.containermanagement.domain.ContainerRepository;
+import com.projectsysdes.containermanagement.domain.commands.TransferContainersCommand;
 import com.projectsysdes.containermanagement.domain.events.ContainersReadyAtDockEvent;
 import com.projectsysdes.containermanagement.infrastructure.ContainerDataModelRepository;
 import com.projectsysdes.containermanagement.infrastructure.ContainerNotFoundException;
@@ -53,10 +55,12 @@ public class ContainermanagementApplication {
         };
     }
     @Bean
-    CommandLineRunner testMessageOutPutGateway(EventDispatcher ed) {
+    CommandLineRunner testMessageOutPutGateway(EventDispatcher ed, CommandDispatcher cd) {
         return (args) -> {
             logger.info(">Save new container with id {} to database.", 0);
-            ed.publishContainersReadyAtDockEvent(new ContainersReadyAtDockEvent(LocalDateTime.now(), List.of(0,1), new ContainerLocation(ContainerLocationType.DOCK, "432")));
+            ed.publishContainersReadyAtDockEvent(new ContainersReadyAtDockEvent(List.of(0,1), new ContainerLocation(ContainerLocationType.DOCK, "432")));
+            cd.transferContainersCommand(new TransferContainersCommand(List.of(0,1,2)));
         };
     }
+
 }

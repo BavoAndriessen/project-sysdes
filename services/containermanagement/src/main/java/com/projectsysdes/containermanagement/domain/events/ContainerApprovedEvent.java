@@ -9,8 +9,8 @@ public class ContainerApprovedEvent extends DomainEvent {
 
     private final Integer containerId;
 
-    public ContainerApprovedEvent(LocalDateTime createdTime, Integer containerId) {
-        super(createdTime);
+    public ContainerApprovedEvent(Integer containerId) {
+        super();
         this.containerId=containerId;
     }
 }

@@ -26,9 +26,12 @@ public interface Channels {
 
     // publish events
     String CONTAINERS_READY_AT_DOCK = "containers_ready_at_dock";
+    String TRANSFER_CONTAINERS_COMMAND = "transfer_containers_command";
 
     @Output(CONTAINERS_READY_AT_DOCK)
-    MessageChannel ContainersReadyAtDock();
+    MessageChannel containersReadyAtDock();
 
+    @Output(TRANSFER_CONTAINERS_COMMAND)
+    MessageChannel transferContainers();
 
 }

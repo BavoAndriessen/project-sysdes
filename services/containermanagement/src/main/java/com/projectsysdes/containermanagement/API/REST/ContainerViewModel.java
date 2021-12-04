@@ -9,8 +9,8 @@ public class ContainerViewModel {
 
     private final Integer containerId;
     private final String contents;
-    private String state;
-    private ContainerLocationViewModel currentLocation;
+    private final String state;
+    private final ContainerLocationViewModel currentLocation;
     private final ContainerLocationViewModel destinationLocation;
 
 }

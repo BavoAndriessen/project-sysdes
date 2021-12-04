@@ -12,8 +12,8 @@ public class ReadyForContainersEvent extends DomainEvent {
     private final ContainerLocation location;
     private final List<Integer> containerIds;
 
-    public ReadyForContainersEvent(LocalDateTime createdTime, List<Integer> containerIds, ContainerLocation location) {
-        super(createdTime);
+    public ReadyForContainersEvent(List<Integer> containerIds, ContainerLocation location) {
+        super();
         this.containerIds = containerIds;
         this.location = location;
     }

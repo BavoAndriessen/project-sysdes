@@ -1,6 +1,8 @@
 package com.projectsysdes.containermanagement.API.messaging;
 
+import com.projectsysdes.containermanagement.application.command.CommandDispatcher;
 import com.projectsysdes.containermanagement.application.event.EventDispatcher;
+import com.projectsysdes.containermanagement.domain.commands.TransferContainersCommand;
 import com.projectsysdes.containermanagement.domain.events.ContainersReadyAtDockEvent;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -9,10 +11,14 @@ import org.springframework.stereotype.Service;
 
 @MessagingGateway
 @Service
-public interface MessageOutputGateway extends EventDispatcher {
+public interface MessageOutputGateway extends EventDispatcher, CommandDispatcher {
 
-    @Gateway(requestChannel = Channels.CONTAINERS_READY_AT_DOCK)
     @Override
+    @Gateway(requestChannel = Channels.CONTAINERS_READY_AT_DOCK)
     void publishContainersReadyAtDockEvent(ContainersReadyAtDockEvent event);
+
+    @Override
+    @Gateway(requestChannel = Channels.TRANSFER_CONTAINERS_COMMAND)
+    void transferContainersCommand(TransferContainersCommand transferContainersCommand);
 
 }

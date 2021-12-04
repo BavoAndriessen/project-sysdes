@@ -1,6 +1,6 @@
 package com.projectsysdes.containermanagement.application.event;
 
-import com.projectsysdes.containermanagement.application.ContainerService;
+import com.projectsysdes.containermanagement.application.ContainerManagementService;
 import com.projectsysdes.containermanagement.application.Response;
 import com.projectsysdes.containermanagement.domain.events.ArrivedWithContainersEvent;
 import com.projectsysdes.containermanagement.domain.events.ContainerApprovedEvent;
@@ -16,7 +16,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 public class EventListener {
     @Autowired
-    ContainerService service;
+    ContainerManagementService service;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -4,7 +4,7 @@ import com.projectsysdes.containermanagement.API.REST.ContainerLocationViewModel
 
 import java.util.List;
 
-public interface ContainerService {
+public interface ContainerManagementService {
 
     Response approveContainer(Integer containerId);
     Response arrivedWithContainer(List<Integer> containers, ContainerLocationViewModel at);

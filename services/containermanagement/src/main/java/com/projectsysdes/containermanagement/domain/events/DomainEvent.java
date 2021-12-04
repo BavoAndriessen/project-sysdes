@@ -5,8 +5,11 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @Getter
 public abstract class DomainEvent {
-    private LocalDateTime createdTime;
+    private final LocalDateTime createdTime;
+
+    public DomainEvent() {
+        this.createdTime = LocalDateTime.now();
+    }
 }

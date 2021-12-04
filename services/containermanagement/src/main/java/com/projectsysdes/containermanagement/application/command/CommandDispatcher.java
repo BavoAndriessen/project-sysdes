@@ -1,13 +1,9 @@
 package com.projectsysdes.containermanagement.application.command;
 
-import com.projectsysdes.containermanagement.application.ContainerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.projectsysdes.containermanagement.domain.commands.TransferContainersCommand;
 
-@Service
-public class CommandDispatcher {
-    @Autowired
-    ContainerService service;
 
+public interface CommandDispatcher {
+    void transferContainersCommand(TransferContainersCommand transferContainersCommand);
 
 }

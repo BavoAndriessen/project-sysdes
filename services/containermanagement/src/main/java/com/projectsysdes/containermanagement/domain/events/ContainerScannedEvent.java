@@ -12,8 +12,8 @@ public class ContainerScannedEvent extends DomainEvent {
     private final ContainerState newStatus;
     private final ContainerLocation newLocation;
 
-    public ContainerScannedEvent(LocalDateTime ldt, Integer containerId, ContainerState newStatus, ContainerLocation newLocation) {
-        super(ldt);
+    public ContainerScannedEvent(Integer containerId, ContainerState newStatus, ContainerLocation newLocation) {
+        super();
         this.containerId = containerId;
         this.newStatus = newStatus;
         this.newLocation = newLocation;

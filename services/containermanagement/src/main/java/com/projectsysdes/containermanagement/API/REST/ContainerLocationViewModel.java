@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ContainerLocationViewModel {
-    private String locationType;
-    private String locationIdentifier;
+    private final String locationType;
+    private final String locationIdentifier;
 }

@@ -13,8 +13,8 @@ public class ContainersReadyAtDockEvent extends DomainEvent {
     private final ContainerLocation location;
     private final List<Integer> containerIds;
 
-    public ContainersReadyAtDockEvent(LocalDateTime createdTime, List<Integer> containerIds, ContainerLocation location) {
-        super(createdTime);
+    public ContainersReadyAtDockEvent(List<Integer> containerIds, ContainerLocation location) {
+        super();
         this.containerIds = containerIds;
         this.location = location;
     }

@@ -1,7 +1,7 @@
 package com.projectsysdes.containermanagement.API.REST;
 
 
-import com.projectsysdes.containermanagement.application.ContainerService;
+import com.projectsysdes.containermanagement.application.ContainerManagementService;
 import com.projectsysdes.containermanagement.application.query.ContainerQuery;
 import com.projectsysdes.containermanagement.infrastructure.ContainerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ContainerRESTController {
 
     @Autowired
-    private ContainerService service;
+    private ContainerManagementService service;
 
     @Autowired
     private ContainerQuery query;

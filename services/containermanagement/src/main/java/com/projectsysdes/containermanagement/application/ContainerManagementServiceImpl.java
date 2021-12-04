@@ -2,6 +2,7 @@ package com.projectsysdes.containermanagement.application;
 
 import com.projectsysdes.containermanagement.API.REST.ContainerLocationViewModel;
 import com.projectsysdes.containermanagement.domain.*;
+import com.projectsysdes.containermanagement.domain.exceptions.IllegalContainerStateChangeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Transactional
 @Service
-public class ContainerServiceImpl implements ContainerService {
+public class ContainerManagementServiceImpl implements ContainerManagementService {
 
     @Autowired
     ContainerRepository repo;
