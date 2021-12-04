@@ -15,22 +15,8 @@ public class Container {
     private final String contents;
     private ContainerState state;
     private ContainerLocation currentLocation;
-    private final ContainerLocation destinationLocation;
-
-//    private static final Map<ContainerState, EnumSet<ContainerState>> allowedStateChanges = new EnumMap<>(ContainerState.class);
-//    static {
-//        allowedStateChanges.put(REGISTERED, EnumSet.of(ARRIVED));
-//        allowedStateChanges.put(ARRIVED, EnumSet.of(TRANSIT_NOT_APPROVED));
-//        allowedStateChanges.put(TRANSIT_NOT_APPROVED, EnumSet.of(TRANSIT_APPROVED));
-//        allowedStateChanges.put(TRANSIT_APPROVED, EnumSet.of(READY_TO_LOAD));
-//        allowedStateChanges.put(READY_TO_LOAD, EnumSet.of(LOADED));
-//        allowedStateChanges.put(LOADED, EnumSet.of(RELEASED));
-//    }
-
-//    private static final Map<ContainerState, Boolean> requiresNewLocation = new EnumMap<>(ContainerState.class);
-//    static {
-//        requiresNewLocation.put(RE)
-//    }
+    private ContainerLocation destinationLocation;
+    private boolean destinationLocationReady;
 
     public Container(int containerId, String contents, ContainerLocation destinationLocation) {
         this.containerId = containerId;
@@ -38,6 +24,7 @@ public class Container {
         this.currentLocation = new ContainerLocation(ContainerLocationType.UNKNOWN, "");
         this.state = REGISTERED;
         this.destinationLocation = destinationLocation;
+        this.destinationLocationReady = false;
     }
 
 
@@ -101,6 +88,12 @@ public class Container {
             }
             this.currentLocation = newLocation;
         }
+    }
+
+    public void setDestinationLocationReady(ContainerLocation location) {
+        this.destinationLocationReady = true;
+        // voor als die nog niet gekend was
+        this.destinationLocation = location;
     }
 
     @Override

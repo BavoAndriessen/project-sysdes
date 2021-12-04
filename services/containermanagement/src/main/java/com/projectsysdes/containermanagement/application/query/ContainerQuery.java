@@ -1,11 +1,11 @@
 package com.projectsysdes.containermanagement.application.query;
 
-import com.projectsysdes.containermanagement.API.REST.ContainerLocationViewModel;
 import com.projectsysdes.containermanagement.API.REST.ContainerViewModel;
+import com.projectsysdes.containermanagement.domain.ContainerLocation;
 
 import java.util.List;
 
 public interface ContainerQuery {
-    ContainerLocationViewModel getContainerLocation(Integer containerId);
+    ContainerLocation getContainerLocation(Integer containerId);
     List<ContainerViewModel> searchContainersForContents(String contents);
 }

@@ -24,24 +24,27 @@ public class EventListener {
     @TransactionalEventListener
     public void consumeContainerApprovedEvent(ContainerApprovedEvent event) {
         Response r = service.approveContainer(event.getContainerId());
-        logger.info("consumeContainerApprovedEvent");
+        logger.info(r.getStatus().name() + ": " + r.getMessage());
     }
 
     @Async
     @TransactionalEventListener
     public void consumeContainerScannedEvent(ContainerScannedEvent event) {
-        logger.info("consumeContainerScannedEvent");
+        Response r = service.scanContainer(event.getContainerId(), event.getNewStatus().name(), event.getNewLocation());
+        logger.info(r.getStatus().name() + ": " + r.getMessage());
     }
 
     @Async
     @TransactionalEventListener
     public void consumeArrivedWithContainersEvent(ArrivedWithContainersEvent event) {
-        logger.info("consumeArrivedWithContainersEvent");
+        Response r = service.arrivedWithContainers(event.getContainerIds(), event.getLocation());
+        logger.info(r.getStatus().name() + ": " + r.getMessage());
     }
 
     @Async
     @TransactionalEventListener
     public void consumeReadyForContainersEvent(ReadyForContainersEvent event) {
-        logger.info("consumeReadyForContainersEvent");
+        Response r = service.readyForContainers(event.getContainerIds(), event.getLocation());
+        logger.info(r.getStatus().name() + ": " + r.getMessage());
     }
 }

@@ -1,15 +1,15 @@
 package com.projectsysdes.containermanagement.application;
 
-import com.projectsysdes.containermanagement.API.REST.ContainerLocationViewModel;
+import com.projectsysdes.containermanagement.domain.ContainerLocation;
 
 import java.util.List;
 
 public interface ContainerManagementService {
 
     Response approveContainer(Integer containerId);
-    Response arrivedWithContainer(List<Integer> containers, ContainerLocationViewModel at);
-    Response readyForContainers(ContainerLocationViewModel location);
-    Response scanContainer(Integer containerId, String newState, ContainerLocationViewModel location);
+    Response arrivedWithContainers(List<Integer> containers, ContainerLocation at);
+    Response readyForContainers(List<Integer> containers, ContainerLocation location);
+    Response scanContainer(Integer containerId, String newState, ContainerLocation location);
 
 
 }

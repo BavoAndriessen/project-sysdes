@@ -3,6 +3,7 @@ package com.projectsysdes.containermanagement.API.REST;
 
 import com.projectsysdes.containermanagement.application.ContainerManagementService;
 import com.projectsysdes.containermanagement.application.query.ContainerQuery;
+import com.projectsysdes.containermanagement.domain.ContainerLocation;
 import com.projectsysdes.containermanagement.infrastructure.ContainerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ContainerRESTController {
     private ContainerQuery query;
 
     @GetMapping("/{id}/location")
-    public ResponseEntity<ContainerLocationViewModel> getContainerLocation(@PathVariable("id") String containerId) {
+    public ResponseEntity<ContainerLocation> getContainerLocation(@PathVariable("id") String containerId) {
         try {
             Integer id= Integer.parseInt(containerId);
             return new ResponseEntity<>(query.getContainerLocation(id), HttpStatus.OK);

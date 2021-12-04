@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ContainerRepositoryImpl implements ContainerRepository {
@@ -25,14 +27,30 @@ public class ContainerRepositoryImpl implements ContainerRepository {
     }
 
     @Override
+    public void save(Collection<Container> containers) {
+        containerDataModelRepository.saveAll(containers.stream().map(c -> {return toContainerDataModel(c); }).collect(Collectors.toList()));
+    }
+
+    @Override
     public List<Container> findAll() {
-        List<Container> containers = new ArrayList<Container>();
+        List<Container> containers = new ArrayList<>();
         List<ContainerDataModel> l = containerDataModelRepository.findAll();
         for (ContainerDataModel c: l) {
             containers.add(toContainer(c));
         }
         return containers;
     }
+
+    @Override
+    public List<Container> findContainersWithContainerIds(Collection<Integer> containerIds) {
+        List<ContainerDataModel> containerDataModels = containerDataModelRepository.findByContainerIdIn(containerIds);
+        List<Container> containers = new ArrayList<>();
+        for (ContainerDataModel cdm: containerDataModels) {
+            containers.add(toContainer(cdm));
+        }
+        return containers;
+    }
+
 
     private Container toContainer(ContainerDataModel cdm) {
         return Container.builder()
@@ -41,6 +59,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
                 .state(ContainerState.valueOf(cdm.getState()))
                 .currentLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getCurrentLocationType()), cdm.getCurrentLocationIdentifier()))
                 .destinationLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getDestinationLocationType()), cdm.getDestinationLocationIdentifier()))
+                .destinationLocationReady(cdm.isDestinationLocationReady())
                 .build();
     }
 
@@ -53,6 +72,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
                 .currentLocationIdentifier(c.getCurrentLocation().getLocationIdentifier())
                 .destinationLocationIdentifier(c.getDestinationLocation().getLocationIdentifier())
                 .destinationLocationType(c.getDestinationLocation().getLocationType().name())
+                .destinationLocationReady(c.isDestinationLocationReady())
                 .build();
     }
 }

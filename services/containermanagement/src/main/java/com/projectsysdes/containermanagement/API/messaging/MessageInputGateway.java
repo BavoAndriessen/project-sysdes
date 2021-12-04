@@ -22,24 +22,20 @@ public class MessageInputGateway {
     @StreamListener(Channels.CONTAINER_APPROVED)
     void consumeContainerApprovedEvent(ContainerApprovedEvent event) {
         eventListener.consumeContainerApprovedEvent(event);
-        logger.info("consumeContainerApprovedEvent");
     }
 
     @StreamListener(Channels.CONTAINER_SCANNED)
     void consumeContainerScannedEvent(ContainerScannedEvent event) {
         eventListener.consumeContainerScannedEvent(event);
-        logger.info("consumeContainerScannedEvent");
     }
 
     @StreamListener(Channels.ARRIVED_WITH_CONTAINERS)
     void consumeArrivedWithContainersEvent(ArrivedWithContainersEvent event) {
         eventListener.consumeArrivedWithContainersEvent(event);
-        logger.info("consumeArrivedWithContainersEvent");
     }
 
     @StreamListener(Channels.READY_FOR_CONTAINERS)
     void consumeReadyForContainersEvent(ReadyForContainersEvent event) {
         eventListener.consumeReadyForContainersEvent(event);
-        logger.info("consumeReadyForContainersEvent");
     }
 }
