@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class Vessel {
 
@@ -28,6 +27,15 @@ public class Vessel {
     private List<String> additionalServices;
     private List<Container> containerList;
     private List<Crew> crewList;
+
+    public Vessel() {
+        this.status = null;
+        this.offerId = null;
+        this.price = null;
+        this.berthReserved = false;
+        this.towingPilotageReserved = false;
+        this.serviceReserved = false;
+    }
 
     public Vessel(String vesselId,
                   LocalDateTime arrivalDateTime,
@@ -75,9 +83,9 @@ public class Vessel {
 
     public boolean checkOfferAvailability(){
         if(berthReserved && towingPilotageReserved && serviceReserved && status==VesselStatus.OFFER_CREATED){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void updateReservationStatus(ReservationServices service){

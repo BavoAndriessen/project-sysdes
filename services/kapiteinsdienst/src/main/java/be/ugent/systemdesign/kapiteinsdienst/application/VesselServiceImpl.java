@@ -45,8 +45,13 @@ public class VesselServiceImpl implements VesselService {
             Vessel vessel = vesselRepo.findById(vesselId);
             synchronized (vesselRegistrationSaga){
                 vesselRegistrationSaga.onOfferConfirmation(vessel, isAccepted);
+                if(vessel.checkOfferAvailability()){
+                    return new Response(ResponseStatus.SUCCESS, vesselId);
+                } else {
+                    return new Response(ResponseStatus.FAIL, vesselId);
+                }
             }
-            return new Response(ResponseStatus.SUCCESS, vesselId);
+
         } catch (RuntimeException e){
             return new Response(ResponseStatus.FAIL, vesselId);
         }

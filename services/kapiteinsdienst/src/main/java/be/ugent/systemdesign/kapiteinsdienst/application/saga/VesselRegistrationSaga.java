@@ -77,20 +77,15 @@ public class VesselRegistrationSaga {
 
     }
 
-    //TODO check als prijs en offerId beschikbaar zijn en alle diensten gereserveerd zijn (een gebruiker zou anders te vroeg kunnen bevestigen)
-    //ofwel in vesselServiceImpl
     //TODO check offer niet reeds werd bevestigd
     public void onOfferConfirmation(Vessel vessel, Boolean isConfirmed){
-        vessel.offerConfirmation(isConfirmed);
-        //TODO enkel voor test
-        vessel.setPrice(33.0);
-        vessel.setOfferId(5);
+        if(vessel.checkOfferAvailability()){
+            vessel.offerConfirmation(isConfirmed);
+            vesselRepo.save(vessel);
 
-        vesselRepo.save(vessel);
-
-        if(!isConfirmed){
-            //TODO zorgt voor problemen
-            sendUndoReservationToAllServices(vessel.getVesselId());
+            if(!isConfirmed){
+                sendUndoReservationToAllServices(vessel.getVesselId());
+            }
         }
     }
 
@@ -99,6 +94,7 @@ public class VesselRegistrationSaga {
         commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);
+        //TODO nodig om op te roepen?
         DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vesselId);
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
     }
