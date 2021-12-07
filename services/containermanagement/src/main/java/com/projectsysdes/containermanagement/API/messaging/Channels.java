@@ -3,6 +3,7 @@ package com.projectsysdes.containermanagement.API.messaging;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 
 public interface Channels {
     // consume events
@@ -12,16 +13,16 @@ public interface Channels {
     String READY_FOR_CONTAINERS = "ready_for_containers";
 
     @Input(CONTAINER_SCANNED)
-    MessageChannel containerScanned();
+    SubscribableChannel containerScanned();
 
     @Input(CONTAINER_APPROVED)
-    MessageChannel containerApproved();
+    SubscribableChannel containerApproved();
 
     @Input(ARRIVED_WITH_CONTAINERS)
-    MessageChannel arrivedWithContainers();
+    SubscribableChannel arrivedWithContainers();
 
     @Input(READY_FOR_CONTAINERS)
-    MessageChannel readyForContainers();
+    SubscribableChannel readyForContainers();
 
 
     // publish events

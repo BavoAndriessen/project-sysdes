@@ -6,7 +6,6 @@ import com.projectsysdes.containermanagement.domain.commands.TransferContainersC
 import com.projectsysdes.containermanagement.domain.events.*;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.springframework.kafka.streams.HeaderEnricher;
 import org.springframework.stereotype.Service;
 
 @MessagingGateway
