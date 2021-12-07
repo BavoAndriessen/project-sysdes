@@ -1,12 +1,10 @@
 package be.ugent.systemdesign.kapiteinsdienst.application.saga;
 
-import be.ugent.systemdesign.kapiteinsdienst.application.ResponseStatus;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
+//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
 import be.ugent.systemdesign.kapiteinsdienst.domain.ReservationServices;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
-import be.ugent.systemdesign.kapiteinsdienst.domain.VesselStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,40 +54,44 @@ public class VesselRegistrationSaga {
         DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vessel.getVesselId(), vessel.getOfferId());
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
 
+        /*
         OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.FAIL,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
         commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
-
+        */
     }
 
     public void onReservationSuccess(Vessel vessel, ReservationServices service){
         vessel.updateReservationStatus(service);
         vesselRepo.save(vessel);
-        if(vessel.checkOfferAvailability()){
+        /*if(vessel.checkOfferAvailability()){
             onRegistrationComplete(vessel);
-        }
+        }*/
     }
 
     public void onOfferCreatedByAdministration(Vessel vessel, Integer offerId, Double price){
         vessel.updateOfferInfo(offerId, price);
         vesselRepo.save(vessel);
-        if(vessel.checkOfferAvailability()){
+        /*if(vessel.checkOfferAvailability()){
             onRegistrationComplete(vessel);
-        }
+        }*/
 
     }
 
+    //TODO check als prijs en offerId beschikbaar zijn en alle diensten gereserveerd zijn (een gebruiker zou anders te vroeg kunnen bevestigen)
+    //ofwel in vesselServiceImpl
+    //TODO check offer niet reeds werd bevestigd
     public void onOfferConfirmation(Vessel vessel, Boolean isConfirmed){
         vessel.offerConfirmation(isConfirmed);
+        //TODO enkel voor test
+        vessel.setPrice(33.0);
+        vessel.setOfferId(5);
+
         vesselRepo.save(vessel);
 
         if(!isConfirmed){
+            //TODO zorgt voor problemen
             sendUndoReservationToAllServices(vessel.getVesselId());
         }
-    }
-
-    private void onRegistrationComplete(Vessel vessel){
-        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.SUCCESS,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
-        commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
     }
 
     private void sendUndoReservationToAllServices(String vesselId){
@@ -97,8 +99,16 @@ public class VesselRegistrationSaga {
         commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);
+        DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vesselId);
+        commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
     }
 
-
+    /*
+    //Vervangen door rest
+    private void onRegistrationComplete(Vessel vessel){
+        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.SUCCESS,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
+        commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
+    }
+    */
 
 }

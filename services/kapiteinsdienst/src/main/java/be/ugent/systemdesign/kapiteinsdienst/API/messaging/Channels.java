@@ -1,4 +1,4 @@
-package be.ugent.systemdesign.kapiteinsdienst.API;
+package be.ugent.systemdesign.kapiteinsdienst.API.messaging;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
@@ -6,9 +6,9 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 public interface Channels {
-    static final String CREATE_OFFER = "create_offer";
-    static final String OFFER_PROPOSAL = "offer_proposal";
-    static final String OFFER_CONFIRMATION =  "offer_confirmation";
+    //static final String CREATE_OFFER = "create_offer";
+    //static final String OFFER_PROPOSAL = "offer_proposal";
+    //static final String OFFER_CONFIRMATION =  "offer_confirmation";
     static final String RESERVE_BERTH = "reserve_berth";
     static final String BERTH_RESERVED = "berth_reserved";
     static final String RESERVE_SERVICE = "reserve_service";
@@ -22,13 +22,16 @@ public interface Channels {
     static final String OFFER_CREATED = "offer_created";
     static final String DELETE_OFFER = "delete_offer";
 
-
+    /*
     @Input(CREATE_OFFER)
     SubscribableChannel createOffer();
 
     @Input(OFFER_CONFIRMATION)
     SubscribableChannel offerConfirmation();
 
+    @Output(OFFER_PROPOSAL)
+    MessageChannel offerProposal();
+    */
     @Input(BERTH_RESERVED)
     SubscribableChannel berthReserved();
 
@@ -40,9 +43,6 @@ public interface Channels {
 
     @Input(OFFER_CREATED)
     SubscribableChannel offerCreated();
-
-    @Output(OFFER_PROPOSAL)
-    MessageChannel offerProposal();
 
     @Output(RESERVE_BERTH)
     MessageChannel reserveBerth();

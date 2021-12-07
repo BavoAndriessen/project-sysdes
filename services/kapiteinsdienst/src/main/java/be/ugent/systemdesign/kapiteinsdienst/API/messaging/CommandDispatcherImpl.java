@@ -1,7 +1,7 @@
-package be.ugent.systemdesign.kapiteinsdienst.API;
+package be.ugent.systemdesign.kapiteinsdienst.API.messaging;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
+//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.RequestOfferCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,14 +22,16 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Value("${spring.cloud.stream.bindings." + Channels.TOWING_PILOTAGE_RESERVED + ".destination}")
     String reserveTowingPilotageResponseDestination;
 
-    @Value("${spring.cloud.stream.bindings." + Channels.REQUEST_OFFER + ".destination}")
+    @Value("${spring.cloud.stream.bindings." + Channels.OFFER_CREATED + ".destination}")
     String requestOfferAdministrationDestination;
 
+    /*
+    //Vervangen door rest
     @Override
     public void sendOfferProposalResponse(OfferProposalResponse response) {
         outputGateway.sendOfferProposalResponse(response);
     }
-
+    */
     @Override
     public void sendReserveBerthCommand(ReserveBerthCommand command) {
         outputGateway.sendReserveBerthCommand(
@@ -52,13 +54,6 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     }
 
     @Override
-    public void sendRequestOfferCommand(RequestOfferCommand command) {
-        outputGateway.sendRequestOfferCommand(
-                new RequestOfferCommand(command.getVesselId(),command.getArrivalDateTime(),command.getDepartureDateTime(),command.getVesselSize(),command.getAmountOfWaste(),command.getContainerList(),command.getCrewList(),requestOfferAdministrationDestination)
-        );
-    }
-
-    @Override
     public void sendUndoBerthReservationCommand(UndoReservationCommand command) {
         outputGateway.sendUndoBerthReservationCommand(command);
     }
@@ -71,6 +66,13 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Override
     public void sendUndoServiceReservationCommand(UndoReservationCommand command) {
         outputGateway.sendUndoServiceReservationCommand(command);
+    }
+
+    @Override
+    public void sendRequestOfferCommand(RequestOfferCommand command) {
+        outputGateway.sendRequestOfferCommand(
+                new RequestOfferCommand(command.getVesselId(),command.getArrivalDateTime(),command.getDepartureDateTime(),command.getVesselSize(),command.getAmountOfWaste(),command.getContainerList(),command.getCrewList(),requestOfferAdministrationDestination)
+        );
     }
 
     @Override

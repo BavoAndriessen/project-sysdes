@@ -12,4 +12,9 @@ public class DeleteOfferCommand {
     private String vesselId;
     private Integer offerId;
 
+    public DeleteOfferCommand(String vesselId){
+        this.vesselId = vesselId;
+        this.offerId = null;
+    }
+
 }

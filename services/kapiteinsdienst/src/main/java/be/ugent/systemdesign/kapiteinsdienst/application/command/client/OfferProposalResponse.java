@@ -1,4 +1,4 @@
-package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
+/*package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.Response;
 import be.ugent.systemdesign.kapiteinsdienst.application.ResponseStatus;
@@ -18,3 +18,4 @@ public class OfferProposalResponse extends Response {
         this.offerId = offerId;
     }
 }
+*/

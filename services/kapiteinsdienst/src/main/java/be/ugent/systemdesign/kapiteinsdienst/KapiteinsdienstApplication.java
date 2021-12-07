@@ -1,6 +1,6 @@
 package be.ugent.systemdesign.kapiteinsdienst;
 
-import be.ugent.systemdesign.kapiteinsdienst.API.Channels;
+import be.ugent.systemdesign.kapiteinsdienst.API.messaging.Channels;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Container;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Crew;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;

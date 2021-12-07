@@ -1,4 +1,4 @@
-package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
+/*package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -10,3 +10,4 @@ public class OfferConfirmationCommand {
     private String vesselId;
     private Boolean confirmed;
 }
+*/

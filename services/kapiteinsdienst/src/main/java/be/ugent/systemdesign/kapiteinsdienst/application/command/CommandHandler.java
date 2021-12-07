@@ -1,8 +1,8 @@
 package be.ugent.systemdesign.kapiteinsdienst.application.command;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.ResponseStatus;
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.CreateOfferCommand;
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferConfirmationCommand;
+//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.CreateOfferCommand;
+//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferConfirmationCommand;
 import be.ugent.systemdesign.kapiteinsdienst.application.saga.VesselRegistrationSaga;
 import be.ugent.systemdesign.kapiteinsdienst.domain.ReservationServices;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
@@ -19,6 +19,8 @@ public class CommandHandler {
     @Autowired
     VesselRegistrationSaga vesselRegistrationSaga;
 
+    //momenteel vervangen door REST
+    /*
     public void handleCreateOfferCommand(CreateOfferCommand command){
         try {
             Vessel vessel = new Vessel(
@@ -41,7 +43,7 @@ public class CommandHandler {
         }
 
     }
-    //TODO aanvullen
+
     public void handleOfferConfirmation(OfferConfirmationCommand command){
         try {
             Vessel vessel = vesselRepo.findById(command.getVesselId());
@@ -52,16 +54,16 @@ public class CommandHandler {
 
         }
     }
-    /*
-    //TODO aanvullen
+
+
     public void handleAcceptOfferCommand(AcceptOfferCommand command){
 
     }
-    //TODO aanvullen
     public void handleRefuseOfferCommand(RefuseOfferCommand command){
 
     }
     */
+
     public void handleReserveBerthResponse(ReserveBerthResponse response){
         try{
             Vessel vessel = vesselRepo.findById(response.getVesselId());

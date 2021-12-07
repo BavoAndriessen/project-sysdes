@@ -1,10 +1,8 @@
 package be.ugent.systemdesign.kapiteinsdienst.application.command;
 
-import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
-
 public interface CommandDispatcher {
 
-    void sendOfferProposalResponse(OfferProposalResponse response);
+    //void sendOfferProposalResponse(OfferProposalResponse response);
 
     void sendReserveBerthCommand(ReserveBerthCommand command);
 

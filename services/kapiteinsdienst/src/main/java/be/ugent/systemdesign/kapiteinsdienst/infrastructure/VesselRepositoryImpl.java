@@ -27,7 +27,7 @@ public class VesselRepositoryImpl implements VesselRepository {
         return mapToVessel(vessel);
     }
 
-
+    //TODO probleem indien een lijst niet wordt meegegeven in de request
     private VesselDataModel mapToVesselDataModel(Vessel vessel){
         return new VesselDataModel(
                 vessel.getVesselId(),

@@ -1,4 +1,4 @@
-package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
+/*package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
 
 import be.ugent.systemdesign.kapiteinsdienst.domain.Container;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Crew;
@@ -24,3 +24,4 @@ public class CreateOfferCommand {
     private List<Crew> crewList;
 
 }
+*/
