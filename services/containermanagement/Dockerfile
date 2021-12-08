@@ -2,7 +2,7 @@
 FROM openjdk:11
 COPY . .
 RUN apt-get install -y curl && ./mvnw package -DskipTests
-CMD ["java", "-jar", "target/containermanagement-0.0.1-SNAPSHOT.jar", "$SPRINGDATASOURCEURL"]
+ENTRYPOINT ["java", "-jar", "target/containermanagement-0.0.1-SNAPSHOT.jar"]
 
 # sneller, maar moet maven hebben en apart builden
 #FROM openjdk:11-jre-slim

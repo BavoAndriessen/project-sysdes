@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: containerdb-deployment
+  labels:
+    app: containerdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: containerdb
+  template:
+    metadata:
+      labels:
+        app: containerdb
+    spec:
+      containers:
+      - name: containerdb
+        image: postgres:latest
+#        args: []
+        envFrom: 
+        - configMapRef:
+            name: containerdb-cm
+        ports:
+        - containerPort: 5432
+          name: postgres
+#        volumeMounts:
+#        - mountPath: /
+#          name: containerdb
+#      volumes: 
+#      - name: containerdb
+#        persistentVolumeClaim:
+#          claimName: containerdb-pv-claim
+        

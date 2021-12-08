@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-management-deployment
+  labels:
+    app: container-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-management
+  template:
+    metadata:
+      labels:
+        app: container-management
+    spec:
+      containers:
+      - name: container-management
+        imagePullPolicy: Never
+        image: sysdes/containermanagement
+        args: ["--spring.datasource.url=jdbc:postgres://containerdb-service.default.svc.cluster.local:5432/containers"]
