@@ -25,7 +25,7 @@ public class VesselDataModel {
     private String vesselId;
     private VesselStatus status;
     private LocalDateTime arrivalDateTime;
-    private LocalDateTime departureDateTime;
+    private Integer lengthOfStay;
     private Double vesselSize;
     private Double amountOfWaste;
     private Integer offerId;
@@ -43,11 +43,11 @@ public class VesselDataModel {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<CrewDataModel> crewList;
     /*
-    public VesselDataModel(Integer vesselNumber, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, Double vesselSize, Double amountOfWaste, List<String> additionalServices, List<Container> containerList, List<Crew> crewList) {
+    public VesselDataModel(Integer vesselNumber, LocalDateTime arrivalDateTime, Integer lengthOfStay, Double vesselSize, Double amountOfWaste, List<String> additionalServices, List<Container> containerList, List<Crew> crewList) {
         this.vesselNumber = vesselNumber;
         this.status = null;
         this.arrivalDateTime = arrivalDateTime;
-        this.departureDateTime = departureDateTime;
+        this.lengthOfStay = lengthOfStay;
         this.vesselSize = vesselSize;
         this.amountOfWaste = amountOfWaste;
         this.offerId = null;
@@ -59,7 +59,7 @@ public class VesselDataModel {
     public VesselDataModel(String vesselId,
                            VesselStatus status,
                            LocalDateTime arrivalDateTime,
-                           LocalDateTime departureDateTime,
+                           Integer lengthOfStay,
                            Double vesselSize,
                            Double amountOfWaste,
                            Integer offerId,
@@ -73,7 +73,7 @@ public class VesselDataModel {
         this.vesselId = vesselId;
         this.status = status;
         this.arrivalDateTime = arrivalDateTime;
-        this.departureDateTime = departureDateTime;
+        this.lengthOfStay = lengthOfStay;
         this.vesselSize = vesselSize;
         this.amountOfWaste = amountOfWaste;
         this.offerId = offerId;

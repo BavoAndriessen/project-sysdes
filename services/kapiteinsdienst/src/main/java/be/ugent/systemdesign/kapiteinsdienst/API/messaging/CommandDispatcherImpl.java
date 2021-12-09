@@ -35,21 +35,21 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Override
     public void sendReserveBerthCommand(ReserveBerthCommand command) {
         outputGateway.sendReserveBerthCommand(
-                new ReserveBerthCommand(command.getVesselId(),command.getVesselSize(),command.getArrivalDateTime(),command.getDepartureDateTime(), reserveBerthResponseDestination)
+                new ReserveBerthCommand(command.getVesselId(),command.getVesselSize(),command.getArrivalDateTime(),command.getLengthOfStay(), reserveBerthResponseDestination)
         );
     }
 
     @Override
     public void sendReserveServiceCommand(ReserveServiceCommand command) {
         outputGateway.sendReserveServiceCommand(
-                new ReserveServiceCommand(command.getVesselId(),command.getArrivalDateTime(),command.getDepartureDateTime(),command.getAdditionalServices(),reserveServiceResponseDestination)
+                new ReserveServiceCommand(command.getVesselId(),command.getArrivalDateTime(),command.getLengthOfStay(),command.getAdditionalServices(),reserveServiceResponseDestination)
         );
     }
 
     @Override
     public void sendReserveTowingPilotageCommand(ReserveTowingPilotageCommand command) {
         outputGateway.sendReserveTowingPilotageCommand(
-                new ReserveTowingPilotageCommand(command.getVesselId(),command.getArrivalDateTime(),command.getDepartureDateTime(),reserveTowingPilotageResponseDestination)
+                new ReserveTowingPilotageCommand(command.getVesselId(),command.getArrivalDateTime(),command.getLengthOfStay(),reserveTowingPilotageResponseDestination)
         );
     }
 
@@ -71,7 +71,7 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Override
     public void sendRequestOfferCommand(RequestOfferCommand command) {
         outputGateway.sendRequestOfferCommand(
-                new RequestOfferCommand(command.getVesselId(),command.getArrivalDateTime(),command.getDepartureDateTime(),command.getVesselSize(),command.getAmountOfWaste(),command.getContainerList(),command.getCrewList(),requestOfferAdministrationDestination)
+                new RequestOfferCommand(command.getVesselId(),command.getArrivalDateTime(),command.getLengthOfStay(),command.getVesselSize(),command.getAmountOfWaste(),command.getContainerList(),command.getCrewList(),requestOfferAdministrationDestination)
         );
     }
 

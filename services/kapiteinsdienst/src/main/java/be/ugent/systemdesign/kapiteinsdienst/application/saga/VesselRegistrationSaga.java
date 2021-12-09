@@ -23,19 +23,19 @@ public class VesselRegistrationSaga {
         vessel.newRegistration();
         vesselRepo.save(vessel);
 
-        ReserveBerthCommand reserveBerthCommand = new ReserveBerthCommand(vessel.getVesselId(),vessel.getVesselSize(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
+        ReserveBerthCommand reserveBerthCommand = new ReserveBerthCommand(vessel.getVesselId(),vessel.getVesselSize(),vessel.getArrivalDateTime(),vessel.getLengthOfStay());
         commandDispatcher.sendReserveBerthCommand(reserveBerthCommand);
 
-        ReserveServiceCommand reserveServiceCommand = new ReserveServiceCommand(vessel.getVesselId(),vessel.getArrivalDateTime(), vessel.getDepartureDateTime(),vessel.getAdditionalServices());
+        ReserveServiceCommand reserveServiceCommand = new ReserveServiceCommand(vessel.getVesselId(),vessel.getArrivalDateTime(), vessel.getLengthOfStay(),vessel.getAdditionalServices());
         commandDispatcher.sendReserveServiceCommand(reserveServiceCommand);
 
-        ReserveTowingPilotageCommand towingPilotageCommand = new ReserveTowingPilotageCommand(vessel.getVesselId(),vessel.getArrivalDateTime(),vessel.getDepartureDateTime());
+        ReserveTowingPilotageCommand towingPilotageCommand = new ReserveTowingPilotageCommand(vessel.getVesselId(),vessel.getArrivalDateTime(),vessel.getLengthOfStay());
         commandDispatcher.sendReserveTowingPilotageCommand(towingPilotageCommand);
 
         RequestOfferCommand requestOfferCommand = new RequestOfferCommand(
                 vessel.getVesselId(),
                 vessel.getArrivalDateTime(),
-                vessel.getDepartureDateTime(),
+                vessel.getLengthOfStay(),
                 vessel.getVesselSize(),
                 vessel.getAmountOfWaste(),
                 vessel.getContainerList(),
@@ -77,15 +77,11 @@ public class VesselRegistrationSaga {
 
     }
 
-    //TODO check offer niet reeds werd bevestigd
     public void onOfferConfirmation(Vessel vessel, Boolean isConfirmed){
-        if(vessel.checkOfferAvailability()){
-            vessel.offerConfirmation(isConfirmed);
-            vesselRepo.save(vessel);
-
-            if(!isConfirmed){
-                sendUndoReservationToAllServices(vessel.getVesselId());
-            }
+        vessel.offerConfirmation(isConfirmed);
+        vesselRepo.save(vessel);
+        if(!isConfirmed){
+            sendUndoReservationToAllServices(vessel.getVesselId());
         }
     }
 

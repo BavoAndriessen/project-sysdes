@@ -12,15 +12,15 @@ public class ReserveServiceCommand {
 
     private String vesselId;
     private LocalDateTime arrivalDateTime;
-    private LocalDateTime departureDateTime;
+    private Integer lengthOfStay;
     private List<String> additionalServices;
 
     private String responseDestination;
 
-    public ReserveServiceCommand(String vesselId, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime, List<String> additionalServices) {
+    public ReserveServiceCommand(String vesselId, LocalDateTime arrivalDateTime, Integer lengthOfStay, List<String> additionalServices) {
         this.vesselId = vesselId;
         this.arrivalDateTime = arrivalDateTime;
-        this.departureDateTime = departureDateTime;
+        this.lengthOfStay = lengthOfStay;
         this.additionalServices = additionalServices;
     }
 }

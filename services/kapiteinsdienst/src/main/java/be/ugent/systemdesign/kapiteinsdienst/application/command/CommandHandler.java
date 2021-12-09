@@ -26,7 +26,7 @@ public class CommandHandler {
             Vessel vessel = new Vessel(
                     command.getVesselId(),
                     command.getArrivalDateTime(),
-                    command.getDepartureDateTime(),
+                    command.getLengthOfStay(),
                     command.getVesselSize(),
                     command.getAmountOfWaste());
             vessel.addAdditionalServices(command.getAdditionalServices());

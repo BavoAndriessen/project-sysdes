@@ -32,25 +32,26 @@ public class KapiteinsdienstController {
         } catch (VesselNotFoundException | OfferNotFoundException e){
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
-
     }
 
     @PostMapping("/registerVessel")
     public ResponseEntity<String> registerNewVessel(@RequestBody Vessel vessel){
         Response response = vesselService.registerNewVessel(vessel);
-        return createResponseEntity(response.status, response.message, response.message);
+        return createResponseEntity(response.status, response.message);
 
     }
 
     @PostMapping("/{id}/offerConfirmation")
     public ResponseEntity<String> offerConfirmation(@PathVariable("id") String vesselId, @RequestParam("confirmation") Boolean isConfirmed){
             Response response = vesselService.handleOfferConfirmation(vesselId, isConfirmed);
-        return createResponseEntity(response.status, isConfirmed?"Offer for vessel "+response.message+" accepted":"Offer for vessel "+response.message+" not accepted", "Offer for vessel "+response.message+" could not be accepted nor denied");
+        return createResponseEntity(response.status, response.message);
     }
 
-    private ResponseEntity<String> createResponseEntity(ResponseStatus status, String happyMessage, String sadMessage){
+
+    private ResponseEntity<String> createResponseEntity(ResponseStatus status, String message){
         if(status == ResponseStatus.FAIL)
-            return new ResponseEntity<>(sadMessage, HttpStatus.CONFLICT);
-        return new ResponseEntity<>(happyMessage, HttpStatus.OK);
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
 }

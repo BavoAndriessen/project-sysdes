@@ -12,14 +12,14 @@ public class ReserveBerthCommand {
     private String vesselId;
     private Double vesselSize;
     private LocalDateTime arrivalDateTime;
-    private LocalDateTime departureDateTime;
+    private Integer lengthOfStay;
 
     private String responseDestination;
 
-    public ReserveBerthCommand(String vesselId, Double vesselSize, LocalDateTime arrivalDateTime, LocalDateTime departureDateTime) {
+    public ReserveBerthCommand(String vesselId, Double vesselSize, LocalDateTime arrivalDateTime, Integer lengthOfStay) {
         this.vesselId = vesselId;
         this.vesselSize = vesselSize;
         this.arrivalDateTime = arrivalDateTime;
-        this.departureDateTime = departureDateTime;
+        this.lengthOfStay = lengthOfStay;
     }
 }

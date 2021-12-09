@@ -3,6 +3,7 @@ package be.ugent.systemdesign.kapiteinsdienst.application;
 import be.ugent.systemdesign.kapiteinsdienst.application.saga.VesselRegistrationSaga;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
+import be.ugent.systemdesign.kapiteinsdienst.domain.VesselStatus;
 import be.ugent.systemdesign.kapiteinsdienst.infrastructure.VesselNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class VesselServiceImpl implements VesselService {
     @Autowired
     VesselRegistrationSaga vesselRegistrationSaga;
 
+    private int counter = 0;
     @Override
     public Response registerNewVessel(Vessel vessel) {
 
@@ -44,16 +46,23 @@ public class VesselServiceImpl implements VesselService {
         try {
             Vessel vessel = vesselRepo.findById(vesselId);
             synchronized (vesselRegistrationSaga){
-                vesselRegistrationSaga.onOfferConfirmation(vessel, isAccepted);
+                /*vessel.setServiceReserved(true);
+                vessel.setBerthReserved(true);
+                vessel.setTowingPilotageReserved(true);
+                if(counter == 0){
+                    vessel.setStatus(VesselStatus.OFFER_CREATED);
+                    counter++;
+                }*/
                 if(vessel.checkOfferAvailability()){
-                    return new Response(ResponseStatus.SUCCESS, vesselId);
+                    vesselRegistrationSaga.onOfferConfirmation(vessel, isAccepted);
+                    return new Response(ResponseStatus.SUCCESS, isAccepted?"Offer for vessel "+vesselId+" accepted by scheepsagent":"Offer for vessel "+vesselId+" not accepted by scheepsagent");
                 } else {
-                    return new Response(ResponseStatus.FAIL, vesselId);
+                    return new Response(ResponseStatus.FAIL, (vessel.getStatus() == VesselStatus.ACCEPTED || vessel.getStatus() == VesselStatus.REFUSED)? "Offer for vessel "+vesselId+" was already "+vessel.getStatus().toString().toLowerCase():"Offer for vessel "+vesselId+" is not ready to be confirmed");
                 }
             }
 
         } catch (RuntimeException e){
-            return new Response(ResponseStatus.FAIL, vesselId);
+            return new Response(ResponseStatus.FAIL, "Offer for vessel "+vesselId+" could neither be accepted nor denied");
         }
     }
 }

@@ -27,13 +27,13 @@ public class VesselRepositoryImpl implements VesselRepository {
         return mapToVessel(vessel);
     }
 
-    //TODO probleem indien een lijst niet wordt meegegeven in de request
+    //TODO probleem indien een lijst niet wordt meegegeven in de request, lijkt opgelost
     private VesselDataModel mapToVesselDataModel(Vessel vessel){
         return new VesselDataModel(
                 vessel.getVesselId(),
                 vessel.getStatus(),
                 vessel.getArrivalDateTime(),
-                vessel.getDepartureDateTime(),
+                vessel.getLengthOfStay(),
                 vessel.getVesselSize(),
                 vessel.getAmountOfWaste(),
                 vessel.getOfferId(),
@@ -52,7 +52,7 @@ public class VesselRepositoryImpl implements VesselRepository {
                     .vesselId(vessel.getVesselId())
                     .status(vessel.getStatus())
                     .arrivalDateTime(vessel.getArrivalDateTime())
-                    .departureDateTime(vessel.getDepartureDateTime())
+                    .lengthOfStay(vessel.getLengthOfStay())
                     .vesselSize(vessel.getVesselSize())
                     .amountOfWaste(vessel.getAmountOfWaste())
                     .additionalServices(vessel.getAdditionalServices())

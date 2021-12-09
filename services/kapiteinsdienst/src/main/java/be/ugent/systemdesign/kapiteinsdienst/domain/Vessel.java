@@ -16,7 +16,7 @@ public class Vessel {
     private String vesselId;
     private VesselStatus status;
     private LocalDateTime arrivalDateTime;
-    private LocalDateTime departureDateTime;
+    private Integer lengthOfStay;
     private Double vesselSize;
     private Double amountOfWaste;
     private Integer offerId;
@@ -35,18 +35,21 @@ public class Vessel {
         this.berthReserved = false;
         this.towingPilotageReserved = false;
         this.serviceReserved = false;
+        this.additionalServices = new ArrayList<String>();
+        this.containerList = new ArrayList<Container>();
+        this.crewList = new ArrayList<Crew>();
     }
 
     public Vessel(String vesselId,
                   LocalDateTime arrivalDateTime,
-                  LocalDateTime departureDateTime,
+                  Integer lengthOfStay,
                   Double vesselSize,
                   Double amountOfWaste
         ) {
         this.vesselId = vesselId;
         this.status = null;
         this.arrivalDateTime = arrivalDateTime;
-        this.departureDateTime = departureDateTime;
+        this.lengthOfStay = lengthOfStay;
         this.vesselSize = vesselSize;
         this.amountOfWaste = amountOfWaste;
         this.offerId = null;
@@ -82,10 +85,7 @@ public class Vessel {
     }
 
     public boolean checkOfferAvailability(){
-        if(berthReserved && towingPilotageReserved && serviceReserved && status==VesselStatus.OFFER_CREATED){
-            return true;
-        }
-        return false;
+        return berthReserved && towingPilotageReserved && serviceReserved && status == VesselStatus.OFFER_CREATED;
     }
 
     public void updateReservationStatus(ReservationServices service){

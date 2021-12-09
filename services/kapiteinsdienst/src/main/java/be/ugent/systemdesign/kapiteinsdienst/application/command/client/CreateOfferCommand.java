@@ -16,7 +16,7 @@ public class CreateOfferCommand {
 
     private String vesselId;
     private LocalDateTime arrivalDateTime;
-    private LocalDateTime departureDateTime;
+    private Integer lengthOfStay;
     private Double vesselSize;
     private Double amountOfWaste;
     private List<String> additionalServices;

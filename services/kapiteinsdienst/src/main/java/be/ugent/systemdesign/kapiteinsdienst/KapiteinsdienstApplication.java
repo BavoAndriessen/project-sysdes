@@ -34,7 +34,7 @@ public class KapiteinsdienstApplication {
         return (args) -> {
             DMrepo.deleteAll();
 
-            Vessel vessel = new Vessel("12", LocalDateTime.now(),LocalDateTime.now(),125.0,10.5);
+            Vessel vessel = new Vessel("12", LocalDateTime.now(),10,125.0,10.5);
             Container container1 = new Container(1,"bananas");
             Container container2 = new Container(2,"bananas");
             Container container3 = new Container(3,"bananas");
