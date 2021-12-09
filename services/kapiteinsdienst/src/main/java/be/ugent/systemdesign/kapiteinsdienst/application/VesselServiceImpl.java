@@ -19,7 +19,7 @@ public class VesselServiceImpl implements VesselService {
     @Autowired
     VesselRegistrationSaga vesselRegistrationSaga;
 
-    private int counter = 0;
+    //private int counter = 0;
     @Override
     public Response registerNewVessel(Vessel vessel) {
 
@@ -49,10 +49,11 @@ public class VesselServiceImpl implements VesselService {
                 /*vessel.setServiceReserved(true);
                 vessel.setBerthReserved(true);
                 vessel.setTowingPilotageReserved(true);
-                if(counter == 0){
+                if(counter %2 == 0){
                     vessel.setStatus(VesselStatus.OFFER_CREATED);
-                    counter++;
-                }*/
+                }
+                counter++;
+                */
                 if(vessel.checkOfferAvailability()){
                     vesselRegistrationSaga.onOfferConfirmation(vessel, isAccepted);
                     return new Response(ResponseStatus.SUCCESS, isAccepted?"Offer for vessel "+vesselId+" accepted by scheepsagent":"Offer for vessel "+vesselId+" not accepted by scheepsagent");
@@ -61,6 +62,9 @@ public class VesselServiceImpl implements VesselService {
                 }
             }
 
+        } catch (VesselNotFoundException e){
+            //counter++;
+            return new Response(ResponseStatus.FAIL, "Vessel "+vesselId+" is not registered");
         } catch (RuntimeException e){
             return new Response(ResponseStatus.FAIL, "Offer for vessel "+vesselId+" could neither be accepted nor denied");
         }

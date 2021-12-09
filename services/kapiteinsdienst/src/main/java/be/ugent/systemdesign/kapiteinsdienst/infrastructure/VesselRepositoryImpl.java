@@ -27,6 +27,11 @@ public class VesselRepositoryImpl implements VesselRepository {
         return mapToVessel(vessel);
     }
 
+    @Override
+    public void deleteById(String vesselId){
+        vesselRepo.deleteById(vesselId);
+    }
+
     //TODO probleem indien een lijst niet wordt meegegeven in de request, lijkt opgelost
     private VesselDataModel mapToVesselDataModel(Vessel vessel){
         return new VesselDataModel(

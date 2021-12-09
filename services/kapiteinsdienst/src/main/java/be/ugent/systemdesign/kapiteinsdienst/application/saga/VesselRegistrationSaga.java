@@ -82,6 +82,7 @@ public class VesselRegistrationSaga {
         vesselRepo.save(vessel);
         if(!isConfirmed){
             sendUndoReservationToAllServices(vessel.getVesselId());
+            vesselRepo.deleteById(vessel.getVesselId());
         }
     }
 
