@@ -26,7 +26,6 @@ public class Vessel {
     private Boolean serviceReserved;
     private List<String> additionalServices;
     private List<Container> containerList;
-    private List<Crew> crewList;
 
     public Vessel() {
         this.status = null;
@@ -37,7 +36,6 @@ public class Vessel {
         this.serviceReserved = false;
         this.additionalServices = new ArrayList<String>();
         this.containerList = new ArrayList<Container>();
-        this.crewList = new ArrayList<Crew>();
     }
 
     public Vessel(String vesselId,
@@ -59,16 +57,12 @@ public class Vessel {
         this.serviceReserved = false;
         this.additionalServices = new ArrayList<String>();
         this.containerList = new ArrayList<Container>();
-        this.crewList = new ArrayList<Crew>();
     }
 
     public void addContainerList(List<Container> containerList){
         this.containerList = containerList;
     }
 
-    public void addCrewList(List<Crew> crewList){
-        this.crewList = crewList;
-    }
 
     public void addAdditionalServices(List<String> additionalServices){
         this.additionalServices = additionalServices;

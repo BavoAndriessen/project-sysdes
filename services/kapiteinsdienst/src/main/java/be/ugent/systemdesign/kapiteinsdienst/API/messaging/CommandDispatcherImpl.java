@@ -71,7 +71,7 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Override
     public void sendRequestOfferCommand(RequestOfferCommand command) {
         outputGateway.sendRequestOfferCommand(
-                new RequestOfferCommand(command.getVesselId(),command.getArrivalDateTime(),command.getLengthOfStay(),command.getVesselSize(),command.getAmountOfWaste(),command.getContainerList(),command.getCrewList(),requestOfferAdministrationDestination)
+                new RequestOfferCommand(command.getVesselId(),command.getArrivalDateTime(),command.getLengthOfStay(),command.getVesselSize(),command.getAmountOfWaste(),command.getContainerList(),requestOfferAdministrationDestination)
         );
     }
 

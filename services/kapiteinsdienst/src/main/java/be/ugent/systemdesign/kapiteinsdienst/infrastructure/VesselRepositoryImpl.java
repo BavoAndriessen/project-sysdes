@@ -1,7 +1,6 @@
 package be.ugent.systemdesign.kapiteinsdienst.infrastructure;
 
 import be.ugent.systemdesign.kapiteinsdienst.domain.Container;
-import be.ugent.systemdesign.kapiteinsdienst.domain.Crew;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +46,7 @@ public class VesselRepositoryImpl implements VesselRepository {
                 vessel.getTowingPilotageReserved(),
                 vessel.getServiceReserved(),
                 vessel.getAdditionalServices(),
-                vessel.getContainerList(),
-                vessel.getCrewList());
+                vessel.getContainerList());
 
     }
 
@@ -73,16 +71,6 @@ public class VesselRepositoryImpl implements VesselRepository {
                                             .contents(e.getContents())
                                             .build())
                                     .collect(Collectors.toList()))
-                    .crewList(vessel.getCrewList()
-                                .stream()
-                                .map(e -> Crew.builder()
-                                        .crewId(e.getCrewId())
-                                        .firstName(e.getFirstName())
-                                        .lastName(e.getLastName())
-                                        .dateOfBirth(e.getDateOfBirth())
-                                        .type(e.getType())
-                                        .build())
-                                .collect(Collectors.toList()))
                     .build();
     }
 

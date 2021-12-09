@@ -31,7 +31,6 @@ public class CommandHandler {
                     command.getAmountOfWaste());
             vessel.addAdditionalServices(command.getAdditionalServices());
             vessel.addContainerList(command.getContainerList());
-            vessel.addCrewList(command.getCrewList());
 
             synchronized (vesselRegistrationSaga){
                 vesselRegistrationSaga.startVesselRegistration(vessel);

@@ -1,10 +1,13 @@
 package be.ugent.systemdesign.kapiteinsdienst.application.saga;
 
+import be.ugent.systemdesign.kapiteinsdienst.KapiteinsdienstApplication;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
 //import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
 import be.ugent.systemdesign.kapiteinsdienst.domain.ReservationServices;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +41,7 @@ public class VesselRegistrationSaga {
                 vessel.getLengthOfStay(),
                 vessel.getVesselSize(),
                 vessel.getAmountOfWaste(),
-                vessel.getContainerList(),
-                vessel.getCrewList()
+                vessel.getContainerList()
         );
         commandDispatcher.sendRequestOfferCommand(requestOfferCommand);
     }

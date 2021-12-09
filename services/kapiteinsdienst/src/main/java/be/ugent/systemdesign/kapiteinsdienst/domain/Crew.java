@@ -1,4 +1,4 @@
-package be.ugent.systemdesign.kapiteinsdienst.domain;
+/*package be.ugent.systemdesign.kapiteinsdienst.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,3 +20,5 @@ public class Crew {
     private LocalDate dateOfBirth;
     private String type;
 }
+
+ */

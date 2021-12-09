@@ -14,4 +14,8 @@ public class Container {
 
     private Integer containerId;
     private String contents;
+
+    public Container(String contents){
+        this.contents = contents;
+    }
 }

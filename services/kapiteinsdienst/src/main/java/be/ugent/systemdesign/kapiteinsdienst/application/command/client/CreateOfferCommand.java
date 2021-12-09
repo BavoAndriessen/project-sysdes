@@ -1,7 +1,6 @@
 /*package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
 
 import be.ugent.systemdesign.kapiteinsdienst.domain.Container;
-import be.ugent.systemdesign.kapiteinsdienst.domain.Crew;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,6 @@ public class CreateOfferCommand {
     private Double amountOfWaste;
     private List<String> additionalServices;
     private List<Container> containerList;
-    private List<Crew> crewList;
 
 }
 */
