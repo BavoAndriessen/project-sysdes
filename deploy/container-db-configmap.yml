@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: containerdb-cm
+  name: container-db-cm
   labels:
-    app: containerdb
+    app: container-db
 data:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres

@@ -13,16 +13,16 @@ public interface Channels {
     String READY_FOR_CONTAINERS = "ready_for_containers";
 
     @Input(CONTAINER_SCANNED)
-    SubscribableChannel containerScanned();
+    MessageChannel containerScanned();
 
     @Input(CONTAINER_APPROVED)
-    SubscribableChannel containerApproved();
+    MessageChannel containerApproved();
 
     @Input(ARRIVED_WITH_CONTAINERS)
-    SubscribableChannel arrivedWithContainers();
+    MessageChannel arrivedWithContainers();
 
     @Input(READY_FOR_CONTAINERS)
-    SubscribableChannel readyForContainers();
+    MessageChannel readyForContainers();
 
 
     // publish events
