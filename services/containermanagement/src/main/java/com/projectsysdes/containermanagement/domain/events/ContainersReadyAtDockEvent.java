@@ -10,12 +10,12 @@ import java.util.List;
 @Getter
 public class ContainersReadyAtDockEvent extends DomainEvent {
 
-    private final ContainerLocation location;
+    private final Integer berthIdentifier;
     private final List<Integer> containerIds;
 
-    public ContainersReadyAtDockEvent(List<Integer> containerIds, ContainerLocation location) {
+    public ContainersReadyAtDockEvent(List<Integer> containerIds, Integer berthIdentifier) {
         super();
         this.containerIds = containerIds;
-        this.location = location;
+        this.berthIdentifier = berthIdentifier;
     }
 }

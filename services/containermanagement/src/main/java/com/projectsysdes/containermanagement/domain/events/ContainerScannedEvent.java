@@ -2,6 +2,7 @@ package com.projectsysdes.containermanagement.domain.events;
 
 import com.projectsysdes.containermanagement.domain.ContainerLocation;
 import com.projectsysdes.containermanagement.domain.ContainerState;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

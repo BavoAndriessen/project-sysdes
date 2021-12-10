@@ -7,32 +7,17 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface Channels {
     // consume events
-    String CONTAINER_SCANNED = "container_scanned";
-    String CONTAINER_APPROVED = "container_approved";
-    String ARRIVED_WITH_CONTAINERS = "arrived_with_containers";
-    String READY_FOR_CONTAINERS = "ready_for_containers";
+    String NEW_CONTAINER_LIST = "new_containers";
 
-    @Input(CONTAINER_SCANNED)
-    SubscribableChannel containerScanned();
+    @Input(NEW_CONTAINER_LIST)
+    MessageChannel newContainerList();
 
-    @Input(CONTAINER_APPROVED)
-    SubscribableChannel containerApproved();
-
-    @Input(ARRIVED_WITH_CONTAINERS)
-    SubscribableChannel arrivedWithContainers();
-
-    @Input(READY_FOR_CONTAINERS)
-    SubscribableChannel readyForContainers();
 
 
     // publish events
     String CONTAINERS_READY_AT_DOCK = "containers_ready_at_dock";
-    String TRANSFER_CONTAINERS_COMMAND = "transfer_containers_command";
 
     @Output(CONTAINERS_READY_AT_DOCK)
     MessageChannel containersReadyAtDock();
-
-    @Output(TRANSFER_CONTAINERS_COMMAND)
-    MessageChannel transferContainers();
 
 }
