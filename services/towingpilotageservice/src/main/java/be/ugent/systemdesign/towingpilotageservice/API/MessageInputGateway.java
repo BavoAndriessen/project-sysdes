@@ -25,7 +25,7 @@ public class MessageInputGateway {
     Channels channels;
 
     @StreamListener(Channels.RESERVE_TOWING_PILOTAGE)
-    public void consumeReserveBerthCommand(ReserveTowingPilotageCommand command){
+    public void consumeReserveTowingPilotageCommand(ReserveTowingPilotageCommand command){
         ReserveTowingPilotageResponse response = new ReserveTowingPilotageResponse(ResponseStatus.SUCCESS, "successful towing reservation", command.getVesselId());
 
         channels.towingPilotageReserved().send(
