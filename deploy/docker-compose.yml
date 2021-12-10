@@ -36,6 +36,8 @@ services:
   container-management:
     container_name: container-management
     build: ../services/containermanagement
+    environment: 
+    - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
     ports:
      - "1234:8080"
     depends_on:
