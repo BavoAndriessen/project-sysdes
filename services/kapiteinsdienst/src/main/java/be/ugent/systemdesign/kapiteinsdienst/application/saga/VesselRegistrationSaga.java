@@ -1,13 +1,9 @@
 package be.ugent.systemdesign.kapiteinsdienst.application.saga;
 
-import be.ugent.systemdesign.kapiteinsdienst.KapiteinsdienstApplication;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
-//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
 import be.ugent.systemdesign.kapiteinsdienst.domain.ReservationServices;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +20,7 @@ public class VesselRegistrationSaga {
 
     public void startVesselRegistration(Vessel vessel){
         vessel.newRegistration();
-        vesselRepo.save(vessel);
+        vesselRepo.saveAndFlush(vessel);
 
         ReserveBerthCommand reserveBerthCommand = new ReserveBerthCommand(vessel.getVesselId(),vessel.getVesselSize(),vessel.getArrivalDateTime(),vessel.getLengthOfStay());
         commandDispatcher.sendReserveBerthCommand(reserveBerthCommand);
@@ -46,42 +42,31 @@ public class VesselRegistrationSaga {
         commandDispatcher.sendRequestOfferCommand(requestOfferCommand);
     }
 
-    public void onReservationFail(Vessel vessel){
+    public void onReservationFail(String vesselId){
+        Vessel vessel = vesselRepo.findById(vesselId);
         vessel.failedReservation();
-        vesselRepo.save(vessel);
-
+        vesselRepo.saveAndFlush(vessel);
         sendUndoReservationToAllServices(vessel.getVesselId());
-
         //TODO is offerId wel beschikbaar? kan dit met enkel vesselId?
         DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vessel.getVesselId(), vessel.getOfferId());
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
-
-        /*
-        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.FAIL,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
-        commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
-        */
     }
 
-    public void onReservationSuccess(Vessel vessel, ReservationServices service){
+    public void onReservationSuccess(String vesselId, ReservationServices service){
+        Vessel vessel = vesselRepo.findById(vesselId);
         vessel.updateReservationStatus(service);
-        vesselRepo.save(vessel);
-        /*if(vessel.checkOfferAvailability()){
-            onRegistrationComplete(vessel);
-        }*/
+        vesselRepo.saveAndFlush(vessel);
     }
 
-    public void onOfferCreatedByAdministration(Vessel vessel, Integer offerId, Double price){
+    public void onOfferCreatedByAdministration(String vesselId, Integer offerId, Double price){
+        Vessel vessel = vesselRepo.findById(vesselId);
         vessel.updateOfferInfo(offerId, price);
-        vesselRepo.save(vessel);
-        /*if(vessel.checkOfferAvailability()){
-            onRegistrationComplete(vessel);
-        }*/
-
+        vesselRepo.saveAndFlush(vessel);
     }
 
     public void onOfferConfirmation(Vessel vessel, Boolean isConfirmed){
         vessel.offerConfirmation(isConfirmed);
-        vesselRepo.save(vessel);
+        vesselRepo.saveAndFlush(vessel);
         if(!isConfirmed){
             sendUndoReservationToAllServices(vessel.getVesselId());
             vesselRepo.deleteById(vessel.getVesselId());
@@ -97,13 +82,5 @@ public class VesselRegistrationSaga {
         DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vesselId);
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
     }
-
-    /*
-    //Vervangen door rest
-    private void onRegistrationComplete(Vessel vessel){
-        OfferProposalResponse offerProposalResponse = new OfferProposalResponse(ResponseStatus.SUCCESS,"",vessel.getVesselId(),vessel.getPrice(),vessel.getOfferId());
-        commandDispatcher.sendOfferProposalResponse(offerProposalResponse);
-    }
-    */
 
 }

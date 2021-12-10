@@ -21,6 +21,11 @@ public class VesselRepositoryImpl implements VesselRepository {
     }
 
     @Override
+    public void saveAndFlush(Vessel vessel) {
+        vesselRepo.saveAndFlush(mapToVesselDataModel(vessel));
+    }
+
+    @Override
     public Vessel findById(String vesselId) {
         VesselDataModel vessel = vesselRepo.findById(vesselId).orElseThrow(VesselNotFoundException::new);
         return mapToVessel(vessel);
