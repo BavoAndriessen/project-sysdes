@@ -26,3 +26,5 @@ spec:
           value: "PLAINTEXT://kafka-service.default.svc.cluster.local:9092"
         - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
           value: "1"
+        ports:
+        - containerPort: 9092
