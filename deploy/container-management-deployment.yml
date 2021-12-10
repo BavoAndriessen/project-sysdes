@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: container-management
-        imagePullPolicy: Never
-        image: sysdes/containermanagement
+#        imagePullPolicy: Never
+        image: bavoandriessen/containermanagement:latest
 #        env: 
 #        - name: URL
 #          value: "--spring.datasource.url=jdbc:postgres://container-db-service.default.svc.cluster.local:5432/containers"
