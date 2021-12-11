@@ -1,11 +1,8 @@
 package be.ugent.systemdesign.kapiteinsdienst.application.command;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.ResponseStatus;
-//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.CreateOfferCommand;
-//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferConfirmationCommand;
 import be.ugent.systemdesign.kapiteinsdienst.application.saga.VesselRegistrationSaga;
 import be.ugent.systemdesign.kapiteinsdienst.domain.ReservationServices;
-import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,116 +16,56 @@ public class CommandHandler {
     @Autowired
     VesselRegistrationSaga vesselRegistrationSaga;
 
-    //momenteel vervangen door REST
-    /*
-    public void handleCreateOfferCommand(CreateOfferCommand command){
-        try {
-            Vessel vessel = new Vessel(
-                    command.getVesselId(),
-                    command.getArrivalDateTime(),
-                    command.getLengthOfStay(),
-                    command.getVesselSize(),
-                    command.getAmountOfWaste());
-            vessel.addAdditionalServices(command.getAdditionalServices());
-            vessel.addContainerList(command.getContainerList());
-
-            synchronized (vesselRegistrationSaga){
-                vesselRegistrationSaga.startVesselRegistration(vessel);
-            }
-
-
-        } catch (RuntimeException e){
-
-        }
-
-    }
-
-    public void handleOfferConfirmation(OfferConfirmationCommand command){
-        try {
-            Vessel vessel = vesselRepo.findById(command.getVesselId());
-            synchronized (vesselRegistrationSaga){
-                vesselRegistrationSaga.onOfferConfirmation(vessel, command.getConfirmed());
-            }
-        } catch (RuntimeException e){
-
-        }
-    }
-
-
-    public void handleAcceptOfferCommand(AcceptOfferCommand command){
-
-    }
-    public void handleRefuseOfferCommand(RefuseOfferCommand command){
-
-    }
-    */
-
     public void handleReserveBerthResponse(ReserveBerthResponse response){
-        try{
-            Vessel vessel = vesselRepo.findById(response.getVesselId());
-            if(response.getStatus() == ResponseStatus.FAIL){
-                synchronized (vesselRegistrationSaga){
-                    vesselRegistrationSaga.onReservationFail(vessel);
+        synchronized (vesselRegistrationSaga){
+            try{
+                if(response.getStatus() == ResponseStatus.SUCCESS){
+                    vesselRegistrationSaga.onReservationSuccess(response.getVesselId(), ReservationServices.BERTH);
+                } else {
+                    vesselRegistrationSaga.onReservationFail(response.getVesselId());
                 }
-            } else {
-                synchronized (vesselRegistrationSaga) {
-                    vesselRegistrationSaga.onReservationSuccess(vessel, ReservationServices.BERTH);
-                }
+            } catch (RuntimeException e){
             }
-        } catch (RuntimeException e){
-
         }
     }
 
     public void handleReserveServiceResponse(ReserveServiceResponse response){
-        try{
-            Vessel vessel = vesselRepo.findById(response.getVesselId());
-            if(response.getStatus() == ResponseStatus.FAIL){
-                synchronized (vesselRegistrationSaga){
-                    vesselRegistrationSaga.onReservationFail(vessel);
+        synchronized (vesselRegistrationSaga){
+            try{
+                if(response.getStatus() == ResponseStatus.SUCCESS){
+                    vesselRegistrationSaga.onReservationSuccess(response.getVesselId(), ReservationServices.ADDITIONALSERVICES);
+                } else {
+                    vesselRegistrationSaga.onReservationFail(response.getVesselId());
                 }
-            } else {
-                synchronized (vesselRegistrationSaga) {
-                    vesselRegistrationSaga.onReservationSuccess(vessel, ReservationServices.ADDITIONALSERVICES);
-                }
+            } catch (RuntimeException e){
             }
-        } catch (RuntimeException e){
-
         }
     }
 
     public void handleReserveTowingPilotageResponse(ReserveTowingPilotageResponse response){
-        try{
-            Vessel vessel = vesselRepo.findById(response.getVesselId());
-            if(response.getStatus() == ResponseStatus.FAIL){
-                synchronized (vesselRegistrationSaga){
-                    vesselRegistrationSaga.onReservationFail(vessel);
+        synchronized (vesselRegistrationSaga) {
+            try {
+                if (response.getStatus() == ResponseStatus.SUCCESS) {
+                    vesselRegistrationSaga.onReservationSuccess(response.getVesselId(), ReservationServices.TOWINGPILOTAGE);
+                } else {
+                    vesselRegistrationSaga.onReservationFail(response.getVesselId());
                 }
-            } else {
-                synchronized (vesselRegistrationSaga) {
-                    vesselRegistrationSaga.onReservationSuccess(vessel, ReservationServices.TOWINGPILOTAGE);
-                }
+            } catch (RuntimeException e) {
             }
-        } catch (RuntimeException e){
-
         }
     }
 
     public void handleOfferCreatedResponse(OfferCreatedResponse response) {
-        try {
-            Vessel vessel = vesselRepo.findById(response.getVesselId());
-            if (response.getStatus() == ResponseStatus.SUCCESS){
-                synchronized (vesselRegistrationSaga){
-                    vesselRegistrationSaga.onOfferCreatedByAdministration(vessel, response.getOfferId(), response.getPrice());
+        synchronized (vesselRegistrationSaga){
+            try {
+                if (response.getStatus() == ResponseStatus.SUCCESS){
+                    vesselRegistrationSaga.onOfferCreatedByAdministration(response.getVesselId(), response.getOfferId(), response.getPrice());
                 }
-            }
-            else {
-                synchronized (vesselRegistrationSaga) {
-                    vesselRegistrationSaga.onReservationFail(vessel);
+                else {
+                    vesselRegistrationSaga.onReservationFail(response.getVesselId());
                 }
+            } catch (RuntimeException e) {
             }
-        } catch (RuntimeException e) {
-
         }
     }
 
