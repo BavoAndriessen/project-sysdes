@@ -4,6 +4,7 @@ import com.projectsysdes.containermanagement.API.REST.ContainerViewModel;
 import com.projectsysdes.containermanagement.application.query.ContainerQuery;
 import com.projectsysdes.containermanagement.domain.ContainerLocation;
 import com.projectsysdes.containermanagement.domain.ContainerLocationType;
+import com.projectsysdes.containermanagement.domain.commands.TransferContainersCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,13 +32,14 @@ public class ContainerQueryImpl implements ContainerQuery {
                 .collect(Collectors.toList());
     }
 
-//    private ContainerLocationViewModel toContainer(ContainerL cdm) {
-//        return ContainerLocationViewModel.builder()
-//                .containerId(cdm.getContainerId())
-//                .contents(cdm.getContents())
-//                .state(ContainerState.valueOf(cdm.getState()))
-//                .currentLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getCurrentLocationType()), cdm.getCurrentLocationIdentifier()))
-//                .destinationLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getDestinationLocationType()), cdm.getDestinationLocationIdentifier()))
-//                .build();
-//    }
+    @Override
+    public List<TransferContainersCommand> findAllTransferCommands() {
+        return null;
+    }
+
+    @Override
+    public void save(TransferContainersCommand transferContainersCommand) {
+
+    }
+
 }

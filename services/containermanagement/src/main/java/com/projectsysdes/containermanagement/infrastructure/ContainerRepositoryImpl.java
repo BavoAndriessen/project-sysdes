@@ -51,6 +51,11 @@ public class ContainerRepositoryImpl implements ContainerRepository {
         return containers;
     }
 
+    @Override
+    public List<TransferContainerCommandDataModel> findAllTransferCommands() {
+        return containerDataModelRepository.findAllCommands();
+    }
+
 
     private Container toContainer(ContainerDataModel cdm) {
         return Container.builder()

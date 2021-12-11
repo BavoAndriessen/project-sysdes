@@ -82,4 +82,10 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
         return new Response("Updated container with id: " + containerId.toString() + "to state " + state, ResponseStatus.SUCCESS);
     }
 
+    @Override
+    public Response registerContainers(List<Container> containers) {
+        repo.save(containers);
+        return new Response("Containers registered", ResponseStatus.SUCCESS);
+    }
+
 }

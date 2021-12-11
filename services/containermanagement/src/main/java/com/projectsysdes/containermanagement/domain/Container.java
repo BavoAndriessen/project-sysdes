@@ -18,12 +18,12 @@ public class Container {
     private ContainerLocation destinationLocation;
     private boolean destinationLocationReady;
 
-    public Container(int containerId, String contents, ContainerLocation destinationLocation) {
+    public Container(int containerId, String contents) {
         this.containerId = containerId;
         this.contents = contents;
         this.currentLocation = new ContainerLocation(ContainerLocationType.UNKNOWN, "");
         this.state = REGISTERED;
-        this.destinationLocation = destinationLocation;
+        this.destinationLocation = new ContainerLocation(ContainerLocationType.UNKNOWN, "");
         this.destinationLocationReady = false;
     }
 

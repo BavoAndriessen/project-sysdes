@@ -1,9 +1,9 @@
 version: "3.9" 
 services:
 # ------------Support services-------------
-  containerdb:
+  container-db:
     image: postgres:latest
-    container_name: containerdb
+    container_name: container-db
     environment:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=postgres
@@ -33,14 +33,16 @@ services:
     links:
      - zookeeper
 # ------------Core services----------------
-  containermanagement:
-    container_name: containermanagement
+  container-management:
+    container_name: container-management
     build: ../services/containermanagement
+    environment: 
+    - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
     ports:
      - "1234:8080"
     depends_on:
-     - containerdb
+     - container-db
      - kafka
     links:
      - kafka
-     - containerdb
+     - container-db

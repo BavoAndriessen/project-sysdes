@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-db-deployment
+  labels:
+    app: container-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-db
+  template:
+    metadata:
+      labels:
+        app: container-db
+    spec:
+      containers:
+      - name: container-db
+        image: postgres:latest
+        env: 
+         - name: POSTGRES_USER
+           value: postgres
+         - name: POSTGRES_PASSWORD 
+           value: postgres
+         - name: POSTGRES_DB
+           value: containers
+         - name: POSTGRES_HOST_AUTH_METHOD
+           value: password
+#        envFrom: 
+#        - configMapRef:
+#            name: container-db-cm
+        ports:
+        - containerPort: 5432
+          name: postgres
+#        volumeMounts:
+#        - mountPath: /
+#          name: container-db
+#      volumes: 
+#      - name: container-db
+#        persistentVolumeClaim:
+#          claimName: container-db-pv-claim
+        

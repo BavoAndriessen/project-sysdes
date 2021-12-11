@@ -16,26 +16,4 @@ public interface MessageOutputGateway extends EventDispatcher, CommandDispatcher
     @Gateway(requestChannel = Channels.CONTAINERS_READY_AT_DOCK)
     void publishContainersReadyAtDockEvent(ContainersReadyAtDockEvent event);
 
-    @Override
-    @Gateway(requestChannel = Channels.TRANSFER_CONTAINERS_COMMAND)
-    void transferContainersCommand(TransferContainersCommand transferContainersCommand);
-
-
-    // the code below if for testing purposes only, anders niet de bedoeling om deze channels te gebruiken als output channel
-//    @Override
-//    @Gateway(requestChannel = Channels.ARRIVED_WITH_CONTAINERS)
-//    void publishTestEvent(ArrivedWithContainersEvent event);
-//
-//    @Override
-//    @Gateway(requestChannel = Channels.CONTAINER_APPROVED)
-//    void publishTestEvent(ContainerApprovedEvent event);
-//
-//    @Override
-//    @Gateway(requestChannel = Channels.CONTAINER_SCANNED)
-//    void publishTestEvent(ContainerScannedEvent event);
-//
-//    @Override
-//    @Gateway(requestChannel = Channels.READY_FOR_CONTAINERS)
-//    void publishTestEvent(ReadyForContainersEvent event);
-
 }
