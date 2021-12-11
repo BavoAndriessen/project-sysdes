@@ -1,9 +1,7 @@
-package com.projectsysdes.containermanagement.infrastructure;
+package com.projectsysdes.containermanagement.infrastructure.container;
 
-import com.projectsysdes.containermanagement.domain.ContainerLocationType;
-import lombok.AllArgsConstructor;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocationType;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.Embeddable;
 

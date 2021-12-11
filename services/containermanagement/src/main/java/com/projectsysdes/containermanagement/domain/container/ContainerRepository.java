@@ -1,6 +1,4 @@
-package com.projectsysdes.containermanagement.domain;
-
-import com.projectsysdes.containermanagement.infrastructure.TransferContainerCommandDataModel;
+package com.projectsysdes.containermanagement.domain.container;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,5 +9,4 @@ public interface ContainerRepository {
     void save(Collection<Container> containers);
     List<Container> findAll();
     List<Container> findContainersWithContainerIds(Collection<Integer> containerIds);
-    List<TransferContainerCommandDataModel> findAllTransferCommands();
 }

@@ -1,13 +1,11 @@
-package com.projectsysdes.containermanagement.infrastructure;
+package com.projectsysdes.containermanagement.infrastructure.container;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
-import com.projectsysdes.containermanagement.domain.ContainerLocationType;
-import com.projectsysdes.containermanagement.domain.ContainerState;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocationType;
+import com.projectsysdes.containermanagement.domain.container.ContainerState;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -16,7 +14,6 @@ import java.util.Set;
 @AllArgsConstructor(access=AccessLevel.PRIVATE)
 public class ContainerDataModel {
     @Id
-//    @GeneratedValue
     private Integer containerId;
     private String contents;
     private String state;

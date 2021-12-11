@@ -1,9 +1,15 @@
 package com.projectsysdes.containermanagement.application;
 
 import com.projectsysdes.containermanagement.application.command.CommandDispatcher;
-import com.projectsysdes.containermanagement.domain.*;
-import com.projectsysdes.containermanagement.domain.commands.TransferContainersCommand;
+import com.projectsysdes.containermanagement.domain.command.CommandRepository;
+import com.projectsysdes.containermanagement.domain.command.TransferContainerCommand;
+import com.projectsysdes.containermanagement.domain.container.Container;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.container.ContainerRepository;
+import com.projectsysdes.containermanagement.domain.container.ContainerState;
 import com.projectsysdes.containermanagement.domain.exceptions.IllegalContainerStateChangeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +21,12 @@ import java.util.List;
 @Service
 public class ContainerManagementServiceImpl implements ContainerManagementService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContainerManagementServiceImpl.class);
+
     @Autowired
     private ContainerRepository repo;
+    @Autowired
+    CommandRepository commandRepository;
     @Autowired
     private CommandDispatcher commandDispatcher;
 
@@ -26,7 +36,7 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
             Container c = repo.find(containerId);
             c.progressState(ContainerState.TRANSIT_APPROVED, null);
             if (c.isDestinationLocationReady()) {
-                commandDispatcher.transferContainersCommand(new TransferContainersCommand(List.of(containerId), c.getDestinationLocation()));
+                commandRepository.save(new TransferContainerCommand(containerId));
             }
             repo.save(c);
         } catch (IllegalContainerStateChangeException e) {
@@ -58,11 +68,10 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
         for (Container c: containers) {
             c.setDestinationLocationReady(location);
             if (c.getState() == ContainerState.TRANSIT_APPROVED) {
-                containerIdsToBeTransported.add(c.getContainerId());
+                commandRepository.save(new TransferContainerCommand(c.getContainerId()));
             }
         }
         repo.save(containers);
-        commandDispatcher.transferContainersCommand(new TransferContainersCommand(containerIdsToBeTransported, location));
         return new Response("Containers will arrive as soon as possible", ResponseStatus.SUCCESS);
     }
 

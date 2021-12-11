@@ -1,17 +1,18 @@
 package com.projectsysdes.containermanagement.domain.events;
 
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
-import com.projectsysdes.containermanagement.domain.ContainerState;
-import lombok.AllArgsConstructor;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.container.ContainerState;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class ContainerScannedEvent extends DomainEvent {
-    private final Integer containerId;
-    private final ContainerState newStatus;
-    private final ContainerLocation newLocation;
+    private Integer containerId;
+    private ContainerState newStatus;
+    private ContainerLocation newLocation;
 
     public ContainerScannedEvent(Integer containerId, ContainerState newStatus, ContainerLocation newLocation) {
         super();

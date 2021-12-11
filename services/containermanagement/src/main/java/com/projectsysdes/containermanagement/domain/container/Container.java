@@ -1,11 +1,11 @@
-package com.projectsysdes.containermanagement.domain;
+package com.projectsysdes.containermanagement.domain.container;
 
 
 import com.projectsysdes.containermanagement.domain.exceptions.ContainerLocationNotProvidedException;
 import com.projectsysdes.containermanagement.domain.exceptions.IllegalContainerStateChangeException;
 import lombok.*;
 
-import static com.projectsysdes.containermanagement.domain.ContainerState.*;
+import static com.projectsysdes.containermanagement.domain.container.ContainerState.*;
 
 @Getter
 @Builder

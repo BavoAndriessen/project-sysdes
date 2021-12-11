@@ -8,4 +8,3 @@
 FROM openjdk:11-jre-slim
 COPY target/containermanagement-0.0.1-SNAPSHOT.jar .
 ENTRYPOINT ["java", "-jar", "/containermanagement-0.0.1-SNAPSHOT.jar", "$DOCKERCOMPOSEDATASOURCEURL"]
-# "--spring.datasource.url=jdbc:postgresql://containermanagement.default.svc.cluster.local:5432/containers"]

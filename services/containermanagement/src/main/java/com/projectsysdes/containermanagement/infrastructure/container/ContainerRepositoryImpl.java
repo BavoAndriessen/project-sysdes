@@ -1,6 +1,6 @@
-package com.projectsysdes.containermanagement.infrastructure;
+package com.projectsysdes.containermanagement.infrastructure.container;
 
-import com.projectsysdes.containermanagement.domain.*;
+import com.projectsysdes.containermanagement.domain.container.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -50,12 +50,6 @@ public class ContainerRepositoryImpl implements ContainerRepository {
         }
         return containers;
     }
-
-    @Override
-    public List<TransferContainerCommandDataModel> findAllTransferCommands() {
-        return containerDataModelRepository.findAllCommands();
-    }
-
 
     private Container toContainer(ContainerDataModel cdm) {
         return Container.builder()

@@ -1,6 +1,6 @@
 package com.projectsysdes.containermanagement.API.REST;
 
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

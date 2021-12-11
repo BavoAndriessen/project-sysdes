@@ -1,17 +1,18 @@
 package com.projectsysdes.containermanagement.API.REST;
 
 
+import com.projectsysdes.containermanagement.application.Response;
+import com.projectsysdes.containermanagement.application.ResponseStatus;
 import com.projectsysdes.containermanagement.application.event.EventListener;
+import com.projectsysdes.containermanagement.application.query.CommandQuery;
 import com.projectsysdes.containermanagement.application.query.ContainerQuery;
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
-import com.projectsysdes.containermanagement.domain.ContainerLocationType;
-import com.projectsysdes.containermanagement.domain.ContainerState;
-import com.projectsysdes.containermanagement.domain.commands.TransferContainersCommand;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.command.TransferContainerCommand;
 import com.projectsysdes.containermanagement.domain.events.ArrivedWithContainersEvent;
 import com.projectsysdes.containermanagement.domain.events.ContainerApprovedEvent;
 import com.projectsysdes.containermanagement.domain.events.ContainerScannedEvent;
 import com.projectsysdes.containermanagement.domain.events.ReadyForContainersEvent;
-import com.projectsysdes.containermanagement.infrastructure.ContainerNotFoundException;
+import com.projectsysdes.containermanagement.infrastructure.container.ContainerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,9 @@ public class ContainerRESTController {
 
     @Autowired
     private ContainerQuery containerQuery;
+
+    @Autowired
+    private CommandQuery commandQuery;
 
     @GetMapping("/{id}/location")
     public ResponseEntity<ContainerLocation> getContainerLocation(@PathVariable("id") String containerId) {
@@ -47,42 +51,39 @@ public class ContainerRESTController {
     }
 
     @GetMapping("/commands/transfer")
-    public ResponseEntity<List<TransferContainersCommand>> getTransferCommands() {
-        return new ResponseEntity<>(containerQuery.findAllTransferCommands(), HttpStatus.OK);
+    public ResponseEntity<List<TransferContainerCommand>> getTransferCommands() {
+        return new ResponseEntity<>(commandQuery.findAllTransferContainerCommands(), HttpStatus.OK);
     }
 
-
     @PostMapping("/approve")
-    public void approveContainer(@RequestBody ContainerApprovedEvent event) {
-        eventListener.consumeContainerApprovedEvent(event);
+    public ResponseEntity<String> approveContainer(@RequestBody ContainerApprovedEvent event) {
+        Response r = eventListener.consumeContainerApprovedEvent(event);
+        return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
     @PostMapping("/scan")
-    public void scanContainer(@RequestBody String event) {
-        System.out.println("=========================" + event + "====================");;
-//        eventListener.consumeContainerScannedEvent(event);
-
-    }
-    @GetMapping("/scan")
-    public ResponseEntity<ContainerScannedEvent> scanContainer() {
-        return new ResponseEntity<>(new ContainerScannedEvent(0, ContainerState.ARRIVED, new ContainerLocation(ContainerLocationType.SHIP, "303")), HttpStatus.OK);
+    public ResponseEntity<String> scanContainer(@RequestBody ContainerScannedEvent event) {
+        Response r = eventListener.consumeContainerScannedEvent(event);
+        return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
     @PostMapping("/arrived")
-    public void arrivedWithContainers(@RequestBody ArrivedWithContainersEvent event) {
-
-        eventListener.consumeArrivedWithContainersEvent(event);
+    public ResponseEntity<String> arrivedWithContainers(@RequestBody ArrivedWithContainersEvent event) {
+        Response r = eventListener.consumeArrivedWithContainersEvent(event);
+        return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
     @PostMapping("/ready")
-    public void readyForContainers(@RequestBody ReadyForContainersEvent event) {
-        eventListener.consumeReadyForContainersEvent(event);
+    public ResponseEntity<String> readyForContainers(@RequestBody ReadyForContainersEvent event) {
+        Response r = eventListener.consumeReadyForContainersEvent(event);
+        return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
-//    private ResponseEntity<String> generateResponseEntity(ResponseStatus status, String sucessMessage, HttpStatus successHTTPStatus, String failMessage, HttpStatus failHTTPStatus) {
-//        if (status == ResponseStatus.FAIL) {
-//            return new ResponseEntity<>(failMessage, failHTTPStatus);
-//        }
-//        return new ResponseEntity<>(sucessMessage, successHTTPStatus);
-//    }
+    private ResponseEntity<String> generateResponseEntity(Response r, HttpStatus successHTTPStatus, HttpStatus failHTTPStatus) {
+        String message = r.getStatus() + ": " + r.getMessage();
+        if (r.getStatus() == ResponseStatus.FAIL) {
+            return new ResponseEntity<>(message, failHTTPStatus);
+        }
+        return new ResponseEntity<>(message, successHTTPStatus);
+    }
 }

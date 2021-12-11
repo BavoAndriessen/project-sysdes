@@ -1,4 +1,4 @@
-package com.projectsysdes.containermanagement.domain;
+package com.projectsysdes.containermanagement.domain.container;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

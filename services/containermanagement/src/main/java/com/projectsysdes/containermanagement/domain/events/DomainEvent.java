@@ -1,13 +1,14 @@
 package com.projectsysdes.containermanagement.domain.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public abstract class DomainEvent {
-    private final LocalDateTime createdTime;
+    private LocalDateTime createdTime;
 
     public DomainEvent() {
         this.createdTime = LocalDateTime.now();

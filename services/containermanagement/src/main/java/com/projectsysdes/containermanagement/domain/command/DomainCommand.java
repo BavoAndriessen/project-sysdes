@@ -1,6 +1,5 @@
-package com.projectsysdes.containermanagement.domain.commands;
+package com.projectsysdes.containermanagement.domain.command;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
