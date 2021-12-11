@@ -2,6 +2,7 @@ package com.projectsysdes.containermanagement.application.event;
 
 import com.projectsysdes.containermanagement.application.ContainerManagementService;
 import com.projectsysdes.containermanagement.application.Response;
+import com.projectsysdes.containermanagement.application.ResponseStatus;
 import com.projectsysdes.containermanagement.domain.container.Container;
 import com.projectsysdes.containermanagement.domain.events.*;
 import org.slf4j.Logger;
@@ -24,9 +25,14 @@ public class EventListener {
     @Async
     @TransactionalEventListener
     public Response consumeContainerApprovedEvent(ContainerApprovedEvent event) {
-        Response r = service.approveContainer(event.getContainerId());
-        logger.info(r.getStatus().name() + ": " + r.getMessage());
-        return r;
+        try {
+            Response r = service.approveContainer(event.getContainerId());
+            logger.info(r.getStatus().name() + ": " + r.getMessage());
+            return r;
+        } catch (Exception uniqueConstrainViolatedException) {
+            // niet erg: command bestaat gewoon al
+            return new Response("command already existed", ResponseStatus.SUCCESS);
+        }
     }
 
     @Async
@@ -48,9 +54,14 @@ public class EventListener {
     @Async
     @TransactionalEventListener
     public Response consumeReadyForContainersEvent(ReadyForContainersEvent event) {
-        Response r = service.readyForContainers(event.getContainerIds(), event.getLocation());
-        logger.info(r.getStatus().name() + ": " + r.getMessage());
-        return r;
+        try {
+            Response r = service.readyForContainers(event.getContainerIds(), event.getLocation());
+            logger.info(r.getStatus().name() + ": " + r.getMessage());
+            return r;
+        } catch (Exception uniqueConstrainViolatedException) {
+            // niet erg: command bestaat gewoon al
+            return new Response("command already existed", ResponseStatus.SUCCESS);
+        }
     }
 
     @Async
