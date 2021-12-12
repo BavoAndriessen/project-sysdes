@@ -20,7 +20,7 @@ public class MaintenanceServiceController {
 
     private void getLocationOfBoat(String vesselId){
         //TODO correcte uri
-        String uri = "http://localhost:8080/api/berthservice/getlocationofboat/"+vesselId;
+        String uri = "http://localhost:2222/api/berth/?vesselId="+vesselId;
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
 
