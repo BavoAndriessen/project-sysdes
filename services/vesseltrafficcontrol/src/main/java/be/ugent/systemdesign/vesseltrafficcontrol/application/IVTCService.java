@@ -1,5 +1,7 @@
 package be.ugent.systemdesign.vesseltrafficcontrol.application;
 
-public interface IVTCService {
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
 
+public interface IVTCService {
+    Response findRoute(Integer vesselId, Size size);
 }
