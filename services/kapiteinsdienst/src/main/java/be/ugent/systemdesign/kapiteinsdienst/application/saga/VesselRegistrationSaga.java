@@ -31,6 +31,7 @@ public class VesselRegistrationSaga {
         ReserveTowingPilotageCommand towingPilotageCommand = new ReserveTowingPilotageCommand(vessel.getVesselId(),vessel.getArrivalDateTime(),vessel.getLengthOfStay());
         commandDispatcher.sendReserveTowingPilotageCommand(towingPilotageCommand);
 
+        vessel = vesselRepo.findById(vessel.getVesselId());
         RequestOfferCommand requestOfferCommand = new RequestOfferCommand(
                 vessel.getVesselId(),
                 vessel.getArrivalDateTime(),
