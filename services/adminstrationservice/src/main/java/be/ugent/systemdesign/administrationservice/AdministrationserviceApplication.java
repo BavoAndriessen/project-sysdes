@@ -50,9 +50,8 @@ public class AdministrationserviceApplication {
 
             repo.save(document);
 
-            List<Document> documents = repo.findAllDocumentsForVessel(vessel.getVesselId()); //Dit werkt nog niet
+            List<Document> documents = repo.findAllDocumentsForVessel(vessel.getVesselId());
             Document docs = documents.get(0);
-//            Document docs = repo.findOne(document.getDocumentId());
 
             log.warn("Document found with id {} and offer {}", docs.getDocumentId(), docs.getOffer().getPrice());
 
@@ -107,9 +106,18 @@ public class AdministrationserviceApplication {
             Response r1 = service.registerNewTimeBadge(5, LocalDateTime.of(2021, Month.JUNE, 25, 17,0));
             log.warn(r1.getMessage());
 
-            Response r2 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 50, 80.0, 60.5, null);
+            Container c1 = new Container(1, "bananen");
+            Container c2 = new Container(2, "appels");
+            Container c3 = new Container(3, "wortels");
+
+            List<Container> containerList = new ArrayList<>();
+            containerList.add(c1);
+            containerList.add(c2);
+            containerList.add(c3);
+
+            Response r2 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 50, 80.0, 60.5, containerList);
             log.warn(r2.getMessage());
-            Response r3 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 25, 80.0, 60.5, null);
+            Response r3 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 25, 80.0, 60.5, containerList);
             log.warn(r3.getMessage());
 
             Response r4 = service.handleOfferDeleted("vessel3", 1);

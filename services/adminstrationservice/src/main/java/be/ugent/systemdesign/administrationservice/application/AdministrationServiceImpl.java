@@ -39,6 +39,7 @@ public class AdministrationServiceImpl implements AdministrationService {
         try {
             Staff s = staffRepository.findOne(staffId);
             s.addWorkedHour(time);
+            staffRepository.save(s);
             return new Response(ResponseStatus.SUCCES, "staff " + staffId + " has badged on " + time);
         }
         catch(StaffNotFoundException e){
