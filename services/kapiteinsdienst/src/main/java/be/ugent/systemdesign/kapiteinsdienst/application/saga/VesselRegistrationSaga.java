@@ -46,10 +46,7 @@ public class VesselRegistrationSaga {
         Vessel vessel = vesselRepo.findById(vesselId);
         vessel.failedReservation();
         vesselRepo.saveAndFlush(vessel);
-        sendUndoReservationToAllServices(vessel.getVesselId());
-        //TODO is offerId wel beschikbaar? kan dit met enkel vesselId?
-        DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vessel.getVesselId(), vessel.getOfferId());
-        commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
+        sendUndoReservationToAllServices(vessel.getVesselId(),vessel.getOfferId());
     }
 
     public void onReservationSuccess(String vesselId, ReservationServices service){
@@ -68,17 +65,17 @@ public class VesselRegistrationSaga {
         vessel.offerConfirmation(isConfirmed);
         vesselRepo.saveAndFlush(vessel);
         if(!isConfirmed){
-            sendUndoReservationToAllServices(vessel.getVesselId());
+            sendUndoReservationToAllServices(vessel.getVesselId(),vessel.getOfferId());
             vesselRepo.deleteById(vessel.getVesselId());
         }
     }
 
-    private void sendUndoReservationToAllServices(String vesselId){
+    private void sendUndoReservationToAllServices(String vesselId, Integer offerId){
         UndoReservationCommand undoReservationCommand = new UndoReservationCommand(vesselId);
         commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);
-        DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vesselId);
+        DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vesselId, offerId);
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
     }
 

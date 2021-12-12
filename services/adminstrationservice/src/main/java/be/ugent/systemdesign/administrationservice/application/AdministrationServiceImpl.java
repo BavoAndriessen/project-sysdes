@@ -30,7 +30,7 @@ public class AdministrationServiceImpl implements AdministrationService {
 
         documentRepository.save(document);
 
-        return new OfferCreatedResponse(ResponseStatus.SUCCES, "new offer "+offerId+" for vessel " + vesselId + " registered",
+        return new OfferCreatedResponse(ResponseStatus.SUCCESS, "new offer "+offerId+" for vessel " + vesselId + " registered",
                 offerId, vessel.getVesselId(), price);
     }
 
@@ -39,7 +39,8 @@ public class AdministrationServiceImpl implements AdministrationService {
         try {
             Staff s = staffRepository.findOne(staffId);
             s.addWorkedHour(time);
-            return new Response(ResponseStatus.SUCCES, "staff " + staffId + " has badged on " + time);
+            staffRepository.save(s);
+            return new Response(ResponseStatus.SUCCESS, "staff " + staffId + " has badged on " + time);
         }
         catch(StaffNotFoundException e){
             return new Response(ResponseStatus.FAIL, "staff " + staffId + " is not found");
@@ -55,7 +56,7 @@ public class AdministrationServiceImpl implements AdministrationService {
         for(Document d : documents){
             if(d.getOffer().getOfferId() == offerId){
                 documentRepository.delete(d);
-                return new Response(ResponseStatus.SUCCES, "The offer "+ offerId + " has been deleted");
+                return new Response(ResponseStatus.SUCCESS, "The offer "+ offerId + " has been deleted");
             }
         }
         return new Response(ResponseStatus.FAIL, "The offer " + offerId + " of vessel " + vesselId + " is not found");

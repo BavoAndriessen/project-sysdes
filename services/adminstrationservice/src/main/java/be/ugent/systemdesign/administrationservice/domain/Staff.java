@@ -1,8 +1,12 @@
 package be.ugent.systemdesign.administrationservice.domain;
 
+import be.ugent.systemdesign.administrationservice.AdministrationserviceApplication;
 import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PUBLIC) //TERUG VERANDEREN!!
 public class Staff {
+    private static final Logger log = LoggerFactory.getLogger(Staff.class);
+
     private Integer staffId;
     private String lastName;
     private String firstName;
@@ -19,12 +25,6 @@ public class Staff {
     private Double wage;
     private List<WorkedHours> workedHoursList;
 
-//    public void addWorkedHour2(LocalDateTime start, LocalDateTime stop){
-//        if(this.workedHoursList == null){
-//            this.workedHoursList = new ArrayList<>();
-//        }
-//        this.workedHoursList.add(new WorkedHours(start, stop));
-//    }
 
     public void addWorkedHour(LocalDateTime time){
         if(this.workedHoursList == null){
@@ -43,7 +43,7 @@ public class Staff {
     }
 
     public Double hoursWorked() throws shiftNotOverExecption{
-        if(this.workedHoursList.get(this.workedHoursList.size() - 1).getStop() == null){
+        if(this.workedHoursList.size() != 0 && this.workedHoursList.get(this.workedHoursList.size() - 1).getStop() == null){
             throw new shiftNotOverExecption();
         }
         //count all the worked hours
