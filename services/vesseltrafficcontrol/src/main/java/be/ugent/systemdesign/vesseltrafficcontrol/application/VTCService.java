@@ -3,6 +3,7 @@ package be.ugent.systemdesign.vesseltrafficcontrol.application;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Gate;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
@@ -19,7 +20,8 @@ public class VTCService implements IVTCService{
     @Autowired
     IRouteRepository routeRepo;
 
-    /*
+    List<Vessel> vessels;
+
     final List<Gate> gates = new ArrayList<>() {
         {
             add(new Gate(1, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
@@ -30,7 +32,6 @@ public class VTCService implements IVTCService{
             add(new Gate(6, GateType.BRIDGE, GateState.CLOSE, Size.MEDIUM));
         }
     };
-    */
 
     public VTCService() {
         routeRepo.save(new Route(
@@ -42,6 +43,7 @@ public class VTCService implements IVTCService{
         routeRepo.save(new Route(
                 3,"3;4", Size.LARGE, 180, 1
         ));
+        vessels = new ArrayList<>();
     }
 
     @Override
@@ -51,6 +53,21 @@ public class VTCService implements IVTCService{
         //    Route route = calculateRoute(size);
         // }
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
+    }
+
+    @Override
+    public Response registerVessel(Vessel vessel) {
+        vessels.add(vessel);
+        return new Response(ResponseStatus.SUCCESS, "your vessel has been registered");
+    }
+
+    @Override
+    public Response changeGateState(Integer gateId) {
+        gates
+                .stream()
+                .filter(gate -> gate.getGateId().equals(gateId))
+                .forEach(Gate::toggleState);
+        return new Response(ResponseStatus.SUCCESS, "thank u for changing the state of the gate");
     }
 
     /*
