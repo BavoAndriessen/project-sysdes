@@ -5,7 +5,6 @@ import be.ugent.systemdesign.kapiteinsdienst.domain.Vessel;
 import be.ugent.systemdesign.kapiteinsdienst.domain.VesselRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.stream.Collectors;
 
 @Repository
@@ -36,7 +35,6 @@ public class VesselRepositoryImpl implements VesselRepository {
         vesselRepo.deleteById(vesselId);
     }
 
-    //TODO probleem indien een lijst niet wordt meegegeven in de request, lijkt opgelost
     private VesselDataModel mapToVesselDataModel(Vessel vessel){
         return new VesselDataModel(
                 vessel.getVesselId(),

@@ -1,10 +1,13 @@
 package com.projectsysdes.containermanagement;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectsysdes.containermanagement.API.messaging.Channels;
-import com.projectsysdes.containermanagement.domain.*;
-import com.projectsysdes.containermanagement.infrastructure.ContainerDataModelRepository;
-import com.projectsysdes.containermanagement.infrastructure.ContainerNotFoundException;
-import com.projectsysdes.containermanagement.infrastructure.TransferContainerCommandDataModel;
+import com.projectsysdes.containermanagement.application.query.CommandQuery;
+import com.projectsysdes.containermanagement.domain.command.TransferContainerCommand;
+import com.projectsysdes.containermanagement.domain.container.*;
+import com.projectsysdes.containermanagement.domain.events.*;
+import com.projectsysdes.containermanagement.infrastructure.container.ContainerDataModelRepository;
+import com.projectsysdes.containermanagement.infrastructure.container.ContainerNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +16,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @EnableBinding(Channels.class)
@@ -42,12 +49,58 @@ public class ContainermanagementApplication {
             List<Container> containers = repo.findAll();
             logger.info(String.valueOf(containers.size()));
             cdmrepo.findAll();
-
-            logger.info("> testing TransferCommands in repo");
-            List<TransferContainerCommandDataModel> commands = repo.findAllTransferCommands();
-
         };
     }
+
+    @Bean
+    CommandLineRunner testTransferContainerCommandLogic(ContainerRepository repo, CommandQuery commandQuery) {
+
+        return (args) -> {
+            logger.info(">Save new container with id {} to database.", 1);
+            repo.save(new Container(1, "crack"));
+            // send arrived event
+            sendPOSTRequest(new ArrivedWithContainersEvent(new ContainerLocation(ContainerLocationType.SHIP, "303"), List.of(1)), "arrived");
+            // send scan event -> transit
+            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.TRANSIT_NOT_APPROVED, new ContainerLocation(ContainerLocationType.TRANSIT, "3456")), "scan");
+
+            // following 2 steps are interchangeable
+            // send radyforcontainers event
+            sendPOSTRequest(new ReadyForContainersEvent(List.of(1), new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, "gvcftyuht678")), "ready");
+            // send scan event -> approved
+            sendPOSTRequest(new ContainerApprovedEvent(1), "approve");
+
+            // nu zou er een event command moeten aangemaakt worden
+            logger.info("> testing TransferCommands in repo");
+            List<TransferContainerCommand> commands = commandQuery.findAllTransferContainerCommands();
+            logger.info("number of commands in repo: " + commands.size());
+        };
+    }
+
+    private static void sendPOSTRequest(DomainEvent o, String to) {
+        try {
+            o.setCreatedTime(null);
+            var objectMapper = new ObjectMapper();
+            String requestBody = objectMapper
+                    .writeValueAsString(o);
+
+            logger.info("Sending: " + requestBody);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/api/containers/" + to))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .headers("Content-Type", "application/json")
+                    .build();
+
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+
+            logger.info("Response: " + response.body());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 //    @Bean
 //    CommandLineRunner testMessageOutPutGateway(EventDispatcher ed, CommandDispatcher cd) {
 //        return (args) -> {
@@ -63,11 +116,4 @@ public class ContainermanagementApplication {
 ////            ed.publishTestEvent(new ReadyForContainersEvent(List.of(1,2,3,4), new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, "6543")));
 //        };
 //    }
-
-//    @Bean
-//    CommandLineRunner testEventHandling(EventDispatcher eventDispatcher) {
-//        return (args) -> {
-//        };
-//    }
-
 }

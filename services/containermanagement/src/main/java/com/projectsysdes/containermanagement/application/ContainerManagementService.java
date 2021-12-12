@@ -1,8 +1,7 @@
 package com.projectsysdes.containermanagement.application;
 
-import com.projectsysdes.containermanagement.API.REST.ContainerViewModel;
-import com.projectsysdes.containermanagement.domain.Container;
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.container.Container;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
 
 import java.util.List;
 

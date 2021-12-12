@@ -1,16 +1,19 @@
 package com.projectsysdes.containermanagement.domain.events;
 
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
+import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class ReadyForContainersEvent extends DomainEvent {
 
-    private final ContainerLocation location;
-    private final List<Integer> containerIds;
+    private List<Integer> containerIds;
+    private ContainerLocation location;
 
     public ReadyForContainersEvent(List<Integer> containerIds, ContainerLocation location) {
         super();

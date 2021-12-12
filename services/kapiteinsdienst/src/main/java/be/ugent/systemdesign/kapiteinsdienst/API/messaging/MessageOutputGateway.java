@@ -1,7 +1,6 @@
 package be.ugent.systemdesign.kapiteinsdienst.API.messaging;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
-//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.RequestOfferCommand;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -10,11 +9,6 @@ import org.springframework.stereotype.Service;
 @MessagingGateway
 @Service
 public interface MessageOutputGateway {
-
-    /*
-    @Gateway(requestChannel = Channels.OFFER_PROPOSAL)
-    public void sendOfferProposalResponse(OfferProposalResponse response);
-    */
 
     @Gateway(requestChannel = Channels.RESERVE_BERTH)
     public void sendReserveBerthCommand(ReserveBerthCommand command);

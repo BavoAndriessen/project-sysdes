@@ -1,17 +1,18 @@
 package com.projectsysdes.containermanagement.domain.events;
 
-import com.projectsysdes.containermanagement.domain.ContainerLocation;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Embedded;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class ContainersReadyAtDockEvent extends DomainEvent {
 
-    private final Integer berthIdentifier;
-    private final List<Integer> containerIds;
+    private Integer berthIdentifier;
+    private List<Integer> containerIds;
 
     public ContainersReadyAtDockEvent(List<Integer> containerIds, Integer berthIdentifier) {
         super();

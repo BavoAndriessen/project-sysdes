@@ -28,7 +28,5 @@ public class OfferQueryImpl implements OfferQuery {
             throw new OfferNotFoundException();
         }
         return new OfferReadModel(vessel.getVesselId(),vessel.getOfferId(),vessel.getPrice());
-        //TODO enkel voor test
-        //return new OfferReadModel(vessel.getVesselId(),10,20.5);
     }
 }

@@ -78,7 +78,6 @@ public class VesselRegistrationSaga {
         commandDispatcher.sendUndoBerthReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoServiceReservationCommand(undoReservationCommand);
         commandDispatcher.sendUndoTowingPilotageReservationCommand(undoReservationCommand);
-        //TODO nodig om op te roepen?
         DeleteOfferCommand deleteOfferCommand = new DeleteOfferCommand(vesselId);
         commandDispatcher.sendDeleteOfferCommand(deleteOfferCommand);
     }
