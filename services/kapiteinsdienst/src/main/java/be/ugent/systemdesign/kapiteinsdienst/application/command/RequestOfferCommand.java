@@ -3,7 +3,6 @@ package be.ugent.systemdesign.kapiteinsdienst.application.command;
 import be.ugent.systemdesign.kapiteinsdienst.domain.Container;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

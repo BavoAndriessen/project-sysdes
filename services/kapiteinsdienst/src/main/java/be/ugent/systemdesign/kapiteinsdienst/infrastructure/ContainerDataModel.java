@@ -1,7 +1,6 @@
 package be.ugent.systemdesign.kapiteinsdienst.infrastructure;
 
 import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
