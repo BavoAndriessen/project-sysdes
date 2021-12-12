@@ -2,7 +2,11 @@ package be.ugent.systemdesign.administrationservice.application.command;
 
 import be.ugent.systemdesign.administrationservice.application.Response;
 import be.ugent.systemdesign.administrationservice.application.ResponseStatus;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class OfferCreatedResponse extends Response {
     private Integer offerId;
     private String vesselId;
