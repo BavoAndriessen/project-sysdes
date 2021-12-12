@@ -8,6 +8,6 @@ import java.util.List;
  * A route is declared by List<Integer> = a list of gateId's
  */
 public interface IRouteRepository {
-    public List<Integer> findOne(Integer vesselId, Size size);
+    public String findOne(Size size);
     public void save(Route route);
 }
