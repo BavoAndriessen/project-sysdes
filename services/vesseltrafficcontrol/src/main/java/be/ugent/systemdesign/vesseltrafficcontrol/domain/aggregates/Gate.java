@@ -22,4 +22,11 @@ public class Gate {
         state = _state;
         sizeCompatibility = size;
     }
+
+    public void toggleState(){
+        if(state == GateState.OPEN)
+            state = GateState.CLOSE;
+        else
+            state = GateState.OPEN;
+    }
 }
