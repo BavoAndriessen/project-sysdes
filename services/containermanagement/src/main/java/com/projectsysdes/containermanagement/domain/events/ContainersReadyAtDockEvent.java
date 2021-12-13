@@ -11,8 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ContainersReadyAtDockEvent extends DomainEvent {
 
-    private Integer berthIdentifier;
     private List<Integer> containerIds;
+    private Integer berthIdentifier;
 
     public ContainersReadyAtDockEvent(List<Integer> containerIds, Integer berthIdentifier) {
         super();

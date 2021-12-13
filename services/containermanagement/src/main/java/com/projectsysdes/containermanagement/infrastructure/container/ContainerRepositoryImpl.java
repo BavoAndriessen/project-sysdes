@@ -28,7 +28,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
 
     @Override
     public void save(Collection<Container> containers) {
-        containerDataModelRepository.saveAll(containers.stream().map(c -> {return toContainerDataModel(c); }).collect(Collectors.toList()));
+        containerDataModelRepository.saveAll(containers.stream().map(this::toContainerDataModel).collect(Collectors.toList()));
     }
 
     @Override
@@ -51,6 +51,11 @@ public class ContainerRepositoryImpl implements ContainerRepository {
         return containers;
     }
 
+    @Override
+    public List<Container> findContainersFromSameReadyForContainersRequest(ReadyForContainersRequest readForContainersRequest) {
+        return containerDataModelRepository.findByReadyForContainersRequestDataModel(new ReadyForContainersRequestDataModel(readForContainersRequest.getId())).stream().map(this::toContainer).collect(Collectors.toList());
+    }
+
     private Container toContainer(ContainerDataModel cdm) {
         return Container.builder()
                 .containerId(cdm.getContainerId())
@@ -59,6 +64,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
                 .currentLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getCurrentLocationType()), cdm.getCurrentLocationIdentifier()))
                 .destinationLocation(new ContainerLocation(ContainerLocationType.valueOf(cdm.getDestinationLocationType()), cdm.getDestinationLocationIdentifier()))
                 .destinationLocationReady(cdm.isDestinationLocationReady())
+                .readyForContainersRequest(cdm.getReadyForContainersRequestDataModel() == null ? null : new ReadyForContainersRequest(cdm.getContainerId())) // niet echt nodig om hier
                 .build();
     }
 
@@ -67,6 +73,7 @@ public class ContainerRepositoryImpl implements ContainerRepository {
                 .containerId(c.getContainerId())
                 .contents(c.getContents())
                 .state(c.getState().name())
+                .readyForContainersRequestDataModel(c.getReadyForContainersRequest() == null ? null : new ReadyForContainersRequestDataModel(c.getReadyForContainersRequest().getId()))
                 .currentLocationType(c.getCurrentLocation().getLocationType().name())
                 .currentLocationIdentifier(c.getCurrentLocation().getLocationIdentifier())
                 .destinationLocationIdentifier(c.getDestinationLocation().getLocationIdentifier())
