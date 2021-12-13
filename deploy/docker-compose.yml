@@ -25,6 +25,16 @@ services:
      - "5000:5432"
     # networks:
     #  - mynet
+  kapiteinsdienst-db:
+    image: postgres:latest
+    container_name: kapiteinsdienst-db
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=kapiteinsdienst
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    ports:
+     - "5002:5432"
   zookeeper:
     image: confluentinc/cp-zookeeper
     environment:
@@ -101,6 +111,19 @@ services:
     links: 
     - kafka
     - kapiteinsdienst
+  kapiteinsdienst:
+    container_name: kapiteinsdienst
+    build: ../services/kapiteinsdienst
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:postgresql://kapiteinsdienst-db:5432/kapiteinsdienst
+    ports:
+     - "2005:8080"
+    depends_on:
+      - kapiteinsdienst-db
+      - kafka
+    links:
+     - kafka
+     - kapiteinsdienst-db
 # networks:
 #   mynet:
 #     name: my-shared-db-networks
