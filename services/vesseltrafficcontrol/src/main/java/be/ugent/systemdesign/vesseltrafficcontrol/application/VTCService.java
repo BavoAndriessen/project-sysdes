@@ -30,7 +30,7 @@ public class VTCService implements IVTCService{
     }
 
     @Override
-    public Response findRoute(Integer vesselId, Size size, Integer destination) {
+    public Response findRoute(String vesselId, Size size, Integer destination) {
         String routePath = routeRepo.findOne(size, destination);
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
     }
