@@ -15,11 +15,11 @@ public class Route {
 
     // Simple formula to calculate the cost of using this route
     private Integer cost;
-    private List<Integer> route;
+    private String route;
     private Integer routeLength;
     private Integer capacity;
 
-    public Route(Integer id, List<Integer> route, Size sizeCompatiblity, Integer routeLength, Integer capacity) {
+    public Route(Integer id, String route, Size sizeCompatiblity, Integer routeLength, Integer capacity) {
         this.routeId = id;
         this.route = route;
         this.sizeCompatiblity = sizeCompatiblity;
@@ -28,7 +28,7 @@ public class Route {
         calculateCost();
     }
 
-    public void updateRoute(List<Integer> newRoute, Integer newLength) {
+    public void updateRoute(String newRoute, Integer newLength) {
         this.route = newRoute;
         this.routeLength = newLength;
         this.calculateCost();

@@ -21,6 +21,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Scanner;
 
 @EnableBinding(Channels.class)
 @SpringBootApplication
@@ -59,15 +60,20 @@ public class ContainermanagementApplication {
             logger.info(">Save new container with id {} to database.", 1);
             repo.save(new Container(1, "crack"));
             // send arrived event
-            sendPOSTRequest(new ArrivedWithContainersEvent(new ContainerLocation(ContainerLocationType.SHIP, "303"), List.of(1)), "arrived");
+            sendPOSTRequest(new ArrivedWithContainersEvent(new ContainerLocation(ContainerLocationType.SHIP, 303), List.of(1)), "arrived");
             // send scan event -> transit
-            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.TRANSIT_NOT_APPROVED, new ContainerLocation(ContainerLocationType.TRANSIT, "3456")), "scan");
+            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.TRANSIT_NOT_APPROVED, new ContainerLocation(ContainerLocationType.TRANSIT, 3456)), "scan");
 
             // following 2 steps are interchangeable
             // send radyforcontainers event
-            sendPOSTRequest(new ReadyForContainersEvent(List.of(1), new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, "gvcftyuht678")), "ready");
+            sendPOSTRequest(new ReadyForContainersEvent(List.of(1), new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "ready");
             // send scan event -> approved
             sendPOSTRequest(new ContainerApprovedEvent(1), "approve");
+
+            // scan => READY_AT_DOCK
+            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.READY_AT_DOCK, new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "scan");
+
+            // TODO: verdere logica uittesten (van containerstate RELEASE bv)
 
             // nu zou er een event command moeten aangemaakt worden
             logger.info("> testing TransferCommands in repo");

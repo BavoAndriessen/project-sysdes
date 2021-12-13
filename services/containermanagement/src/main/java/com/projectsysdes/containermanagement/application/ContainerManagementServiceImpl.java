@@ -1,12 +1,12 @@
 package com.projectsysdes.containermanagement.application;
 
 import com.projectsysdes.containermanagement.application.command.CommandDispatcher;
+import com.projectsysdes.containermanagement.application.event.EventDispatcher;
 import com.projectsysdes.containermanagement.domain.command.CommandRepository;
 import com.projectsysdes.containermanagement.domain.command.TransferContainerCommand;
-import com.projectsysdes.containermanagement.domain.container.Container;
-import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
-import com.projectsysdes.containermanagement.domain.container.ContainerRepository;
-import com.projectsysdes.containermanagement.domain.container.ContainerState;
+import com.projectsysdes.containermanagement.domain.container.*;
+import com.projectsysdes.containermanagement.domain.events.ContainersReadyAtDockEvent;
+import com.projectsysdes.containermanagement.domain.events.ReadyForContainersEvent;
 import com.projectsysdes.containermanagement.domain.exceptions.IllegalContainerStateChangeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -29,6 +30,9 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
     CommandRepository commandRepository;
     @Autowired
     private CommandDispatcher commandDispatcher;
+
+    @Autowired
+    EventDispatcher eventDispatcher;
 
     @Override
     public Response approveContainer(Integer containerId) {
@@ -64,9 +68,10 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
     @Override
     public Response readyForContainers(List<Integer> containerIds, ContainerLocation location) {
         List<Container> containers = repo.findContainersWithContainerIds(containerIds);
-        List<Integer> containerIdsToBeTransported = new ArrayList<>();
+        ReadyForContainersRequest readyForContainersRequest = new ReadyForContainersRequest();
         for (Container c: containers) {
             c.setDestinationLocationReady(location);
+            c.setReadyForContainersRequest(readyForContainersRequest);
             if (c.getState() == ContainerState.TRANSIT_APPROVED) {
                 commandRepository.save(new TransferContainerCommand(c.getContainerId()));
             }
@@ -76,19 +81,32 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
     }
 
     @Override
-    public Response scanContainer(Integer containerId, String state, ContainerLocation location) {
+    public Response scanContainer(Integer containerId, String newStateString, ContainerLocation location) {
+        Container c = repo.find(containerId);
         try {
-            Container c = repo.find(containerId);
-            try {
-                c.progressState(ContainerState.valueOf(state), location);
-                repo.save(c);
-            } catch (IllegalContainerStateChangeException e) {
-                return new Response("Illegal state change: state of container with id " + containerId.toString() + " cannot be changed to " + state + ", because it is " + c.getState().name(), ResponseStatus.FAIL);
+            ContainerState newState = ContainerState.valueOf(newStateString);
+            c.progressState(newState, location);
+            if (newState == ContainerState.READY_AT_DOCK) {
+                // TODO: deze werkt precies nog niet zo goed
+                List<Container> containersFromSameRequest = repo.findContainersFromSameReadyForContainersRequest(c.getReadyForContainersRequest());
+                String s = "";
+                for (Container container : containersFromSameRequest) {
+                    s += (container.getContainerId() + ", ");
+                }
+                logger.debug(s);
+                if (containersFromSameRequest.stream().allMatch((e) -> {
+                    return e.getState() == ContainerState.READY_AT_DOCK;
+                })) {
+                    eventDispatcher.publishContainersReadyAtDockEvent(new ContainersReadyAtDockEvent(c.getDestinationLocation().getLocationIdentifier()));
+                }
             }
-        }  catch (RuntimeException e) {
-            return new Response("Could not update the state of container with id " + containerId.toString(), ResponseStatus.FAIL);
+            repo.save(c);
+        } catch (IllegalContainerStateChangeException e) {
+            return new Response("Illegal state change: state of container with id " + containerId.toString() + " cannot be changed to " + newStateString + ", because it is " + c.getState().name(), ResponseStatus.FAIL);
+        } catch (IllegalArgumentException e) { // enum.valueof() lukt niet
+            return new Response("Provided state does not exist", ResponseStatus.FAIL);
         }
-        return new Response("Updated container with id: " + containerId.toString() + "to state " + state, ResponseStatus.SUCCESS);
+        return new Response("Updated container with id: " + containerId.toString() + "to state " + newStateString, ResponseStatus.SUCCESS);
     }
 
     @Override
@@ -96,5 +114,4 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
         repo.save(containers);
         return new Response("Containers registered", ResponseStatus.SUCCESS);
     }
-
 }

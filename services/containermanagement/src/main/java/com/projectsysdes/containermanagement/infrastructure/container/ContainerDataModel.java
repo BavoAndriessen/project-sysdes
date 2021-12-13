@@ -18,19 +18,23 @@ public class ContainerDataModel {
     private String contents;
     private String state;
     private String currentLocationType;
-    private String currentLocationIdentifier;
+    private Integer currentLocationIdentifier;
     private String destinationLocationType;
-    private String destinationLocationIdentifier;
+    private Integer destinationLocationIdentifier;
     private boolean destinationLocationReady;
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private ReadyForContainersRequestDataModel readyForContainersRequestDataModel;
 
     public ContainerDataModel(int containerId,String contents, ContainerLocation destinationLocation) {
         this.containerId = containerId;
         this.contents = contents;
         this.currentLocationType = ContainerLocationType.UNKNOWN.name();
-        this.currentLocationIdentifier = "";
+        this.currentLocationIdentifier = null;
         this.state = ContainerState.REGISTERED.name();
         this.destinationLocationType = destinationLocation.getLocationType().name();
         this.destinationLocationIdentifier = destinationLocation.getLocationIdentifier();
+        this.readyForContainersRequestDataModel = null;
     }
 
 }

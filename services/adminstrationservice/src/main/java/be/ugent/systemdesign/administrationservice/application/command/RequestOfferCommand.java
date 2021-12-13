@@ -1,25 +1,21 @@
-/*package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
+package be.ugent.systemdesign.administrationservice.application.command;
 
-import be.ugent.systemdesign.kapiteinsdienst.domain.Container;
-import be.ugent.systemdesign.kapiteinsdienst.domain.VesselStatus;
+import be.ugent.systemdesign.administrationservice.domain.Container;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateOfferCommand {
-
+public class RequestOfferCommand {
     private String vesselId;
     private LocalDateTime arrivalDateTime;
     private Integer lengthOfStay;
     private Double vesselSize;
     private Double amountOfWaste;
-    private List<String> additionalServices;
     private List<Container> containerList;
-
 }
-*/

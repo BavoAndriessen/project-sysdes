@@ -32,7 +32,7 @@ public class MessageInputGateway {
     public void receiveContainerReadyAtDockEvent(ContainersReadyAtDockEvent e) throws Exception {
         eventHandler.handelContainerReadyAtDock(e);
     }
-    @StreamListener(Channels.BERTH_RESERVED_REPLY)
+    @StreamListener(Channels.RESERVE_BERTH_COMMAND)
     @SendTo(Channels.BERTH_RESERVED_REPLY)
     public ReserveBerthResponse receiveReserveBerthCommand(ReserveBerthCommand command) throws Exception {
         String vesselId = command.getVesselId();

@@ -1,13 +1,13 @@
-/*package be.ugent.systemdesign.kapiteinsdienst.application.command.client;
+package be.ugent.systemdesign.administrationservice.application.command;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OfferConfirmationCommand {
-
+public class DeleteOfferCommand {
     private String vesselId;
-    private Boolean confirmed;
+    private Integer offerId;
 }
-*/

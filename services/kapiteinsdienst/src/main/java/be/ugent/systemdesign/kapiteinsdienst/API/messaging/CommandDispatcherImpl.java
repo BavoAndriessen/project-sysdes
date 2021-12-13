@@ -1,7 +1,6 @@
 package be.ugent.systemdesign.kapiteinsdienst.API.messaging;
 
 import be.ugent.systemdesign.kapiteinsdienst.application.command.*;
-//import be.ugent.systemdesign.kapiteinsdienst.application.command.client.OfferProposalResponse;
 import be.ugent.systemdesign.kapiteinsdienst.application.command.RequestOfferCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,13 +24,6 @@ public class CommandDispatcherImpl implements CommandDispatcher {
     @Value("${spring.cloud.stream.bindings." + Channels.OFFER_CREATED + ".destination}")
     String requestOfferAdministrationDestination;
 
-    /*
-    //Vervangen door rest
-    @Override
-    public void sendOfferProposalResponse(OfferProposalResponse response) {
-        outputGateway.sendOfferProposalResponse(response);
-    }
-    */
     @Override
     public void sendReserveBerthCommand(ReserveBerthCommand command) {
         outputGateway.sendReserveBerthCommand(
