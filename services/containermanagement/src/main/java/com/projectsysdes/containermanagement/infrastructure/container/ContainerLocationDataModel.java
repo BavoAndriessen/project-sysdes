@@ -10,5 +10,5 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ContainerLocationDataModel {
     private ContainerLocationType locationType;
-    private String locationIdentifier;
+    private Integer locationIdentifier;
 }

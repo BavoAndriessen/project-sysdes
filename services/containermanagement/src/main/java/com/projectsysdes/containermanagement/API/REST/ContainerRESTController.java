@@ -3,7 +3,7 @@ package com.projectsysdes.containermanagement.API.REST;
 
 import com.projectsysdes.containermanagement.application.Response;
 import com.projectsysdes.containermanagement.application.ResponseStatus;
-import com.projectsysdes.containermanagement.application.event.EventListener;
+import com.projectsysdes.containermanagement.application.event.EventHandler;
 import com.projectsysdes.containermanagement.application.query.CommandQuery;
 import com.projectsysdes.containermanagement.application.query.ContainerQuery;
 import com.projectsysdes.containermanagement.domain.container.ContainerLocation;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ContainerRESTController {
 
     @Autowired
-    private EventListener eventListener;
+    private EventHandler eventHandler;
 
     @Autowired
     private ContainerQuery containerQuery;
@@ -57,25 +57,25 @@ public class ContainerRESTController {
 
     @PostMapping("/approve")
     public ResponseEntity<String> approveContainer(@RequestBody ContainerApprovedEvent event) {
-        Response r = eventListener.consumeContainerApprovedEvent(event);
+        Response r = eventHandler.consumeContainerApprovedEvent(event);
         return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
     @PostMapping("/scan")
     public ResponseEntity<String> scanContainer(@RequestBody ContainerScannedEvent event) {
-        Response r = eventListener.consumeContainerScannedEvent(event);
+        Response r = eventHandler.consumeContainerScannedEvent(event);
         return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
     @PostMapping("/arrived")
     public ResponseEntity<String> arrivedWithContainers(@RequestBody ArrivedWithContainersEvent event) {
-        Response r = eventListener.consumeArrivedWithContainersEvent(event);
+        Response r = eventHandler.consumeArrivedWithContainersEvent(event);
         return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 
     @PostMapping("/ready")
     public ResponseEntity<String> readyForContainers(@RequestBody ReadyForContainersEvent event) {
-        Response r = eventListener.consumeReadyForContainersEvent(event);
+        Response r = eventHandler.consumeReadyForContainersEvent(event);
         return generateResponseEntity(r, HttpStatus.ACCEPTED, HttpStatus.CONFLICT);
     }
 

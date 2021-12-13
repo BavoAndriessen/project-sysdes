@@ -10,7 +10,8 @@ public interface Channels {
     static final String RESERVE_TOWING_PILOTAGE = "reserve_towing_pilotage";
     static final String TOWING_PILOTAGE_RESERVED = "towing_pilotage_reserved";
     static final String UNDO_TOWING_PILOTAGE_RESERVATION = "undo_towing_pilotage_reservation";
-    static final String ARRIVAL_TIME_CHANGED = "arrival_time_changed";
+    static final String NAVIGATE_SHIP = "navigate_ship";
+    static final String ARRIVED = "arrived";
 
     @Output(TOWING_PILOTAGE_RESERVED)
     MessageChannel towingPilotageReserved();
@@ -21,8 +22,11 @@ public interface Channels {
     @Input(UNDO_TOWING_PILOTAGE_RESERVATION)
     SubscribableChannel undoTowingPilotageReservation();
 
-    @Input(ARRIVAL_TIME_CHANGED)
-    SubscribableChannel arrivalTimeChanged();
+    @Input(NAVIGATE_SHIP)
+    SubscribableChannel navigateShip();
+
+    @Output(ARRIVED)
+    MessageChannel arrived();
 
 
 }

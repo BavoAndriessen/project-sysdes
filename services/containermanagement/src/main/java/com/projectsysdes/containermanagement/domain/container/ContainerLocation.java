@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class ContainerLocation {
     private ContainerLocationType locationType;
-    private String locationIdentifier;
+    private Integer locationIdentifier;
 
     @Override
     public String toString() {

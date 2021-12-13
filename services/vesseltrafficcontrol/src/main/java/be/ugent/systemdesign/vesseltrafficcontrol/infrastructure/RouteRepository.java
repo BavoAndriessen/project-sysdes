@@ -15,7 +15,7 @@ public class RouteRepository implements IRouteRepository {
     IRouteDataModelRepository routeDMRepo;
 
     @Override
-    public List<Integer> findOne(Integer vesselId, Size size) {
+    public String findOne(Size size) {
         List<RouteDataModel> routeDMs = routeDMRepo.findBySizeCompatibilityAndCapacityGreaterThan(size, 0);
         Integer cost = routeDMs.get(0).getCost();
         RouteDataModel routeDM = routeDMs.get(0);
@@ -25,12 +25,7 @@ public class RouteRepository implements IRouteRepository {
                 routeDM = rdm;
             }
         }
-
-        List<Integer> route = new ArrayList<>();
-        for (String id: routeDM.getRoute().split(";")) {
-            route.add(Integer.parseInt(id));
-        }
-        return route;
+        return routeDM.getRoute();
     }
 
     @Override
@@ -41,18 +36,10 @@ public class RouteRepository implements IRouteRepository {
     private RouteDataModel toRouteDM(Route route){
         return new RouteDataModel(
                 route.getRouteId(),
-                castRouteToString(route.getRoute()),
+                route.getRoute(),
                 route.getSizeCompatiblity(),
                 route.getRouteLength(),
                 route.getCapacity()
         );
-    }
-
-    private String castRouteToString(List<Integer> route) {
-        StringBuilder routeString = new StringBuilder(route.get(0).toString());
-        for(int i = 1; i<route.size(); i++) {
-            routeString.append(";").append(route.get(i).toString());
-        }
-        return routeString.toString();
     }
 }
