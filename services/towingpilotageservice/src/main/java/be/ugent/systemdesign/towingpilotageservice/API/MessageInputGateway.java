@@ -6,6 +6,7 @@ import be.ugent.systemdesign.towingpilotageservice.application.command.ResponseS
 import be.ugent.systemdesign.towingpilotageservice.application.command.UndoReservationCommand;
 import be.ugent.systemdesign.towingpilotageservice.application.event.ArrivalTimeChangedEvent;
 import be.ugent.systemdesign.towingpilotageservice.application.event.EventHandler;
+import be.ugent.systemdesign.towingpilotageservice.application.event.NavigateShipEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class MessageInputGateway {
     }
 
     @StreamListener(Channels.ARRIVAL_TIME_CHANGED)
-    public void arrivalTimeChangedEvent(ArrivalTimeChangedEvent event) {
-        eventHandler.handleArrivalTimeChangedEvent(event);
+    public void navigateShipEvent(NavigateShipEvent event) {
+        eventHandler.navigateShipEvent(event);
     }
 }
