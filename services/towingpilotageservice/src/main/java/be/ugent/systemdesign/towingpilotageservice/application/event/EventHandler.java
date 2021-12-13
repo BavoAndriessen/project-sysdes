@@ -18,7 +18,7 @@ public class EventHandler {
     public void navigateShipEvent(NavigateShipEvent event) {
         log.info("NavigateShipEvent for vessel {} received by towingpilotageservice", event.getVesselId());
         try{
-            TimeUnit.MINUTES.sleep(1);
+            TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

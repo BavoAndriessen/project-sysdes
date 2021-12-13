@@ -4,7 +4,6 @@ import be.ugent.systemdesign.towingpilotageservice.application.command.ReserveTo
 import be.ugent.systemdesign.towingpilotageservice.application.command.ReserveTowingPilotageResponse;
 import be.ugent.systemdesign.towingpilotageservice.application.command.ResponseStatus;
 import be.ugent.systemdesign.towingpilotageservice.application.command.UndoReservationCommand;
-import be.ugent.systemdesign.towingpilotageservice.application.event.ArrivalTimeChangedEvent;
 import be.ugent.systemdesign.towingpilotageservice.application.event.EventHandler;
 import be.ugent.systemdesign.towingpilotageservice.application.event.NavigateShipEvent;
 import org.slf4j.Logger;
@@ -42,7 +41,7 @@ public class MessageInputGateway {
         log.info("Received undoreservation for vessel {}", command.getVesselId());
     }
 
-    @StreamListener(Channels.ARRIVAL_TIME_CHANGED)
+    @StreamListener(Channels.NAVIGATE_SHIP)
     public void navigateShipEvent(NavigateShipEvent event) {
         eventHandler.navigateShipEvent(event);
     }
