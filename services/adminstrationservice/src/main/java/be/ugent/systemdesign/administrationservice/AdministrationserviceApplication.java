@@ -3,21 +3,30 @@ package be.ugent.systemdesign.administrationservice;
 import be.ugent.systemdesign.administrationservice.API.messaging.Channels;
 import be.ugent.systemdesign.administrationservice.application.AdministrationServiceImpl;
 import be.ugent.systemdesign.administrationservice.application.Response;
+import be.ugent.systemdesign.administrationservice.application.command.OfferCreatedResponse;
 import be.ugent.systemdesign.administrationservice.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+//@EnableAutoConfiguration
+//@EnableWebMvc
+//@Configuration
+//@ComponentScan
 @SpringBootApplication
 @EnableAsync
 @EnableBinding(Channels.class)
@@ -42,13 +51,13 @@ public class AdministrationserviceApplication {
             containerList.add(c2);
             containerList.add(c3);
 
-            Offer offer = new Offer(1, 200.7, 2, null, 5.0, 6.0);
+            Offer offer = new Offer( 200.7, 2, null, 5.0, 6.0);
 
             Vessel vessel = new Vessel("ellen", null);
 
-            Document document = new Document(1, vessel, offer, containerList);
+            Document document = new Document( vessel, offer, containerList);
 
-            repo.save(document);
+            document = repo.save(document);
 
             List<Document> documents = repo.findAllDocumentsForVessel(vessel.getVesselId());
             Document docs = documents.get(0);
@@ -113,17 +122,18 @@ public class AdministrationserviceApplication {
             List<Container> containerList = new ArrayList<>();
             containerList.add(c1);
             containerList.add(c2);
-            containerList.add(c3);
 
-            Response r2 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 50, 80.0, 60.5, containerList);
+
+            OfferCreatedResponse r2 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 50, 80.0, 60.5, containerList);
             log.warn(r2.getMessage());
-            Response r3 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 25, 80.0, 60.5, containerList);
+            containerList.add(c3);
+            OfferCreatedResponse r3 = service.registerNewVesselWithOffer("vessel3", LocalDateTime.now(), 25, 80.0, 60.5, containerList);
             log.warn(r3.getMessage());
 
-            Response r4 = service.handleOfferDeleted("vessel3", 1);
+            Response r4 = service.handleOfferDeleted("vessel3", r3.getOfferId());
             log.warn(r4.getMessage());
 
-            Response verkeerdeVessel = service.handleOfferDeleted("vessel4", 1);
+            Response verkeerdeVessel = service.handleOfferDeleted("vessel4", r3.getOfferId());
             Response verkeerdeOffer = service.handleOfferDeleted("vessel3", 2);
             Response verkeerdeStaff = service.registerNewTimeBadge(3, LocalDateTime.now());
             log.warn(verkeerdeOffer.getMessage());

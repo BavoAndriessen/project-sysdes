@@ -24,13 +24,13 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     @Override
-    public void save(Document _d) {
-        repository.save(mapToDocumentDataModel(_d));
+    public Document save(Document _d) {
+        return mapToDocument(repository.save(mapToDocumentDataModel(_d)));
 
-        for(DomainEvent event : _d.getDomainEvents()){
-            publisher.publishEvent(event);
-        }
-        _d.clearDomainEvents();
+//        for(DomainEvent event : _d.getDomainEvents()){
+//            publisher.publishEvent(event);
+//        }
+//        _d.clearDomainEvents();
     }
 
     @Override
@@ -46,12 +46,14 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     private DocumentDataModel mapToDocumentDataModel(Document _document){
-        return new DocumentDataModel(
-                _document.getDocumentId(),
+        DocumentDataModel model = new DocumentDataModel(
+                //_document.getDocumentId(),
                 _document.getVessel(),
                 _document.getOffer(),
                 _document.getContainerList()
         );
+        model.setDocumentId(_document.getDocumentId());
+        return model;
     }
 
     private Document mapToDocument(DocumentDataModel _documentDataModel){

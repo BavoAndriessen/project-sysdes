@@ -1,24 +1,40 @@
 version: "3.9" 
 services:
 # ------------Support services-------------
-  container-db:
+  # container-db:
+  #   image: postgres:latest
+  #   container_name: container-db
+  #   environment:
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASSWORD=postgres
+  #    - POSTGRES_DB=containers
+  #    - POSTGRES_HOST_AUTH_METHOD="password"
+  #   ports:
+  #    - "5432:5432"
+  #   volumes:
+  #    - ./sql/containerdb.sql:/docker-entrypoint-initdb.d/create_tables.sql 
+  #   networks:
+  #    - mynet
+  administration-db:
     image: postgres:latest
-    container_name: container-db
+    container_name: administration-db
     environment:
      - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=postgres
-     - POSTGRES_DB=containers
+     - POSTGRES_PASSWORD=pwd
+     - POSTGRES_DB=administration
      - POSTGRES_HOST_AUTH_METHOD="password"
     ports:
-     - "5432:5432"
-    volumes:
-     - ./sql/containerdb.sql:/docker-entrypoint-initdb.d/create_tables.sql 
+     - "5000:5432"
+    # networks:
+    #  - mynet
   zookeeper:
     image: confluentinc/cp-zookeeper
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
     ports:
      - "2181:2181"
+    # networks:
+    #  - mynet2
   kafka:
     image: confluentinc/cp-kafka
     depends_on: 
@@ -32,17 +48,64 @@ services:
      - "9092:9092"
     links:
      - zookeeper
+    # networks:
+    #  - mynet2
 # ------------Core services----------------
-  container-management:
-    container_name: container-management
-    build: ../services/containermanagement
+  administration:
+    container_name: administration
+    build: ../services/adminstrationservice
     environment: 
-    - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
+    #  - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://administration-db:5433/administration"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://administration-db:5432/administration
     ports:
-     - "1234:8080"
+     - "2004:2222"
     depends_on:
-     - container-db
-     - kafka
+      - administration-db
+      - kafka
     links:
      - kafka
-     - container-db
+     - administration-db
+#     networks:
+#     - mynet
+#     - mynet2
+# container-management:
+  #   container_name: container-management
+  #   build: ../services/containermanagement
+  #   environment: 
+  #   - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
+  #   ports:
+  #    - "2000:8080"
+  #   depends_on:
+  #    - container-db
+  #    - kafka
+  #   links:
+  #    - kafka
+  #    - container-db
+  # towingpilotage:
+  #   container_name: towingpilotage
+  #   build: ../services/towingpilotageservice
+  #   ports:
+  #   - "2001:3333"
+  #   depends_on:
+  #   - kafka
+  #   links: 
+  #   - kafka
+  # maintenance:
+  #   container_name: maintenance       
+  #   build: ../services/maintenanceservice
+  #   environment: 
+  #   - KAPITEINSDIENSTSERVICE="--kapiteinsdienstservice=kapiteinsdienst"
+  #   ports:
+  #   - "2002:3333"
+  #   depends_on:
+  #   - kafka
+  #   - kapiteinsdienst
+  #   links: 
+  #   - kafka
+  #   - kapiteinsdienst
+# networks:
+#   mynet:
+#     name: my-shared-db-networks
+#   mynet2:
+#     name: my-shared-kafka-network
+

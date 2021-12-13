@@ -1,17 +1,18 @@
 package be.ugent.systemdesign.administrationservice.infrastructure.document;
 
+import be.ugent.systemdesign.administrationservice.domain.Document;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Embeddable
+@Entity
 @NoArgsConstructor
 @Getter
 public class OfferDataModel {
-//    @Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer offerId;
     private Double price;
     private Integer lengthOfStay;
@@ -19,9 +20,9 @@ public class OfferDataModel {
     private Double vesselSize;
     private Double amountOfWaste;
 
-    public OfferDataModel(Integer offerId, Double price, Integer lengthOfStay,
+    public OfferDataModel( Double price, Integer lengthOfStay,
                           LocalDateTime arrivalTime, Double vesselSize, Double amountOfWaste){
-        this.offerId = offerId;
+        //this.offerId = offerId;
         this.price = price;
         this.lengthOfStay = lengthOfStay;
         this.arrivalTime = arrivalTime;

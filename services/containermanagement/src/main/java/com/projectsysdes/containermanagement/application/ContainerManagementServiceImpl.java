@@ -88,11 +88,16 @@ public class ContainerManagementServiceImpl implements ContainerManagementServic
             c.progressState(newState, location);
             if (newState == ContainerState.READY_AT_DOCK) {
                 // TODO: deze werkt precies nog niet zo goed
-                List<Container> containerFromSameRequest = repo.findContainersFromSameReadyForContainersRequest(c.getReadyForContainersRequest());
-                if (containerFromSameRequest.stream().allMatch((e) -> {
+                List<Container> containersFromSameRequest = repo.findContainersFromSameReadyForContainersRequest(c.getReadyForContainersRequest());
+                String s = "";
+                for (Container container : containersFromSameRequest) {
+                    s += (container.getContainerId() + ", ");
+                }
+                logger.debug(s);
+                if (containersFromSameRequest.stream().allMatch((e) -> {
                     return e.getState() == ContainerState.READY_AT_DOCK;
                 })) {
-                    eventDispatcher.publishContainersReadyAtDockEvent(new ContainersReadyAtDockEvent(containerFromSameRequest.stream().map(Container::getContainerId).collect(Collectors.toList()), c.getDestinationLocation().getLocationIdentifier()));
+                    eventDispatcher.publishContainersReadyAtDockEvent(new ContainersReadyAtDockEvent(c.getDestinationLocation().getLocationIdentifier()));
                 }
             }
             repo.save(c);

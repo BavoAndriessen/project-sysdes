@@ -9,4 +9,5 @@ public interface BerthRepository {
     public List<Berth> findAllThatAreAvailable();
     public List<Berth> findAllBySizeAndState(Double size, String state);
     public Berth findByVesselId(String vesselId);
+    public void flushRepo();
 }

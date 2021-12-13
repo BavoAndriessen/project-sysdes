@@ -10,9 +10,9 @@ import lombok.Setter;
 public class ShipArrivingEvent extends DomainEvent {
     private String vesselId;
 
-    public ShipArrivingEvent(String id){
+    public ShipArrivingEvent(String vesselId){
         super();
-        this.vesselId = id;
+        this.vesselId = vesselId;
 
     }
 }

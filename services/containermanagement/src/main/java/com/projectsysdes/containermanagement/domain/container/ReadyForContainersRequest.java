@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-
 public class ReadyForContainersRequest {
     private Integer id;
 

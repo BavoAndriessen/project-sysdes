@@ -31,13 +31,13 @@ public class BerthController {
     }
 
 
-    @GetMapping("/load/{berthId}")
+    @GetMapping("/unload/{berthId}")
     public String unloadContainers(@PathVariable("berthId") Integer berthId) throws Exception {
         berthService.handelUnloadContainersREST(new UnloadContainersCommand(berthId));
         return "the containers are being unloaded";
     }
 
-    @GetMapping("/unload/{berthId}")
+    @GetMapping("/load/{berthId}")
     public String loadContainers(@PathVariable("berthId") Integer berthId) throws Exception {
         berthService.handelLoadContainersREST(new LoadContainersCommand(berthId));
         return "the containers are being loaded";
