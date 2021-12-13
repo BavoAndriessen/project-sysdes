@@ -1,4 +1,4 @@
-package be.ugent.systemdesign.vesseltrafficcontrol.api;
+package be.ugent.systemdesign.vesseltrafficcontrol.api.REST;
 
 import be.ugent.systemdesign.vesseltrafficcontrol.application.Response;
 import be.ugent.systemdesign.vesseltrafficcontrol.application.ResponseStatus;
