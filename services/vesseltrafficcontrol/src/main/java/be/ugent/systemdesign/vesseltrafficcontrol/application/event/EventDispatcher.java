@@ -1,9 +1,11 @@
 package be.ugent.systemdesign.vesseltrafficcontrol.application.event;
 
-import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.DomainEvent;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.NavigateShipEvent;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.ShipArrivingEvent;
 
 public interface EventDispatcher {
 
-    void publishEvent(DomainEvent event);
+    void publishNavigateShipEvent(NavigateShipEvent event);
+    void publishShipArrivingEvent(ShipArrivingEvent event);
 
 }
