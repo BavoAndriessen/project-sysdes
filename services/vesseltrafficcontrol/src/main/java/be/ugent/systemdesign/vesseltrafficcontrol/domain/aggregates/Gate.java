@@ -9,14 +9,14 @@ import lombok.Setter;
 @Getter
 public class Gate {
 
-    private final Integer gateId;
+    private final int gateId;
     private @Setter
     GateType type;
     private @Setter
     GateState state;
     private final Size sizeCompatibility;
 
-    public Gate(Integer _gateId, GateType _type, GateState _state, Size size){
+    public Gate(int _gateId, GateType _type, GateState _state, Size size){
         gateId = _gateId;
         type = _type;
         state = _state;
