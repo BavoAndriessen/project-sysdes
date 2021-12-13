@@ -1,5 +1,6 @@
 package be.ugent.systemdesign.maintenanceservice.API.rest;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,8 @@ import org.springframework.web.client.RestTemplate;
 @CrossOrigin(origins="*")
 public class MaintenanceServiceController {
 
-
+    @Value("${kapiteinsdienstservice}")
+    private String kapiteinsdienstservice;
 
     @GetMapping("/askforservice/{id}")
     public ResponseEntity<String> askForService(@PathVariable("id") String vesselId){
@@ -19,8 +21,8 @@ public class MaintenanceServiceController {
     }
 
     private void getLocationOfBoat(String vesselId){
-        //TODO correcte uri
-        String uri = "http://localhost:2222/api/berth/?vesselId="+vesselId;
+        String uri = "http://" + kapiteinsdienstservice + "/api/berth/?vesselId="+vesselId;
+        System.out.println(uri);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
 

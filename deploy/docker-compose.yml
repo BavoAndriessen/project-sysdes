@@ -39,10 +39,32 @@ services:
     environment: 
     - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
     ports:
-     - "1234:8080"
+     - "2000:8080"
     depends_on:
      - container-db
      - kafka
     links:
      - kafka
      - container-db
+  towingpilotage:
+    container_name: towingpilotage
+    build: ../services/towingpilotageservice
+    ports:
+    - "2001:3333"
+    depends_on:
+    - kafka
+    links: 
+    - kafka
+  maintenance:
+    container_name: maintenance       
+    build: ../services/maintenanceservice
+    environment: 
+    - KAPITEINSDIENSTSERVICE="--kapiteinsdienstservice=kapiteinsdienst"
+    ports:
+    - "2002:3333"
+    depends_on:
+    - kafka
+    - kapiteinsdienst
+    links: 
+    - kafka
+    - kapiteinsdienst
