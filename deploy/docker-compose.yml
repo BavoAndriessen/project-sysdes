@@ -1,20 +1,18 @@
 version: "3.9" 
 services:
 # ------------Support services-------------
-  # container-db:
-  #   image: postgres:latest
-  #   container_name: container-db
-  #   environment:
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASSWORD=postgres
-  #    - POSTGRES_DB=containers
-  #    - POSTGRES_HOST_AUTH_METHOD="password"
-  #   ports:
-  #    - "5432:5432"
-  #   volumes:
-  #    - ./sql/containerdb.sql:/docker-entrypoint-initdb.d/create_tables.sql 
-  #   networks:
-  #    - mynet
+  container-db:
+    image: postgres:latest
+    container_name: container-db
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=containers
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    volumes:
+     - ./sql/containerdb.sql:/docker-entrypoint-initdb.d/create_tables.sql 
+    ports:
+    - "5001:5432"
   administration-db:
     image: postgres:latest
     container_name: administration-db
@@ -68,41 +66,41 @@ services:
 #     networks:
 #     - mynet
 #     - mynet2
-# container-management:
-  #   container_name: container-management
-  #   build: ../services/containermanagement
-  #   environment: 
-  #   - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
-  #   ports:
-  #    - "2000:8080"
-  #   depends_on:
-  #    - container-db
-  #    - kafka
-  #   links:
-  #    - kafka
-  #    - container-db
-  # towingpilotage:
-  #   container_name: towingpilotage
-  #   build: ../services/towingpilotageservice
-  #   ports:
-  #   - "2001:3333"
-  #   depends_on:
-  #   - kafka
-  #   links: 
-  #   - kafka
-  # maintenance:
-  #   container_name: maintenance       
-  #   build: ../services/maintenanceservice
-  #   environment: 
-  #   - KAPITEINSDIENSTSERVICE="--kapiteinsdienstservice=kapiteinsdienst"
-  #   ports:
-  #   - "2002:3333"
-  #   depends_on:
-  #   - kafka
-  #   - kapiteinsdienst
-  #   links: 
-  #   - kafka
-  #   - kapiteinsdienst
+  container-management:
+    container_name: container-management
+    build: ../services/containermanagement
+    command:
+    - --spring.datasource.url=jdbc:postgresql://container-db:5432/containers
+    ports:
+     - "2000:8080"
+    depends_on:
+     - container-db
+     - kafka
+    links:
+     - kafka
+     - container-db
+  towingpilotage:
+    container_name: towingpilotage
+    build: ../services/towingpilotageservice
+    ports:
+    - "2001:8080"
+    depends_on:
+    - kafka
+    links: 
+    - kafka
+  maintenance:
+    container_name: maintenance       
+    build: ../services/maintenanceservice
+    command:
+      - --kapiteinsdienstservice=localhost:2222
+    ports:
+    - "2002:8080"
+    depends_on:
+    - kafka
+    - kapiteinsdienst
+    links: 
+    - kafka
+    - kapiteinsdienst
 # networks:
 #   mynet:
 #     name: my-shared-db-networks

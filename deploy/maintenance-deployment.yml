@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: towingpilotage-deployment
+  labels:
+    app: towingpilotage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: towingpilotage
+  template:
+    metadata:
+      labels:
+        app: towingpilotage
+    spec:
+      containers:
+      - name: towingpilotage
+        image: bavoandriessen/towingpilotageservice:latest
+        args: ["--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]
+      
+        ports:
+        - containerPort: 2090
