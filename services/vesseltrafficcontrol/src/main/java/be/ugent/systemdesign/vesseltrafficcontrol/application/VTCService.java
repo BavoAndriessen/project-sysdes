@@ -34,24 +34,12 @@ public class VTCService implements IVTCService{
     };
 
     public VTCService() {
-        routeRepo.save(new Route(
-                1,"1;5", Size.SMALL, 130, 5
-        ));
-        routeRepo.save(new Route(
-                2,"2;6", Size.MEDIUM, 101, 3
-        ));
-        routeRepo.save(new Route(
-                3,"3;4", Size.LARGE, 180, 1
-        ));
         vessels = new ArrayList<>();
     }
 
     @Override
-    public Response findRoute(Integer vesselId, Size size) {
-        String routePath = routeRepo.findOne(size);
-        // if(routePath.isEmpty()) {
-        //    Route route = calculateRoute(size);
-        // }
+    public Response findRoute(Integer vesselId, Size size, Integer destination) {
+        String routePath = routeRepo.findOne(size, destination);
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
     }
 

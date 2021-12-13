@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface IRouteDataModelRepository extends JpaRepository<RouteDataModel, Integer> {
-    List<RouteDataModel> findBySizeCompatibilityAndCapacityGreaterThan(Size size, Integer capacity);
+    List<RouteDataModel> findBySizeCompatibilityAndCapacityGreaterThanAndDestination(Size size, Integer capacity, Integer destination);
 }

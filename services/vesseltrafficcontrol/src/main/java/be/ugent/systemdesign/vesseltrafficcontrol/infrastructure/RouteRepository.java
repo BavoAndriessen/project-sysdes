@@ -15,8 +15,8 @@ public class RouteRepository implements IRouteRepository {
     IRouteDataModelRepository routeDMRepo;
 
     @Override
-    public String findOne(Size size) {
-        List<RouteDataModel> routeDMs = routeDMRepo.findBySizeCompatibilityAndCapacityGreaterThan(size, 0);
+    public String findOne(Size size, Integer destination) {
+        List<RouteDataModel> routeDMs = routeDMRepo.findBySizeCompatibilityAndCapacityGreaterThanAndDestination(size, 0, destination);
         Integer cost = routeDMs.get(0).getCost();
         RouteDataModel routeDM = routeDMs.get(0);
         for (RouteDataModel rdm: routeDMs) {
@@ -39,7 +39,8 @@ public class RouteRepository implements IRouteRepository {
                 route.getRoute(),
                 route.getSizeCompatiblity(),
                 route.getRouteLength(),
-                route.getCapacity()
+                route.getCapacity(),
+                route.getDestination()
         );
     }
 }
