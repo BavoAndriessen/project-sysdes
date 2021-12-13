@@ -11,12 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ContainersReadyAtDockEvent extends DomainEvent {
 
-    private List<Integer> containerIds;
     private Integer berthIdentifier;
 
-    public ContainersReadyAtDockEvent(List<Integer> containerIds, Integer berthIdentifier) {
+    public ContainersReadyAtDockEvent(Integer berthIdentifier) {
         super();
-        this.containerIds = containerIds;
         this.berthIdentifier = berthIdentifier;
     }
 }
