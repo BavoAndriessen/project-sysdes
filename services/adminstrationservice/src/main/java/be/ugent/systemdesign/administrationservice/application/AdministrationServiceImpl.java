@@ -1,7 +1,9 @@
 package be.ugent.systemdesign.administrationservice.application;
 
 import be.ugent.systemdesign.administrationservice.application.command.OfferCreatedResponse;
+import be.ugent.systemdesign.administrationservice.application.event.EventDispatcher;
 import be.ugent.systemdesign.administrationservice.domain.*;
+import be.ugent.systemdesign.administrationservice.domain.seedwork.DomainEvent;
 import be.ugent.systemdesign.administrationservice.infrastructure.staff.StaffNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,18 +22,27 @@ public class AdministrationServiceImpl implements AdministrationService {
     @Autowired
     StaffRepository staffRepository;
 
+    @Autowired
+    EventDispatcher dispatcher;
+
     @Override
     public OfferCreatedResponse registerNewVesselWithOffer(String vesselId, LocalDateTime arrivalDate, Integer lengthOfStay, Double vesselSize, Double amountOfWaste, List<Container> containerList) {
         Double price = Document.calculatePrice(lengthOfStay, vesselSize, amountOfWaste);
-        Integer offerId = Offer.getNewId();
-        Offer offer = new Offer(offerId, price, lengthOfStay, arrivalDate, vesselSize, amountOfWaste);
+        //Integer offerId = Offer.getNewId();
+        Offer offer = new Offer(price, lengthOfStay, arrivalDate, vesselSize, amountOfWaste);
         Vessel vessel = new Vessel(vesselId, arrivalDate);
-        Document document = new Document(Document.getNewId(), vessel, offer, containerList);
+        Document document = new Document(vessel, offer, containerList);
 
-        documentRepository.save(document);
+        document = documentRepository.save(document);
+        if(containerList != null && containerList.size() != 0){
+            dispatcher.publishNewContainerListEvent(new NewContainerListEvent(containerList));
+        }
+//        for (NewContainerListEvent event : document.getDomainEvents()) {
+//            dispatcher.publishNewContainerListEvent(event);
+//        }
 
-        return new OfferCreatedResponse(ResponseStatus.SUCCESS, "new offer "+offerId+" for vessel " + vesselId + " registered",
-                offerId, vessel.getVesselId(), price);
+        return new OfferCreatedResponse(ResponseStatus.SUCCESS, "new offer "+document.getOffer().getOfferId()+" for vessel " + vesselId + " registered "+document.getDocumentId(),
+                document.getOffer().getOfferId(), vessel.getVesselId(), price);
     }
 
     @Override

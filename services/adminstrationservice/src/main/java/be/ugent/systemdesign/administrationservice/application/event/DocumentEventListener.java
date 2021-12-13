@@ -18,12 +18,12 @@ public class DocumentEventListener {
     @Autowired
     EventDispatcher eventDispatcher;
 
-    @Async
-//    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @EventListener
-    public void handleNewContainerListEvent(NewContainerListEvent event){
-        log.info("handle newcontainerevent created at {} with {} containers", event.getCreatedAt(), event.getContainerList().size());
-        eventDispatcher.publishNewContainerListEvent(event);
-
-    }
+//    @Async
+////    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+//    @EventListener
+//    public void handleNewContainerListEvent(NewContainerListEvent event){
+//        log.info("handle newcontainerevent created at {} with {} containers", event.getCreatedAt(), event.getContainerList().size());
+//        eventDispatcher.publishNewContainerListEvent(event);
+//
+//    }
 }

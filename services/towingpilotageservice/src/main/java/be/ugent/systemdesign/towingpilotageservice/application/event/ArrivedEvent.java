@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ArrivalTimeChangedEvent {
+public class ArrivedEvent {
     private String vesselId;
 
 }
