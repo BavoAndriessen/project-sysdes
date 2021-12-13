@@ -92,7 +92,7 @@ services:
     container_name: maintenance       
     build: ../services/maintenanceservice
     command:
-      - --kapiteinsdienstservice=localhost:2222
+      - --kapiteinsdienstservice=kapiteinsdienst:8080
     ports:
     - "2002:8080"
     depends_on:
