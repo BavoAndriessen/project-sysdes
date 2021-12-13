@@ -3,16 +3,18 @@ package be.ugent.systemdesign.ligplaats.application;
 import be.ugent.systemdesign.ligplaats.application.command.LoadContainersCommand;
 import be.ugent.systemdesign.ligplaats.application.command.ReserveBerthResponse;
 import be.ugent.systemdesign.ligplaats.application.command.UnloadContainersCommand;
+import be.ugent.systemdesign.ligplaats.application.event.DockReadyEvent;
 import be.ugent.systemdesign.ligplaats.application.event.EventDispatcher;
+import be.ugent.systemdesign.ligplaats.application.event.EventHandler;
 import be.ugent.systemdesign.ligplaats.application.event.ShipReadyEvent;
-import be.ugent.systemdesign.ligplaats.domain.Berth;
-import be.ugent.systemdesign.ligplaats.domain.BerthRepository;
-import be.ugent.systemdesign.ligplaats.domain.BerthState;
-import be.ugent.systemdesign.ligplaats.domain.BerthWorkerState;
+import be.ugent.systemdesign.ligplaats.domain.*;
+import be.ugent.systemdesign.ligplaats.infrastructure.BerthDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -24,17 +26,20 @@ public class BerthServiceImpl implements BerthService{
     @Autowired
     BerthRepository berthRepo;
 
-
+    @Autowired
+    EventDispatcher eventDispatcher;
 
     @Override
     public ReserveBerthResponse reserveBerth(Double size, String vesselId) {
         Berth b;
         try {
+            System.out.println("reserve berth opgeroepen");
             Random rand = new Random();
             List<Berth> bs = berthRepo.findAllBySizeAndState(size, BerthState.AVAILABLE.name());
             b = bs.get(rand.nextInt(bs.size()));
             b.changeStateOfBerth(BerthState.RESERVED);
             b.setVesselId(vesselId);
+            System.out.println("berthId: " + b.getBerthId());
             berthRepo.save(b);
         } catch(NoBerthAvailableException e) {
             return new ReserveBerthResponse(ResponseStatus.FAIL,"there is no berth available");
@@ -49,11 +54,13 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public void undoReservation(String vesselId) throws Exception {
         try {
+            System.out.println("undoReservation berth opgeroepen");
             Berth b =  berthRepo.findByVesselId(vesselId);
             //System.out.println("found vessel with id : " + vesselId);
             b.setVesselId("");
             //System.out.println("vessel name removed from berth");
             b.changeStateOfBerth(BerthState.AVAILABLE);
+            b.getWorker().setState(BerthWorkerState.AVAILABLE);
             //System.out.println("status changed");
             berthRepo.save(b);
             //System.out.println("status is saved");
@@ -66,6 +73,7 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public void setBerthReady(String vesselId) throws Exception {
         try{
+            System.out.println("setBerthReady berth opgeroepen");
             Berth b = berthRepo.findByVesselId(vesselId);
             b.changeStateOfBerth(BerthState.READY);
             berthRepo.save(b);
@@ -75,10 +83,10 @@ public class BerthServiceImpl implements BerthService{
     }
 
     @Override
-    public void setWorkerAtBerthAvailable(Integer berthId) throws Exception {
+    public void setWorkerStatusAtDock(BerthWorkerState state,Integer berthId) throws Exception {
         try {
             Berth b = berthRepo.findById(berthId);
-            b.getWorker().setState(BerthWorkerState.AVAILABLE);
+            b.getWorker().setState(state);
             berthRepo.save(b);
             TimeUnit.SECONDS.sleep(2);
             //het kan zijn dat de vesselId leeg is, dan zit het programma vast, dus gebruikt men een "if" voor de veiligheid
@@ -97,6 +105,7 @@ public class BerthServiceImpl implements BerthService{
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
+        System.out.println(" loading containers");
         berthRepo.save(berth);
     }
 
@@ -107,9 +116,52 @@ public class BerthServiceImpl implements BerthService{
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
+        System.out.println(" unloading containers");
         berthRepo.save(berth);
     }
 
+    @Override
+    public void fillRepository() {
+
+        berthRepo.flushRepo();
+        Berth b;
+        List<Berth> l = new ArrayList<Berth>();
+        for(int i=0; i<10;i++){
+            b = new Berth(
+                    i,
+                    (i + 1) *2.0,
+                    BerthState.AVAILABLE,
+                    i+1,
+                    new BerthWorker(i+2,BerthWorkerState.AVAILABLE,i),
+                    true,
+                    "ship-"+i
+            );
+            l.add(b);
+        }
+        l.forEach(elt-> {
+            try {
+                berthRepo.save(elt);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendshipReady(Integer berthId) throws Exception {
+        Berth b = berthRepo.findById(berthId);
+        String vesselId = b.getVesselId();
+        int berthNumber = b.getBerthNumber();
+        eventDispatcher.sendShipReadyEvent(new ShipReadyEvent(vesselId, berthNumber));
+    }
+
+    @Override
+    public void sendDockReady(String vesselId) throws Exception {
+        Berth b = berthRepo.findByVesselId(vesselId);
+        int berthNumber = b.getBerthNumber();
+        Integer berthId = b.getBerthId();
+        eventDispatcher.sendDockReadyEvent(new DockReadyEvent(berthId, berthNumber));
+    }
 
     //@Override
     //public Response BerthNumberforReservation() {

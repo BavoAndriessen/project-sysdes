@@ -108,5 +108,8 @@ public class BerthRepositoryImpl implements BerthRepository {
 
         return bm;
     }
+    public void flushRepo(){
+        berthDMRepo.flush();
+    }
 
 }

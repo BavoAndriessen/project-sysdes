@@ -1,10 +1,11 @@
 package be.ugent.systemdesign.ligplaats;
 
-import be.ugent.systemdesign.ligplaats.API.REST.BerthViewModel;
 import be.ugent.systemdesign.ligplaats.API.messaging.Channels;
 import be.ugent.systemdesign.ligplaats.application.BerthService;
-import be.ugent.systemdesign.ligplaats.application.query.BerthQuery;
-import be.ugent.systemdesign.ligplaats.application.query.BerthRealModel;
+import be.ugent.systemdesign.ligplaats.application.event.ContainersReadyAtDockEvent;
+import be.ugent.systemdesign.ligplaats.application.event.EventDispatcher;
+import be.ugent.systemdesign.ligplaats.application.event.EventHandler;
+import be.ugent.systemdesign.ligplaats.application.event.ShipReadyEvent;
 import be.ugent.systemdesign.ligplaats.domain.*;
 import be.ugent.systemdesign.ligplaats.infrastructure.BerthDataModel;
 import be.ugent.systemdesign.ligplaats.infrastructure.BerthDataModelRepository;
@@ -13,7 +14,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class LigplaatsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LigplaatsApplication.class, args);
 	}
+	/*
 	@Bean
 	CommandLineRunner testBerthDataModelRepo(BerthDataModelRepository repo) {
 		return (args) -> {
@@ -67,7 +68,8 @@ public class LigplaatsApplication {
 			List<BerthDataModel> findByState = repo.findByState(BerthState.AVAILABLE.name());
 			System.out.println("found the following:" + findByState.size()+ " elements");
 		};
-	}
+	} */
+	/*
 	@Bean
 	CommandLineRunner testBerthRepository(BerthRepository repo) {
 		return (args) -> {
@@ -99,9 +101,10 @@ public class LigplaatsApplication {
 			System.out.println(testFindById.toString());
 
 		};
-	}
+	}*/
+	/*
 	@Bean
-	CommandLineRunner testBerthService(BerthService service, BerthDataModelRepository repo){
+	CommandLineRunner testBerthService(BerthService service, BerthDataModelRepository repo, EventDispatcher e){
 		return (args -> {
 			repo.flush();
 			BerthDataModel b;
@@ -118,6 +121,7 @@ public class LigplaatsApplication {
 						BerthWorkerState.AVAILABLE);
 				l.add(b);
 			}
+			e.sendShipReadyEvent(new ShipReadyEvent("ship-10"));
 			System.out.println("started testing BerthDataModelRepository:");
 			l.forEach(i -> repo.save(i));
 			l.forEach(i -> System.out.println(i.toString()));
@@ -125,6 +129,7 @@ public class LigplaatsApplication {
 			service.reserveBerth(10.0, "ship-10");
 			System.out.println("after calling reserveBerth:================================");
 			System.out.println(repo.findByVesselId("ship-10").toString());
+			//dispatcher.sendShipReadyEvent(new ShipReadyEvent("ship-10"));
 			System.out.println("==============================================================");
 			System.out.println("test setBerthReady:");
 			System.out.println("before setting the berth ready, the status was: " + repo.findByVesselId("ship-10").getState());
@@ -136,8 +141,9 @@ public class LigplaatsApplication {
 			BerthDataModel test =  repo.findByVesselId("ship-10");
 			test.setWorkerState(BerthWorkerState.BUSY.name());
 			repo.save(test);
+
 			System.out.println("before setting the Worker ready, the status was: " + repo.findByVesselId("ship-10").getWorkerState());
-			service.setWorkerAtBerthAvailable(repo.findByVesselId("ship-10").getBerthId());
+			service.setWorkerStatusAtDock(BerthWorkerState.BUSY,repo.findByVesselId("ship-10").getBerthId());
 
 			System.out.println("after setting the worker ready the status is:");
 			System.out.println(repo.findByVesselId("ship-10").getWorkerState());
@@ -154,6 +160,8 @@ public class LigplaatsApplication {
 
 		});
 	}
+
+	 */
 	/*
 	@Bean
 	CommandLineRunner testBerthQuery(BerthQuery query, BerthDataModelRepository repo){
@@ -186,4 +194,13 @@ public class LigplaatsApplication {
 			//repo.flush();
 		});
 	} */
+	@Bean
+	CommandLineRunner testBerthQuery(BerthService service, EventHandler eventHandler){
+		return (args -> {
+			service.fillRepository();
+			service.reserveBerth(8.0, "ship-10");
+
+		});
+	}
+
 }
