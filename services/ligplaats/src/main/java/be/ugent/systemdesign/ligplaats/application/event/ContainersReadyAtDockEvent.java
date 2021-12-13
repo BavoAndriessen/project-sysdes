@@ -14,6 +14,7 @@ public class ContainersReadyAtDockEvent extends DomainEvent {
     public ContainersReadyAtDockEvent(Integer id){
         super();
         this.berthId = id;
+
     }
 
 }

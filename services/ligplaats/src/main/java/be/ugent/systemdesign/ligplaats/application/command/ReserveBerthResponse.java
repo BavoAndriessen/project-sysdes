@@ -2,7 +2,13 @@ package be.ugent.systemdesign.ligplaats.application.command;
 
 import be.ugent.systemdesign.ligplaats.application.Response;
 import be.ugent.systemdesign.ligplaats.application.ResponseStatus;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReserveBerthResponse extends Response {
 
     String vesselId;
