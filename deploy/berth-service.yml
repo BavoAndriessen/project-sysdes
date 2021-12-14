@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: berth-service
+spec:
+  selector:
+    app: berth
+  ports:
+  - port: 8080
+    targetPort: 8080
