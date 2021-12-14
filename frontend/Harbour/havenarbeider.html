@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Harbour</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="js/badgenEnLoon.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="scheepsagent.html">Scheepsagent</a></li>
+    <li><a href="kapitein.html">Kapitein</a></li>
+    <li><a href="dokwerker.html">Dokwerker</a></li>
+    <li><a href="extern.html">Extern Vervoersbedrijf</a></li>
+    <li  class="active"><a href="havenarbeider.html">Havenarbeider</a></li>
+    <li><a href="loods.html">Loods</a></li>
+    <li><a href="sleepboot.html">Sleepbootkapitein</a></li>
+    <li><a href="kwaliteit.html">Kwaliteitscontrole</a></li>
+    <li><a href="douane.html">Douane</a></li>
+</ul>
+<h1>Dashboard Havenarbeider</h1>
+<label for="staff">Staff id</label>
+<input type="text" class="form-control" id="staff" required>
+<label for="confirmation">Confirmation of badging</label>
+<input type="text" class="form-control" id="confirmation" readonly>
+<label for="paycheck">Paycheck</label>
+<textarea class="form-control" id="paycheck"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="badge">Badge At Work</button>
+<button type="button" class="btn btn-primary" id="pay">Get Pay</button>
+</body>
+</html>
