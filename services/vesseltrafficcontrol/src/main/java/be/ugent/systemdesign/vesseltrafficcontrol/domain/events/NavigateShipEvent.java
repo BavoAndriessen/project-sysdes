@@ -9,11 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NavigateShipEvent extends DomainEvent{
     private String vesselId;
-    private int dockNumber;
+    private String path;
 
-    public NavigateShipEvent(String vesselId, int dockNumber) {
+    public NavigateShipEvent(String vesselId, String path) {
         super();
         this.vesselId = vesselId;
-        this.dockNumber = dockNumber;
+        this.path = path;
     }
 }

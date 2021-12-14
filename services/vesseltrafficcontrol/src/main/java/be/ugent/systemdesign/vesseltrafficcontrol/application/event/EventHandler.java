@@ -44,8 +44,7 @@ public class EventHandler {
     @Async
     @TransactionalEventListener
     public Response consumeShipReadyEvent(ShipReadyEvent event) {
-        Response resp = vtcService.findRoute(event.getVesselId(), event.getDockNumber());
-        // send navigateShipEvent
+        Response resp = vtcService.findRoute(event.getVesselId(), 0);
         logger.info(resp.status.name() + ": " + resp.message);
         return resp;
     }

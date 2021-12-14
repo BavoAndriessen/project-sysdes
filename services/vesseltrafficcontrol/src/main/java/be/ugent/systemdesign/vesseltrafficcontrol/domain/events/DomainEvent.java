@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public class DomainEvent {
 
     @Getter
-    private final LocalDateTime createdTime;
+    private final LocalDateTime createdAt;
 
-    public DomainEvent() { this.createdTime = LocalDateTime.now();}
+    public DomainEvent() { this.createdAt = LocalDateTime.now();}
 }

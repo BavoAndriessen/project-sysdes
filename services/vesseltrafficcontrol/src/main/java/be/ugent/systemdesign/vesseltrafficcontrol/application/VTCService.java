@@ -1,5 +1,6 @@
 package be.ugent.systemdesign.vesseltrafficcontrol.application;
 
+import be.ugent.systemdesign.vesseltrafficcontrol.application.event.EventDispatcher;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Gate;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
@@ -8,7 +9,10 @@ import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.VesselState;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.NavigateShipEvent;
+import be.ugent.systemdesign.vesseltrafficcontrol.infrastructure.exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -20,6 +24,9 @@ public class VTCService implements IVTCService{
     @Autowired
     IRouteRepository routeRepo;
 
+    @Autowired
+    EventDispatcher eventDispatcher;
+
     List<Vessel> vessels;
     final List<Gate> gates;
     Set<Integer> freeDocks;
@@ -30,19 +37,30 @@ public class VTCService implements IVTCService{
         freeDocks = new HashSet<>();
     }
 
+    // Destination 0 is the ocean, 1-10 are the docks
     @Override
     public Response findRoute(String vesselId, Integer destination) {
         Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
         if(vessel.isPresent()) {
-            String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
+            try {
+                String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
+                eventDispatcher.publishNavigateShipEvent(new NavigateShipEvent(vesselId, routePath));
+            } catch(RouteNotFoundException exception) {
+                return new Response(ResponseStatus.FAILED, "no route found");
+            }
         }
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
     }
 
     @Override
+    @Async
     public Response registerVessel(Vessel vessel) {
         vessels.add(vessel);
-        return new Response(ResponseStatus.SUCCESS, "your vessel has been registered");
+        while(freeDocks.isEmpty()){
+            System.out.println("no dock available");
+        }
+        Optional<Integer> dock = freeDocks.stream().findFirst();
+        return findRoute(vessel.getVesselId(), dock.get());
     }
 
     @Override
