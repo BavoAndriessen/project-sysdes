@@ -17,6 +17,6 @@ spec:
       containers:
       - name: maintenance
         image: bavoandriessen/maintenanceservice:latest
-        args: ["--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local", "--kapiteinsdienstservice=kapiteinsdienst-service.default.svc.cluster.local:8080"]     
+        args: ["--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local", "--berthservice=berth-service.default.svc.cluster.local:8080"]     
         ports:
         - containerPort: 8080

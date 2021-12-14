@@ -123,17 +123,17 @@ services:
     container_name: maintenance       
     build: ../services/maintenanceservice
     command:
-    - --kapiteinsdienstservice=kapiteinsdienst:8080
+    - --berthservice=berth:8080
     - --spring.cloud.stream.kafka.binder.brokers=kafka
     - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
     ports:
     - "2002:8080"
     depends_on:
     - kafka
-    - kapiteinsdienst
+    - berth
     links: 
     - kafka
-    - kapiteinsdienst
+    - berth
   kapiteinsdienst:
     container_name: kapiteinsdienst
     build: ../services/kapiteinsdienst
