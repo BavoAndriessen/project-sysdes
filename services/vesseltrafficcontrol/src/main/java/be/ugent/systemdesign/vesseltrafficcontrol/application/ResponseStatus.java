@@ -1,3 +1,3 @@
 package be.ugent.systemdesign.vesseltrafficcontrol.application;
 
-public enum ResponseStatus {SUCCESS, FAIL};
+public enum ResponseStatus {SUCCESS, FAILED, FAIL};

@@ -5,8 +5,10 @@ import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.NavigateShipEven
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.ShipArrivingEvent;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
+import org.springframework.stereotype.Service;
 
 @MessagingGateway
+@Service
 public interface MessageOutputGateway extends EventDispatcher {
 
     @Gateway(requestChannel = Channels.NAVIGATE_SHIP)
