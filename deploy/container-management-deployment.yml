@@ -16,9 +16,5 @@ spec:
     spec:
       containers:
       - name: container-management
-#        imagePullPolicy: Never
         image: bavoandriessen/containermanagement:latest
-#        env: 
-#        - name: URL
-#          value: "--spring.datasource.url=jdbc:postgres://container-db-service.default.svc.cluster.local:5432/containers"
         args: ["--spring.datasource.url=jdbc:postgresql://container-db-service.default.svc.cluster.local:5432/containers", "--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]

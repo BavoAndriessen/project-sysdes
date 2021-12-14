@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: container-db-deployment
+  name: kapiteinsdienst-db-deployment
   labels:
-    app: container-db
+    app: kapiteinsdienst-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: container-db
+      app: kapiteinsdienst-db
   template:
     metadata:
       labels:
-        app: container-db
+        app: kapiteinsdienst-db
     spec:
       containers:
-      - name: container-db
+      - name: kapiteinsdienst-db
         image: postgres:latest
         env: 
          - name: POSTGRES_USER
@@ -23,7 +23,7 @@ spec:
          - name: POSTGRES_PASSWORD 
            value: postgres
          - name: POSTGRES_DB
-           value: containers
+           value: kapiteinsdienst
          - name: POSTGRES_HOST_AUTH_METHOD
            value: password
         ports:

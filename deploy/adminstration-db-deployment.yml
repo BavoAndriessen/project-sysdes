@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: container-db-deployment
+  name: administration-db-deployment
   labels:
-    app: container-db
+    app: administration-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: container-db
+      app: administration-db
   template:
     metadata:
       labels:
-        app: container-db
+        app: administration-db
     spec:
       containers:
-      - name: container-db
+      - name: administration-db
         image: postgres:latest
         env: 
          - name: POSTGRES_USER
            value: postgres
          - name: POSTGRES_PASSWORD 
-           value: postgres
+           value: pwd
          - name: POSTGRES_DB
-           value: containers
+           value: administration
          - name: POSTGRES_HOST_AUTH_METHOD
            value: password
         ports:
