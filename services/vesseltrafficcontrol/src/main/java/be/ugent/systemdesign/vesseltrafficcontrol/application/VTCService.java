@@ -7,11 +7,11 @@ import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.VesselState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Transactional
 @Service
@@ -21,17 +21,21 @@ public class VTCService implements IVTCService{
     IRouteRepository routeRepo;
 
     List<Vessel> vessels;
-
     final List<Gate> gates;
+    Set<Integer> freeDocks;
 
     public VTCService() {
         vessels = new ArrayList<>();
         gates = fillGates();
+        freeDocks = new HashSet<>();
     }
 
     @Override
-    public Response findRoute(String vesselId, Size size, Integer destination) {
-        String routePath = routeRepo.findOne(size, destination);
+    public Response findRoute(String vesselId, Integer destination) {
+        Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
+        if(vessel.isPresent()) {
+            String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
+        }
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
     }
 
@@ -48,6 +52,21 @@ public class VTCService implements IVTCService{
                 .filter(gate -> gate.getGateId() == gateId)
                 .forEach(Gate::toggleState);
         return new Response(ResponseStatus.SUCCESS, "thank u for changing the state of the gate");
+    }
+
+    @Override
+    public Response vesselArrived(String vesselId, Integer destination) {
+        Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
+        if(vessel.isPresent() && destination.equals(0)) {
+            vessels.remove(vessel.get());
+        } else vessel.ifPresent(value -> value.setState(VesselState.IDLE));
+        return new Response(ResponseStatus.SUCCESS, "Vessel has successfully arrived");
+    }
+
+    @Override
+    public Response freeDock(Integer dockNumber) {
+        freeDocks.add(dockNumber);
+        return new Response(ResponseStatus.SUCCESS, "dock " + dockNumber + " became available");
     }
 
     private List<Gate> fillGates(){
