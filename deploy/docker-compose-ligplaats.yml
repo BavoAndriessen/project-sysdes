@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  berthDb:
+    image: postgres:latest
+    container_name: berthDb
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=berthDb
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    ports:
+    - "5003:5432"
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  ligplaats:
+    container_name: ligplaats
+    build: ../services/ligplaats
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:postgresql://berthDb:5432/berthDb
+    ports:
+     - "2004:2222"
+    depends_on:
+      - berthDb
+      - kafka
+    links:
+     - kafka
+     - berthDb
