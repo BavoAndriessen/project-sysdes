@@ -22,36 +22,16 @@ public class VTCService implements IVTCService{
 
     List<Vessel> vessels;
 
-    final List<Gate> gates = new ArrayList<>() {
-        {
-            add(new Gate(1, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
-            add(new Gate(2, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.MEDIUM));
-            add(new Gate(3, GateType.BRIDGE, GateState.CLOSE, Size.LARGE));
-            add(new Gate(4, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.LARGE));
-            add(new Gate(5, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.SMALL));
-            add(new Gate(6, GateType.BRIDGE, GateState.CLOSE, Size.MEDIUM));
-        }
-    };
+    final List<Gate> gates;
 
     public VTCService() {
-        routeRepo.save(new Route(
-                1,"1;5", Size.SMALL, 130, 5
-        ));
-        routeRepo.save(new Route(
-                2,"2;6", Size.MEDIUM, 101, 3
-        ));
-        routeRepo.save(new Route(
-                3,"3;4", Size.LARGE, 180, 1
-        ));
         vessels = new ArrayList<>();
+        gates = fillGates();
     }
 
     @Override
-    public Response findRoute(Integer vesselId, Size size) {
-        String routePath = routeRepo.findOne(size);
-        // if(routePath.isEmpty()) {
-        //    Route route = calculateRoute(size);
-        // }
+    public Response findRoute(String vesselId, Size size, Integer destination) {
+        String routePath = routeRepo.findOne(size, destination);
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
     }
 
@@ -62,12 +42,31 @@ public class VTCService implements IVTCService{
     }
 
     @Override
-    public Response changeGateState(Integer gateId) {
+    public Response changeGateState(int gateId) {
         gates
                 .stream()
-                .filter(gate -> gate.getGateId().equals(gateId))
+                .filter(gate -> gate.getGateId() == gateId)
                 .forEach(Gate::toggleState);
         return new Response(ResponseStatus.SUCCESS, "thank u for changing the state of the gate");
+    }
+
+    private List<Gate> fillGates(){
+        List<Gate> allGates = new ArrayList<>();
+        allGates.add(new Gate(0, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
+        allGates.add(new Gate(1, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
+        allGates.add(new Gate(2, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.MEDIUM));
+        allGates.add(new Gate(3, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.MEDIUM));
+        allGates.add(new Gate(4, GateType.BRIDGE, GateState.CLOSE, Size.MEDIUM));
+        allGates.add(new Gate(5, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.LARGE));
+        allGates.add(new Gate(6, GateType.BRIDGE, GateState.CLOSE, Size.LARGE));
+        allGates.add(new Gate(7, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.SMALL));
+        allGates.add(new Gate(8, GateType.BRIDGE, GateState.CLOSE, Size.LARGE));
+        allGates.add(new Gate(9, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
+        allGates.add(new Gate(10, GateType.BRIDGE, GateState.CLOSE, Size.MEDIUM));
+        allGates.add(new Gate(11, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
+        allGates.add(new Gate(12, GateType.HARBOUR_LOCK, GateState.CLOSE, Size.MEDIUM));
+        allGates.add(new Gate(13, GateType.BRIDGE, GateState.CLOSE, Size.SMALL));
+        return allGates;
     }
 
     /*

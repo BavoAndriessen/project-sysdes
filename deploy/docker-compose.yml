@@ -1,20 +1,16 @@
 version: "3.9" 
 services:
-# ------------Support services-------------
-  # container-db:
-  #   image: postgres:latest
-  #   container_name: container-db
-  #   environment:
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASSWORD=postgres
-  #    - POSTGRES_DB=containers
-  #    - POSTGRES_HOST_AUTH_METHOD="password"
-  #   ports:
-  #    - "5432:5432"
-  #   volumes:
-  #    - ./sql/containerdb.sql:/docker-entrypoint-initdb.d/create_tables.sql 
-  #   networks:
-  #    - mynet
+# ------------Databases-------------
+  container-db:
+    image: postgres:latest
+    container_name: container-db
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=containers
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    ports:
+    - "5001:5432"
   administration-db:
     image: postgres:latest
     container_name: administration-db
@@ -27,8 +23,20 @@ services:
      - "5000:5432"
     # networks:
     #  - mynet
+  kapiteinsdienst-db:
+    image: postgres:latest
+    container_name: kapiteinsdienst-db
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=kapiteinsdienst
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    ports:
+     - "5002:5432"
+# ------------Support services-------------
   zookeeper:
     image: confluentinc/cp-zookeeper
+    container_name: zookeeper
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
     ports:
@@ -37,6 +45,7 @@ services:
     #  - mynet2
   kafka:
     image: confluentinc/cp-kafka
+    container_name: kafka
     depends_on: 
       - zookeeper
     environment: 
@@ -68,41 +77,92 @@ services:
 #     networks:
 #     - mynet
 #     - mynet2
-# container-management:
-  #   container_name: container-management
-  #   build: ../services/containermanagement
-  #   environment: 
-  #   - DOCKERCOMPOSEDATASOURCEURL="--spring.datasource.url=jdbc:postgresql://container-db:5432/containers"
-  #   ports:
-  #    - "2000:8080"
-  #   depends_on:
-  #    - container-db
-  #    - kafka
-  #   links:
-  #    - kafka
-  #    - container-db
-  # towingpilotage:
-  #   container_name: towingpilotage
-  #   build: ../services/towingpilotageservice
-  #   ports:
-  #   - "2001:3333"
-  #   depends_on:
-  #   - kafka
-  #   links: 
-  #   - kafka
-  # maintenance:
-  #   container_name: maintenance       
-  #   build: ../services/maintenanceservice
-  #   environment: 
-  #   - KAPITEINSDIENSTSERVICE="--kapiteinsdienstservice=kapiteinsdienst"
-  #   ports:
-  #   - "2002:3333"
-  #   depends_on:
-  #   - kafka
-  #   - kapiteinsdienst
-  #   links: 
-  #   - kafka
-  #   - kapiteinsdienst
+  container-management:
+    container_name: container-management
+    build: ../services/containermanagement
+    command:
+    - --spring.datasource.url=jdbc:postgresql://container-db:5432/containers
+    - --spring.cloud.stream.kafka.binder.brokers=kafka
+    - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
+    ports:
+     - "2000:8080"
+    depends_on:
+     - container-db
+     - kafka
+    links:
+     - kafka
+     - container-db
+  towingpilotage:
+    container_name: towingpilotage
+    build: ../services/towingpilotageservice
+    command:
+    - --spring.cloud.stream.kafka.binder.brokers=kafka
+    - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
+    ports:
+    - "2001:8080"
+    depends_on:
+    - kafka
+    links: 
+    - kafka
+  maintenance:
+    container_name: maintenance       
+    build: ../services/maintenanceservice
+    command:
+    - --kapiteinsdienstservice=kapiteinsdienst:8080
+    - --spring.cloud.stream.kafka.binder.brokers=kafka
+    - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
+    ports:
+    - "2002:8080"
+    depends_on:
+    - kafka
+    - kapiteinsdienst
+    links: 
+    - kafka
+    - kapiteinsdienst
+  kapiteinsdienst:
+    container_name: kapiteinsdienst
+    build: ../services/kapiteinsdienst
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:postgresql://kapiteinsdienst-db:5432/kapiteinsdienst
+    ports:
+     - "2005:8080"
+    depends_on:
+      - kapiteinsdienst-db
+      - kafka
+    links:
+     - kafka
+     - kapiteinsdienst-db
+
+# todo: checken of poorten kloppen
+  gateway:
+    container_name: gateway
+    ports:
+     - "8080:8080"
+    build: ../services/apigateway
+    command: 
+    - "--containers=container-management:8080"
+    # - TODO:  "--administration=administration:8080"
+    - "--kapiteinsdienst=kapiteinsdienst:8080"
+  #  - TODO: "--berth=berth:8080"
+    - "--maintenanceservice=maintenance:8080"
+    - "--towingpilotage=towingpilotage:8080"
+    # - TODO: "--vtc=vtc:8080"
+    depends_on:
+    - kapiteinsdienst
+    - container-management
+    - towingpilotage
+    - maintenance
+    - administration
+    - berth
+    - vtc
+    links: 
+    - kapiteinsdienst
+    - container-management
+    - towingpilotage
+    - maintenance
+    - administration
+    - berth
+    - vtc
 # networks:
 #   mynet:
 #     name: my-shared-db-networks

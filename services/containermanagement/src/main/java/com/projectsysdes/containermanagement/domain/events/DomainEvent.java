@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public abstract class DomainEvent {
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
     public DomainEvent() {
-        this.createdTime = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 }

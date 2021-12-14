@@ -18,13 +18,15 @@ public class Route {
     private String route;
     private Integer routeLength;
     private Integer capacity;
+    private Integer destination;
 
-    public Route(Integer id, String route, Size sizeCompatiblity, Integer routeLength, Integer capacity) {
+    public Route(Integer id, String route, Size sizeCompatiblity, Integer routeLength, Integer capacity, Integer dest) {
         this.routeId = id;
         this.route = route;
         this.sizeCompatiblity = sizeCompatiblity;
         this.routeLength = routeLength;
         this.capacity = capacity;
+        this.destination = dest;
         calculateCost();
     }
 

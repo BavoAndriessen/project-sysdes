@@ -34,78 +34,78 @@ public class ContainermanagementApplication {
         SpringApplication.run(ContainermanagementApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner testContainerRepo(ContainerRepository repo, ContainerDataModelRepository cdmrepo) {
-        return (args) -> {
-            logger.info(">Save new container with id {} to database.", 0);
-            repo.save(new Container(0, "hash"));
+//    @Bean
+//    CommandLineRunner testContainerRepo(ContainerRepository repo, ContainerDataModelRepository cdmrepo) {
+//        return (args) -> {
+//            logger.info(">Save new container with id {} to database.", 0);
+//            repo.save(new Container(0, "hash"));
+//
+//            logger.info(">Find one container by id {} from database.", 0);
+//            try {
+//                Container c = repo.find(0);
+//                logger.info(c.toString());
+//            } catch (ContainerNotFoundException e) {
+//                logger.error("container with id 0 not found");
+//            }
+//            List<Container> containers = repo.findAll();
+//            logger.info(String.valueOf(containers.size()));
+//            cdmrepo.findAll();
+//        };
+//    }
 
-            logger.info(">Find one container by id {} from database.", 0);
-            try {
-                Container c = repo.find(0);
-                logger.info(c.toString());
-            } catch (ContainerNotFoundException e) {
-                logger.error("container with id 0 not found");
-            }
-            List<Container> containers = repo.findAll();
-            logger.info(String.valueOf(containers.size()));
-            cdmrepo.findAll();
-        };
-    }
-
-    @Bean
-    CommandLineRunner testTransferContainerCommandLogic(ContainerRepository repo, CommandQuery commandQuery) {
-
-        return (args) -> {
-            logger.info(">Save new container with id {} to database.", 1);
-            repo.save(new Container(1, "crack"));
-            // send arrived event
-            sendPOSTRequest(new ArrivedWithContainersEvent(new ContainerLocation(ContainerLocationType.SHIP, 303), List.of(1)), "arrived");
-            // send scan event -> transit
-            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.TRANSIT_NOT_APPROVED, new ContainerLocation(ContainerLocationType.TRANSIT, 3456)), "scan");
-
-            // following 2 steps are interchangeable
-            // send radyforcontainers event
-            sendPOSTRequest(new ReadyForContainersEvent(List.of(1), new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "ready");
-            // send scan event -> approved
-            sendPOSTRequest(new ContainerApprovedEvent(1), "approve");
-
-            // scan => READY_AT_DOCK
-            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.READY_AT_DOCK, new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "scan");
-
-            // TODO: verdere logica uittesten (van containerstate RELEASE bv)
-
-            // nu zou er een event command moeten aangemaakt worden
-            logger.info("> testing TransferCommands in repo");
-            List<TransferContainerCommand> commands = commandQuery.findAllTransferContainerCommands();
-            logger.info("number of commands in repo: " + commands.size());
-        };
-    }
-
-    private static void sendPOSTRequest(DomainEvent o, String to) {
-        try {
-            o.setCreatedTime(null);
-            var objectMapper = new ObjectMapper();
-            String requestBody = objectMapper
-                    .writeValueAsString(o);
-
-            logger.info("Sending: " + requestBody);
-
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/containers/" + to))
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .headers("Content-Type", "application/json")
-                    .build();
-
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-
-            logger.info("Response: " + response.body());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Bean
+//    CommandLineRunner testTransferContainerCommandLogic(ContainerRepository repo, CommandQuery commandQuery) {
+//
+//        return (args) -> {
+//            logger.info(">Save new container with id {} to database.", 1);
+//            repo.save(new Container(1, "crack"));
+//            // send arrived event
+//            sendPOSTRequest(new ArrivedWithContainersEvent(new ContainerLocation(ContainerLocationType.SHIP, 303), List.of(1)), "arrived");
+//            // send scan event -> transit
+//            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.TRANSIT_NOT_APPROVED, new ContainerLocation(ContainerLocationType.TRANSIT, 3456)), "scan");
+//
+//            // following 2 steps are interchangeable
+//            // send radyforcontainers event
+//            sendPOSTRequest(new ReadyForContainersEvent(List.of(1), new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "ready");
+//            // send scan event -> approved
+//            sendPOSTRequest(new ContainerApprovedEvent(1), "approve");
+//
+//            // scan => READY_AT_DOCK
+//            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.READY_AT_DOCK, new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "scan");
+//
+//            // TODO: verdere logica uittesten (van containerstate RELEASE bv)
+//
+//            // nu zou er een event command moeten aangemaakt worden
+//            logger.info("> testing TransferCommands in repo");
+//            List<TransferContainerCommand> commands = commandQuery.findAllTransferContainerCommands();
+//            logger.info("number of commands in repo: " + commands.size());
+//        };
+//    }
+//
+//    private static void sendPOSTRequest(DomainEvent o, String to) {
+//        try {
+//            o.setCreatedTime(null);
+//            var objectMapper = new ObjectMapper();
+//            String requestBody = objectMapper
+//                    .writeValueAsString(o);
+//
+//            logger.info("Sending: " + requestBody);
+//
+//            HttpClient client = HttpClient.newHttpClient();
+//            HttpRequest request = HttpRequest.newBuilder()
+//                    .uri(URI.create("http://localhost:8080/api/containers/" + to))
+//                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+//                    .headers("Content-Type", "application/json")
+//                    .build();
+//
+//            HttpResponse<String> response = client.send(request,
+//                    HttpResponse.BodyHandlers.ofString());
+//
+//            logger.info("Response: " + response.body());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 //    @Bean
 //    CommandLineRunner testMessageOutPutGateway(EventDispatcher ed, CommandDispatcher cd) {

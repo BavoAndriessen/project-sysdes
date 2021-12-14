@@ -29,7 +29,7 @@ public class KapiteinsdienstApplication {
     @Bean
     public CommandLineRunner populateDatabase(VesselDataModelRepository DMrepo, VesselRepository repo) {
         return (args) -> {
-            DMrepo.deleteAll();
+            //DMrepo.deleteAll();
 
             Vessel vessel = new Vessel("12", LocalDateTime.now(),10,125.0,10.5);
             Container container1 = new Container("bananas");

@@ -24,13 +24,15 @@ public class RouteDataModel {
     private String route;
     private Integer routeLength;
     private Integer capacity;
+    private Integer destination;
 
-    public RouteDataModel(Integer id, String route, Size sizeCompatibility, Integer routeLength, Integer capacity) {
+    public RouteDataModel(Integer id, String route, Size sizeCompatibility, Integer routeLength, Integer capacity, Integer dest) {
         this.routeId = id;
         this.route = route;
         this.sizeCompatibility = sizeCompatibility;
         this.routeLength = routeLength;
         this.capacity = capacity;
+        this.destination = dest;
         this.calculateCost();
     }
 
