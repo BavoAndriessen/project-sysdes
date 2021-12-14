@@ -3,6 +3,7 @@ package be.ugent.systemdesign.vesseltrafficcontrol.infrastructure;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
+import be.ugent.systemdesign.vesseltrafficcontrol.infrastructure.exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class RouteRepository implements IRouteRepository {
                 routeDM = rdm;
             }
         }
+        if(routeDM == null){
+            throw new RouteNotFoundException();
+        }
+        // to lower the route capacity when ship is sent out
+        // routeDM.setCapacity(routeDM.getCapacity() - 1);
         return routeDM.getRoute();
     }
 

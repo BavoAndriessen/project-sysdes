@@ -1,5 +1,6 @@
 package be.ugent.systemdesign.vesseltrafficcontrol.application;
 
+import be.ugent.systemdesign.vesseltrafficcontrol.application.event.EventDispatcher;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Gate;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
@@ -7,11 +8,14 @@ import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.VesselState;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.NavigateShipEvent;
+import be.ugent.systemdesign.vesseltrafficcontrol.infrastructure.exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Transactional
 @Service
@@ -20,25 +24,43 @@ public class VTCService implements IVTCService{
     @Autowired
     IRouteRepository routeRepo;
 
-    List<Vessel> vessels;
+    @Autowired
+    EventDispatcher eventDispatcher;
 
+    List<Vessel> vessels;
     final List<Gate> gates;
+    Set<Integer> freeDocks;
 
     public VTCService() {
         vessels = new ArrayList<>();
         gates = fillGates();
+        freeDocks = new HashSet<>();
     }
 
+    // Destination 0 is the ocean, 1-10 are the docks
     @Override
-    public Response findRoute(String vesselId, Size size, Integer destination) {
-        String routePath = routeRepo.findOne(size, destination);
+    public Response findRoute(String vesselId, Integer destination) {
+        Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
+        if(vessel.isPresent()) {
+            try {
+                String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
+                eventDispatcher.publishNavigateShipEvent(new NavigateShipEvent(vesselId, routePath));
+            } catch(RouteNotFoundException exception) {
+                return new Response(ResponseStatus.FAILED, "no route found");
+            }
+        }
         return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
     }
 
     @Override
+    @Async
     public Response registerVessel(Vessel vessel) {
         vessels.add(vessel);
-        return new Response(ResponseStatus.SUCCESS, "your vessel has been registered");
+        while(freeDocks.isEmpty()){
+            System.out.println("no dock available");
+        }
+        Optional<Integer> dock = freeDocks.stream().findFirst();
+        return findRoute(vessel.getVesselId(), dock.get());
     }
 
     @Override
@@ -48,6 +70,21 @@ public class VTCService implements IVTCService{
                 .filter(gate -> gate.getGateId() == gateId)
                 .forEach(Gate::toggleState);
         return new Response(ResponseStatus.SUCCESS, "thank u for changing the state of the gate");
+    }
+
+    @Override
+    public Response vesselArrived(String vesselId, Integer destination) {
+        Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
+        if(vessel.isPresent() && destination.equals(0)) {
+            vessels.remove(vessel.get());
+        } else vessel.ifPresent(value -> value.setState(VesselState.IDLE));
+        return new Response(ResponseStatus.SUCCESS, "Vessel has successfully arrived");
+    }
+
+    @Override
+    public Response freeDock(Integer dockNumber) {
+        freeDocks.add(dockNumber);
+        return new Response(ResponseStatus.SUCCESS, "dock " + dockNumber + " became available");
     }
 
     private List<Gate> fillGates(){

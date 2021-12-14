@@ -29,14 +29,20 @@ button_pay.addEventListener('click', async () => {
     })
         .then(response => {
             if(response.status === 200){
-                response = response.json();
-                printPayCheck(response);
+                return response.json();
+                // console.log(data)
+                // printPayCheck(data);
             }
             else if(response.status === 400){
                 printShiftNotOVer();
             }
             else{
                 printStaffNotFound();
+            }
+        })
+        .then(data => {
+            if(data !== undefined){
+                printPayCheck(data);
             }
         })
         // .then(response => response.text())
@@ -54,7 +60,7 @@ function printPayCheck(paycheck){
     input_pay.value = "";
     input_pay.value += paycheck.firstName + " " + paycheck.lastName + "\n";
     input_pay.value += paycheck.hoursWorked + " hours worked for " + paycheck.wage+ " euros per hour\n";
-    input_pay.value += paycheck.pay += " euros earned";
+    input_pay.value += paycheck.pay + " euros earned";
 }
 
 function printStaffNotFound(){
