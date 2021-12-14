@@ -4,6 +4,8 @@ const input_vessel = document.getElementById("vessel");
 const input_containers = document.getElementById("containers");
 
 button.addEventListener('click', async () => {
+    input_containers.value = "";
+    input_doucment.value = "";
     fetch('http://localhost:2004/api/administration/documents/'+ input_vessel.value, {
         method: 'get',
         headers: {
