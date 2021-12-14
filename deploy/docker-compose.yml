@@ -33,16 +33,16 @@ services:
      - POSTGRES_HOST_AUTH_METHOD="password"
     ports:
      - "5002:5432"
-  # berth-db:
-  #   image: postgres:latest
-  #   container_name: berth-db
-  #   environment:
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASSWORD=postgres
-  #    - POSTGRES_DB=berthDb
-  #    - POSTGRES_HOST_AUTH_METHOD="password"
-  #   ports:
-  #   - "5003:5432"
+  berth-db:
+    image: postgres:latest
+    container_name: berth-db
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=berthDb
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    ports:
+    - "5003:5432"
   # vtc-db:
   #   image: postgres:latest
   #   container_name: vtc-db
@@ -150,22 +150,22 @@ services:
     links:
      - kafka
      - kapiteinsdienst-db
-  # ligplaats:
-  #   container_name: ligplaats
-  #   build: ../services/ligplaats
-  #   environment: 
-  #     SPRING_DATASOURCE_URL: jdbc:postgresql://berth-db:5432/berthDb
-  #   command:
-  #   - --spring.cloud.stream.kafka.binder.brokers=kafka
-  #   - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
-  #   ports:
-  #    - "2003:8080" # todo: poort 
-  #   depends_on:
-  #     - berth-db
-  #     - kafka
-  #   links:
-  #    - kafka
-  #    - berth-db
+  berth:
+    container_name: berth
+    build: ../services/ligplaats
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:postgresql://berth-db:5432/berthDb
+    command:
+    - --spring.cloud.stream.kafka.binder.brokers=kafka
+    - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
+    ports:
+     - "2003:8080"
+    depends_on:
+      - berth-db
+      - kafka
+    links:
+     - kafka
+     - berth-db
   # vtc: 
   #   container_name: vtc
   #   ports:
@@ -185,7 +185,7 @@ services:
     - "--containers=container-management:8080"
     - "--administration=administration:8080"
     - "--kapiteinsdienst=kapiteinsdienst:8080"
-    - "--berth=ligplaats:8080"
+    - "--berth=berth:8080"
     - "--maintenanceservice=maintenance:8080"
     - "--towingpilotage=towingpilotage:8080"
     # - "--vtc=vtc:8080"
