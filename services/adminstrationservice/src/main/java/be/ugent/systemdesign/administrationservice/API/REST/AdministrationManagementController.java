@@ -6,6 +6,7 @@ import be.ugent.systemdesign.administrationservice.application.ResponseStatus;
 import be.ugent.systemdesign.administrationservice.application.query.DocumentQuery;
 import be.ugent.systemdesign.administrationservice.application.query.StaffQuery;
 import be.ugent.systemdesign.administrationservice.infrastructure.staff.StaffNotFoundException;
+import be.ugent.systemdesign.administrationservice.domain.shiftNotOverExecption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,11 @@ public class AdministrationManagementController {
         try {
             return new ResponseEntity<StaffViewModel>(new StaffViewModel(staffQuery.generatePayCheck(id)), HttpStatus.OK);
         } catch (StaffNotFoundException e) {
+            //Staff bestaat niet
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (shiftNotOverExecption e){
+            //Staff is nog bezig met shift
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
