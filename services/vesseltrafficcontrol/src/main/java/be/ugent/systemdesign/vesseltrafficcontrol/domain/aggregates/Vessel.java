@@ -15,6 +15,6 @@ public class Vessel {
     public Vessel(String id, Size size){
         this.vesselId = id;
         this.size = size;
-        state = VesselState.IDLE;
+        state = VesselState.MOVING;
     }
 }
