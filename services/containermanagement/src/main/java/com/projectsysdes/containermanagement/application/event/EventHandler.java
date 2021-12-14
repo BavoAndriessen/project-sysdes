@@ -67,8 +67,8 @@ public class EventHandler {
     @Async
     @TransactionalEventListener
     public Response consumeNewContainerListEvent(NewContainerListEvent event) {
-        List<Container> containers = new ArrayList<>(event.getContainers().size());
-        for (ContainerImportModel cim: event.getContainers()) {
+        List<Container> containers = new ArrayList<>(event.getContainerList().size());
+        for (ContainerImportModel cim: event.getContainerList()) {
             containers.add(new Container(cim.getContainerId(), cim.getContents()));
         }
         Response r = service.registerContainers(containers);
