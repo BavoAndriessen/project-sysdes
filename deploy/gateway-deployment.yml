@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: bavoandriessen/gateway:latest
+        args: ["--containers=container-management-service.default.svc.cluster.local:8080", 
+          TODO: "--administration=administration-service.default.svc.cluster.local:8080", 
+          TODO: "--kapiteinsdienst=kapiteinsdienst-service.default.svc.cluster.local:8080", 
+          TODO: "--berth=berth-service.default.svc.cluster.local:8080", 
+          "--maintenanceservice=maintenance-service.default.svc.cluster.local:8080", 
+          "--towingpilotage=towingpilotage-service.default.svc.cluster.local:8080", 
+          TODO: "--vtc=vtc-service.default.svc.cluster.local:8080"
+              ]
+        ports:
+        - containerPort: 8080

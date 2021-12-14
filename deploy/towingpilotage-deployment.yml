@@ -20,4 +20,4 @@ spec:
         args: ["--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]
       
         ports:
-        - containerPort: 2090
+        - containerPort: 8080

@@ -124,6 +124,19 @@ services:
     links:
      - kafka
      - kapiteinsdienst-db
+
+# todo: checken of poorten kloppen
+  # gateway:
+  #   container_name: gateway
+  #   build: ../services/apigateway
+  #   command: 
+  #   - "--containers=container-management:8080"
+  #   - "--administration=administration:8080"
+  #   - "--kapiteinsdienst=kapiteinsdienst:8080"
+  #  - TODO: "--berth=berth-service.default.svc.cluster.local:8080"
+  #   - "--maintenanceservice=maintenance-service.default.svc.cluster.local:8080"
+  #   - "--towingpilotage=towingpilotage-service.default.svc.cluster.local:8080"
+  #   - TODO: "--vtc=vtc-service.default.svc.cluster.local:8080"
 # networks:
 #   mynet:
 #     name: my-shared-db-networks
