@@ -30,7 +30,7 @@ services:
     environment: 
       SPRING_DATASOURCE_URL: jdbc:postgresql://berthDb:5432/berthDb
     ports:
-     - "2004:2222"
+     - "1995:8080"
     depends_on:
       - berthDb
       - kafka
