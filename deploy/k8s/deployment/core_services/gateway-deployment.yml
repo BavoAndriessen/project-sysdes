@@ -18,12 +18,12 @@ spec:
       - name: gateway
         image: bavoandriessen/gateway:latest
         args: ["--containers=container-management-service.default.svc.cluster.local:8080", 
-          TODO: "--administration=administration-service.default.svc.cluster.local:8080", 
-          TODO: "--kapiteinsdienst=kapiteinsdienst-service.default.svc.cluster.local:8080", 
-          TODO: "--berth=berth-service.default.svc.cluster.local:8080", 
+          "--administration=administration-service.default.svc.cluster.local:8080", 
+          "--kapiteinsdienst=kapiteinsdienst-service.default.svc.cluster.local:8080", 
+          "--berth=berth-service.default.svc.cluster.local:8080", 
           "--maintenanceservice=maintenance-service.default.svc.cluster.local:8080", 
           "--towingpilotage=towingpilotage-service.default.svc.cluster.local:8080", 
-          TODO: "--vtc=vtc-service.default.svc.cluster.local:8080"
+          #TODO: "--vtc=vtc-service.default.svc.cluster.local:8080"
               ]
         ports:
         - containerPort: 8080

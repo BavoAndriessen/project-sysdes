@@ -8,4 +8,5 @@ spec:
   ports:
   - port: 8080
     targetPort: 8080
-    
+  externalIPs:
+  - 193.191.169.28    
