@@ -1,6 +1,6 @@
 version: "3.9" 
 services:
-# ------------Support services-------------
+# ------------Databases-------------
   container-db:
     image: postgres:latest
     container_name: container-db
@@ -9,8 +9,6 @@ services:
      - POSTGRES_PASSWORD=postgres
      - POSTGRES_DB=containers
      - POSTGRES_HOST_AUTH_METHOD="password"
-    volumes:
-     - ./sql/containerdb.sql:/docker-entrypoint-initdb.d/create_tables.sql 
     ports:
     - "5001:5432"
   administration-db:
@@ -35,6 +33,7 @@ services:
      - POSTGRES_HOST_AUTH_METHOD="password"
     ports:
      - "5002:5432"
+# ------------Support services-------------
   zookeeper:
     image: confluentinc/cp-zookeeper
     container_name: zookeeper
@@ -135,17 +134,35 @@ services:
      - kapiteinsdienst-db
 
 # todo: checken of poorten kloppen
-  # gateway:
-  #   container_name: gateway
-  #   build: ../services/apigateway
-  #   command: 
-  #   - "--containers=container-management:8080"
-  #   - "--administration=administration:8080"
-  #   - "--kapiteinsdienst=kapiteinsdienst:8080"
-  #  - TODO: "--berth=berth-service.default.svc.cluster.local:8080"
-  #   - "--maintenanceservice=maintenance-service.default.svc.cluster.local:8080"
-  #   - "--towingpilotage=towingpilotage-service.default.svc.cluster.local:8080"
-  #   - TODO: "--vtc=vtc-service.default.svc.cluster.local:8080"
+  gateway:
+    container_name: gateway
+    ports:
+     - "8080:8080"
+    build: ../services/apigateway
+    command: 
+    - "--containers=container-management:8080"
+    # - TODO:  "--administration=administration:8080"
+    - "--kapiteinsdienst=kapiteinsdienst:8080"
+  #  - TODO: "--berth=berth:8080"
+    - "--maintenanceservice=maintenance:8080"
+    - "--towingpilotage=towingpilotage:8080"
+    # - TODO: "--vtc=vtc:8080"
+    depends_on:
+    - kapiteinsdienst
+    - container-management
+    - towingpilotage
+    - maintenance
+    - administration
+    - berth
+    - vtc
+    links: 
+    - kapiteinsdienst
+    - container-management
+    - towingpilotage
+    - maintenance
+    - administration
+    - berth
+    - vtc
 # networks:
 #   mynet:
 #     name: my-shared-db-networks
