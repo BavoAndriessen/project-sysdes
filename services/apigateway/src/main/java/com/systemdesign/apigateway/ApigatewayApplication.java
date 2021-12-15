@@ -8,56 +8,36 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 
 @SpringBootApplication
+@CrossOrigin(origins="*")
 public class ApigatewayApplication {
-
-    @Value("${containers}")
-    private String containers;
-
-    @Value("${administration}")
-    private String administration;
-
-    @Value("${kapiteinsdienst}")
-    private String kapiteinsdienst;
-
-    @Value("${berth}")
-    private String berth;
-
-    @Value("${maintenanceservice}")
-    private String maintenanceservice;
-
-    @Value("${towingpilotage}")
-    private String towingpilotage;
-
-    @Value("${vtc}")
-    private String vtc;
-
-    Logger logger = LoggerFactory.getLogger(ApigatewayApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(ApigatewayApplication.class, args);
     }
 
+    private String getEnvOrLocalhost(String envName) {
+        String env = System.getenv(envName);
+        if(env == null) {
+            return "localhost";
+        }
+        return env;
+    }
+
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-        logger.info("routing to " + containers);
-        logger.info("routing to " + administration);
-        logger.info("routing to " + kapiteinsdienst);
-        logger.info("routing to " + berth);
-        logger.info("routing to " + maintenanceservice);
-        logger.info("routing to " + towingpilotage);
-        logger.info("routing to " + vtc);
-
         return builder.routes()
-                .route(r -> r.host("*").and().path("/api/containers/**").uri("http://" + containers + "/api/containers/"))
-                .route(r -> r.host("*").and().path("/api/administration/**").uri("http://" + administration + "/api/administration/"))
-                .route(r -> r.host("*").and().path("/api/kapiteinsdienst/**").uri("http://" + kapiteinsdienst + "/api/kapiteinsdienst/"))
-                .route(r -> r.host("*").and().path("/api/berth/**").uri("http://" + berth + "/api/berth/"))
-                .route(r -> r.host("*").and().path("/api/maintenanceservice/**").uri("http://" + maintenanceservice + "/api/maintenanceservice/"))
-                .route(r -> r.host("*").and().path("/api/towingpilotage/**").uri("http://" + towingpilotage + "/api/towingpilotage/"))
-                .route(r -> r.host("*").and().path("/api/vtc/**").uri("http://" + vtc + "/api/vtc/"))
+                .route(r -> r.path("/api/containers/**").uri(String.format("http://%s:8080/api/containers/", getEnvOrLocalhost("CONTAINER_MANAGEMENT_HOST"))))
+                .route(r -> r.path("/api/administration/**").uri(String.format("http://%s:8080/api/administration/", getEnvOrLocalhost("ADMINISTRATION_HOST"))))
+                .route(r -> r.path("/api/kapiteinsdienst/**").uri(String.format("http://%s:8080/api/kapiteinsdienst/", getEnvOrLocalhost("KAPITEINSDIENST_HOST"))))
+                .route(r -> r.path("/api/berth/**").uri(String.format("http://%s:8080/api/berth/", getEnvOrLocalhost("BERTH_HOST"))))
+                .route(r -> r.path("/api/maintenanceservice/**").uri(String.format("http://%s:8080/api/maintenanceservice/", getEnvOrLocalhost("MAINTENANCE_HOST"))))
+                .route(r -> r.path("/api/towingpilotage/**").uri(String.format("http://%s:8080/api/towingpilotage/", getEnvOrLocalhost("TOWINGPILOTAGE_HOST"))))
+                .route(r -> r.path("/api/vtc/**").uri(String.format("http://%s:8080/api/vtc/", getEnvOrLocalhost("VTC_HOST"))))
 
                 .build();
     }

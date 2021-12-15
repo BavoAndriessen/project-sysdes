@@ -181,13 +181,23 @@ services:
     ports:
      - "8080:8080"
     build: ../services/apigateway
-    command: 
-    - "--containers=container-management:8080"
-    - "--administration=administration:8080"
-    - "--kapiteinsdienst=kapiteinsdienst:8080"
-    - "--berth=berth:8080"
-    - "--maintenanceservice=maintenance:8080"
-    - "--towingpilotage=towingpilotage:8080"
+    environment:
+      CONTAINER_MANAGEMENT_HOST: "container-management"
+      ADMINISTRATION_HOST: "administration"
+      KAPITEINSDIENST_HOST: "kapiteinsdienst"
+      BERTH_HOST: "berth"
+      MAINTENANCE_HOST: "maintenance"
+      TOWINGPILOTAGE_HOST: "towingpilotage"
+      # - VTC_HOST: "vtc"
+
+      
+    # command: 
+    # - "--containers=container-management:8080"
+    # - "--administration=administration:8080"
+    # - "--kapiteinsdienst=kapiteinsdienst:8080"
+    # - "--berth=berth:8080"
+    # - "--maintenanceservice=maintenance:8080"
+    # - "--towingpilotage=towingpilotage:8080"
     # - "--vtc=vtc:8080"
     depends_on:
     - kapiteinsdienst
