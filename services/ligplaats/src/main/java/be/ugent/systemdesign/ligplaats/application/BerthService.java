@@ -3,6 +3,8 @@ package be.ugent.systemdesign.ligplaats.application;
 import be.ugent.systemdesign.ligplaats.application.command.LoadContainersCommand;
 import be.ugent.systemdesign.ligplaats.application.command.ReserveBerthResponse;
 import be.ugent.systemdesign.ligplaats.application.command.UnloadContainersCommand;
+import be.ugent.systemdesign.ligplaats.application.event.ContainersReadyAtDockEvent;
+import be.ugent.systemdesign.ligplaats.application.event.ShipArrivingEvent;
 import be.ugent.systemdesign.ligplaats.domain.Berth;
 import be.ugent.systemdesign.ligplaats.domain.BerthWorkerState;
 
@@ -27,5 +29,6 @@ public interface BerthService {
     void sendShipReady(Integer berthId) throws Exception;
     void sendDockReady(String vesselId) throws Exception;
     public List<Berth> findAll();
-    //void handelShipArriving();
+    void handelShipArriving(ShipArrivingEvent e) throws Exception;
+    void handelContainersReadyAtDock(ContainersReadyAtDockEvent e) throws Exception;
 }

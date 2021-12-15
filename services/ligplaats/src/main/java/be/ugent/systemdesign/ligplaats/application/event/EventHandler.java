@@ -23,13 +23,7 @@ public class EventHandler {
     @TransactionalEventListener
     public void handelShipArriving(ShipArrivingEvent e) throws Exception {
       try {
-          logger.info("handling ship arriving event ");
-          System.out.println(e.getVesselId());
-          bs.setBerthReady(e.getVesselId());
-          logger.info("berth ready for ship with id{ " + e.getVesselId() + "}.");
-          logger.info("sending ship ready event");
-          //TimeUnit.SECONDS.sleep(3);
-          bs.sendDockReady(e.getVesselId());
+          bs.handelShipArriving(e);
       }catch (Exception ex){
           throw new Exception("berth can't be ready now.");
       }
@@ -41,12 +35,7 @@ public class EventHandler {
         //bs.setWorkerAtBerthAvailable(e.getBerthId());
 
         try {
-            //bs.handelLoadContainersREST(new LoadContainersCommand(e.getBerthId()));
-            logger.info("handling containers ready ay dock event ");
-            bs.setWorkerStatusAtDock(BerthWorkerState.BUSY, e.getBerthId());
-            //TimeUnit.SECONDS.sleep(3);
-            System.out.println("finished loading the containers, sending ship ship ready message to VTC");
-            bs.sendShipReady(e.getBerthId());
+            bs.handelContainersReadyAtDock(e);
 
         }catch (Exception ex){
             throw new Exception("error in handelContainerReadyAtDock.");

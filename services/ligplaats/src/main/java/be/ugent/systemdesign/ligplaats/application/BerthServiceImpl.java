@@ -3,10 +3,10 @@ package be.ugent.systemdesign.ligplaats.application;
 import be.ugent.systemdesign.ligplaats.application.command.LoadContainersCommand;
 import be.ugent.systemdesign.ligplaats.application.command.ReserveBerthResponse;
 import be.ugent.systemdesign.ligplaats.application.command.UnloadContainersCommand;
-import be.ugent.systemdesign.ligplaats.application.event.DockReadyEvent;
-import be.ugent.systemdesign.ligplaats.application.event.EventDispatcher;
-import be.ugent.systemdesign.ligplaats.application.event.ShipReadyEvent;
+import be.ugent.systemdesign.ligplaats.application.event.*;
 import be.ugent.systemdesign.ligplaats.domain.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,7 @@ public class BerthServiceImpl implements BerthService{
     @Autowired
     EventDispatcher eventDispatcher;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public ReserveBerthResponse reserveBerth(Double size, String vesselId) throws Exception {
         Berth b;
@@ -160,6 +161,36 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public List<Berth> findAll() {
        return berthRepo.findAll();
+    }
+
+    @Override
+    public void handelShipArriving(ShipArrivingEvent e) throws Exception {
+        try {
+            logger.info("handling ship arriving event ");
+            System.out.println(e.getVesselId());
+            setBerthReady(e.getVesselId());
+            logger.info("berth ready for ship with id{ " + e.getVesselId() + "}.");
+            logger.info("sending ship ready event");
+            //TimeUnit.SECONDS.sleep(3);
+            sendDockReady(e.getVesselId());
+        }catch (Exception ex){
+            throw new Exception("berth can't be ready now.");
+        }
+    }
+
+    @Override
+    public void handelContainersReadyAtDock(ContainersReadyAtDockEvent e) throws Exception {
+        try {
+            //bs.handelLoadContainersREST(new LoadContainersCommand(e.getBerthId()));
+            logger.info("handling containers ready ay dock event ");
+            setWorkerStatusAtDock(BerthWorkerState.BUSY, e.getBerthId());
+            //TimeUnit.SECONDS.sleep(3);
+            System.out.println("finished loading the containers, sending ship ship ready message to VTC");
+            sendShipReady(e.getBerthId());
+
+        }catch (Exception ex){
+            throw new Exception("error in handelContainerReadyAtDock.");
+        }
     }
 
 }

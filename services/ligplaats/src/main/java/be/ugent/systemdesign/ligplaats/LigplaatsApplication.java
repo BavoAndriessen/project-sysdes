@@ -3,10 +3,7 @@ package be.ugent.systemdesign.ligplaats;
 import be.ugent.systemdesign.ligplaats.API.messaging.Channels;
 import be.ugent.systemdesign.ligplaats.application.BerthService;
 import be.ugent.systemdesign.ligplaats.application.command.CommandHandler;
-import be.ugent.systemdesign.ligplaats.application.event.ContainersReadyAtDockEvent;
-import be.ugent.systemdesign.ligplaats.application.event.EventDispatcher;
-import be.ugent.systemdesign.ligplaats.application.event.EventHandler;
-import be.ugent.systemdesign.ligplaats.application.event.ShipReadyEvent;
+import be.ugent.systemdesign.ligplaats.application.event.*;
 import be.ugent.systemdesign.ligplaats.application.query.BerthQuery;
 import be.ugent.systemdesign.ligplaats.application.query.BerthRealModel;
 import be.ugent.systemdesign.ligplaats.domain.*;
@@ -209,6 +206,9 @@ public class LigplaatsApplication {
 
 			//System.out.println(service.findAll().size());
 			System.out.println(repo.findByVesselId("ship-1").toString());
+
+			//service.handelContainersReadyAtDock(new ContainersReadyAtDockEvent(repo.findByVesselId("ship-1").getBerthId()));
+			//service.handelShipArriving(new ShipArrivingEvent("ship-1"));
 		});
 	}
 
