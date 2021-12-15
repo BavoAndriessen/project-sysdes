@@ -3,7 +3,7 @@ const input_vessel = document.getElementById("vesselid");
 const service_response = document.getElementById("towvesselresponse");
 
 button_2.addEventListener('click', async () => {
-    fetch('http://localhost:2001/api/towingpilotage/towvessel/'+ input_vessel.value, {
+    fetch('http://localhost:8080/api/towingpilotage/towvessel/'+ input_vessel.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",

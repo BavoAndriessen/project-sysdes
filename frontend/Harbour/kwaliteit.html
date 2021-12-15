@@ -5,6 +5,7 @@
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="js/documentenOpvragen.js" defer></script>
+    <script src="js/containerLocatie.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -30,5 +31,12 @@
 <label for="containers">Information</label>
 <textarea  class="form-control" id="containers" rows="10" readonly></textarea>
 <button type="button" class="btn btn-primary" id="documenten_kwaliteit">Get documents</button>
+
+<br>
+<br>
+<label for="containerid">Container id</label>
+<input type="text" class="form-control" id="containerid" required>
+<textarea class="form-control" id="containerlocation"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="getcontainerlocation">Get container location</button>
 </body>
 </html>
