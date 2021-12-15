@@ -24,18 +24,18 @@ public class BerthDataModel {
     private String state;
     private int berthNumber;
     private boolean dockReady;
+    private String vesselId;
     private int workerId;
     private String workerState;
-    private String vesselId;
-    public BerthDataModel(Integer berthId, Double size, BerthState state, int berthNumber, boolean dockReady, String vesselId
-            , int workerId, BerthWorkerState workerState){
+    public BerthDataModel(Integer berthId, Double size, String state, int berthNumber, boolean dockReady, String vesselId
+            , int workerId, String workerState){
         this.berthId = berthId;
         this.berthNumber = berthNumber;
         this.size = size;
         this.dockReady = dockReady;
-        this.state = state.name();
+        this.state = state;
         this.workerId = workerId;
-        this.workerState = workerState.name();
+        this.workerState = workerState;
         this.vesselId = vesselId;
     }
 
@@ -46,7 +46,7 @@ public class BerthDataModel {
     public String toString() {
         return "Berth{" +
                 "berthId=" + berthId +
-                ", size='" + size + '\'' +
+                ", size=" + size +
                 ", state=" + state +
                 ", berth_number=" + berthNumber +
                 ",vesselId = " + vesselId  +'}' +"\n"+

@@ -5,14 +5,11 @@ import be.ugent.systemdesign.ligplaats.application.command.ReserveBerthResponse;
 import be.ugent.systemdesign.ligplaats.application.command.UnloadContainersCommand;
 import be.ugent.systemdesign.ligplaats.application.event.DockReadyEvent;
 import be.ugent.systemdesign.ligplaats.application.event.EventDispatcher;
-import be.ugent.systemdesign.ligplaats.application.event.EventHandler;
 import be.ugent.systemdesign.ligplaats.application.event.ShipReadyEvent;
 import be.ugent.systemdesign.ligplaats.domain.*;
-import be.ugent.systemdesign.ligplaats.infrastructure.BerthDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,25 +27,28 @@ public class BerthServiceImpl implements BerthService{
     EventDispatcher eventDispatcher;
 
     @Override
-    public ReserveBerthResponse reserveBerth(Double size, String vesselId) {
+    public ReserveBerthResponse reserveBerth(Double size, String vesselId) throws Exception {
         Berth b;
-        try {
-            System.out.println("reserve berth opgeroepen");
-            Random rand = new Random();
-            List<Berth> bs = berthRepo.findAllBySizeAndState(size, BerthState.AVAILABLE.name());
-            b = bs.get(rand.nextInt(bs.size()));
-            b.changeStateOfBerth(BerthState.RESERVED);
-            b.setVesselId(vesselId);
-            System.out.println("berthId: " + b.getBerthId());
-            berthRepo.save(b);
-        } catch(NoBerthAvailableException e) {
+        //try {
+        System.out.println("reserve berth opgeroepen");
+        //Random rand = new Random();
+        List<Berth> bs = berthRepo.findAllBySizeAndState(size, BerthState.AVAILABLE.name());
+
+        if (bs.isEmpty()){
+            System.out.println("failed");
             return new ReserveBerthResponse(ResponseStatus.FAIL,"there is no berth available");
-        } catch(RuntimeException e) {
-            return new ReserveBerthResponse(ResponseStatus.FAIL,"Berth could not be reserved");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+            //pak de eerste ligplaats van de lijst.
+        b = bs.get(0);
+        b.setState(BerthState.RESERVED);
+        b.setVesselId(vesselId);
+        System.out.println("berthId: " + b.getBerthId());
+        berthRepo.save(b);
         return new ReserveBerthResponse(ResponseStatus.SUCCESS,"berth reserved");
+        //} catch (Exception e) {
+            //return new ReserveBerthResponse(ResponseStatus.FAIL,"berth reserved");
+            //e.printStackTrace();
+        //}
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BerthServiceImpl implements BerthService{
             //System.out.println("found vessel with id : " + vesselId);
             b.setVesselId("");
             //System.out.println("vessel name removed from berth");
-            b.changeStateOfBerth(BerthState.AVAILABLE);
+            b.setState(BerthState.AVAILABLE);
             b.getWorker().setState(BerthWorkerState.AVAILABLE);
             //System.out.println("status changed");
             berthRepo.save(b);
@@ -75,7 +75,8 @@ public class BerthServiceImpl implements BerthService{
         try{
             System.out.println("setBerthReady berth opgeroepen");
             Berth b = berthRepo.findByVesselId(vesselId);
-            b.changeStateOfBerth(BerthState.READY);
+            System.out.println("found ligplaats with vesselId" +  b.getVesselId());
+            b.setState(BerthState.READY);
             berthRepo.save(b);
         }catch (Exception e){
             throw new Exception("problem at Berth, can't be ready now.");
@@ -88,7 +89,7 @@ public class BerthServiceImpl implements BerthService{
             Berth b = berthRepo.findById(berthId);
             b.getWorker().setState(state);
             berthRepo.save(b);
-            TimeUnit.SECONDS.sleep(2);
+            //TimeUnit.SECONDS.sleep(2);
             //het kan zijn dat de vesselId leeg is, dan zit het programma vast, dus gebruikt men een "if" voor de veiligheid
             //als de worker beschikbaar is, dan is hij/zij klaar met laden/ontladen van de containers
 
@@ -105,8 +106,13 @@ public class BerthServiceImpl implements BerthService{
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
+        //TimeUnit.SECONDS.sleep(3);
         System.out.println(" loading containers");
+        sendShipReady(command.getBerthId());
         berthRepo.save(berth);
+
+        //de dok werker (super man) gaat na 3 seconden klaar zijn, hierna wordt het event ship_ready gestuud
+        sendShipReady(command.getBerthId());
     }
 
     @Override
@@ -122,37 +128,25 @@ public class BerthServiceImpl implements BerthService{
 
     @Override
     public void fillRepository() {
-
-        berthRepo.flushRepo();
-        Berth b;
-        List<Berth> l = new ArrayList<Berth>();
-        for(int i=0; i<10;i++){
-            b = new Berth(
-                    i,
-                    (i + 1) *2.0,
-                    BerthState.AVAILABLE,
-                    i+1,
-                    new BerthWorker(i+2,BerthWorkerState.AVAILABLE,i),
-                    true,
-                    "ship-"+i
-            );
-            l.add(b);
-        }
-        l.forEach(elt-> {
-            try {
-                berthRepo.save(elt);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        berthRepo.fillRepository();
     }
 
+
     @Override
-    public void sendshipReady(Integer berthId) throws Exception {
+    public void sendShipReady(Integer berthId) throws Exception {
         Berth b = berthRepo.findById(berthId);
         String vesselId = b.getVesselId();
         int berthNumber = b.getBerthNumber();
+
         eventDispatcher.sendShipReadyEvent(new ShipReadyEvent(vesselId, berthNumber));
+        //waanneer de schip klaar staat, gaat die dan vertrekken en wordt de ligplaats en de dock werker
+        //op status AVAILABLE gezet, dit is analoog aan undo reservatio, maar men heeft undoReservation
+        //niet getriggerd want anders wordt een event naar kapiteins dienst gestuurd dat de reservatie ongedaan is
+        //terwijn de reservatie met sucess afgelopen is.
+        b.getWorker().setState(BerthWorkerState.AVAILABLE);
+        b.setState(BerthState.AVAILABLE);
+        b.setVesselId("");
+        berthRepo.save(b);
     }
 
     @Override
@@ -163,9 +157,9 @@ public class BerthServiceImpl implements BerthService{
         eventDispatcher.sendDockReadyEvent(new DockReadyEvent(berthId, berthNumber));
     }
 
-    //@Override
-    //public Response BerthNumberforReservation() {
-    //    return null;
-    //}
+    @Override
+    public List<Berth> findAll() {
+       return berthRepo.findAll();
+    }
 
 }

@@ -5,7 +5,6 @@ import be.ugent.systemdesign.ligplaats.application.command.ReserveBerthCommand;
 import be.ugent.systemdesign.ligplaats.application.command.ReserveBerthResponse;
 import be.ugent.systemdesign.ligplaats.application.command.UndoReservationCommand;
 import be.ugent.systemdesign.ligplaats.application.event.ContainersReadyAtDockEvent;
-import be.ugent.systemdesign.ligplaats.application.event.DockReadyEvent;
 import be.ugent.systemdesign.ligplaats.application.event.EventHandler;
 import be.ugent.systemdesign.ligplaats.application.event.ShipArrivingEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,7 +29,7 @@ public class MessageInputGateway {
     }
     @StreamListener(Channels.CONTAINERS_READY_AT_DOCK_EVENT)
     public void receiveContainerReadyAtDockEvent(ContainersReadyAtDockEvent e) throws Exception {
-        eventHandler.handelContainerReadyAtDock(e);
+        eventHandler.handelContainersReadyAtDock(e);
     }
     @StreamListener(Channels.RESERVE_BERTH_COMMAND)
     @SendTo(Channels.BERTH_RESERVED_REPLY)
