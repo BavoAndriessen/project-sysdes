@@ -36,13 +36,28 @@
 <textarea type="text" class="form-control" id="additionalServices" rows="3" required></textarea>
 <label for="containerList">Container list</label>
 <textarea type="text" class="form-control" id="containerList"  rows="8" required></textarea>
-<label for="offer">Offer id</label>
-<input type="text" class="form-control" id="offer" required>
-<label for="price">Price</label>
-<input type="text" class="form-control" id="price" required>
+<label for="registerResponse">Register vessel response</label>
+<input type="text" class="form-control" id="registerResponse" readonly>
+<br>
+<br>
+
 <button type="button" class="btn btn-primary" id="register_offer">Register offer</button>
+
+<br>
+<br>
+<label for="vesselidforoffer">Vessel id</label>
+<input type="text" class="form-control" id="vesselidforoffer">
+<label for="offer">Offer id</label>
+<input type="text" class="form-control" id="offer" readonly>
+<label for="price">Price</label>
+<input type="text" class="form-control" id="price" readonly>
+<button type="button" class="btn btn-primary" id="get_offer">Get offer</button>
+<br>
+<label for="vesselIdForConfirmation">Vessel id</label>
+<input type="text" class="form-control" id="vesselIdForConfirmation">
+<label for="offerConfirmationResponse">Offer confirmation</label>
+<input type="text" class="form-control" id="offerConfirmationResponse" readonly>
 <button type="button" class="btn btn-success" id="accept_offer">Accept offer</button>
 <button type="button" class="btn btn-danger" id="refuse_offer">Refuse offer</button>
-<button type="button" class="btn btn-primary" id="get_offer">Register offer</button>
 </body>
 </html>

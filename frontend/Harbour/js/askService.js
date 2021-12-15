@@ -3,7 +3,7 @@ const input_vessel = document.getElementById("vesselid");
 const service_response = document.getElementById("serviceasked");
 
 button.addEventListener('click', async () => {
-    fetch('http://localhost:8080/api/maintenanceservice/askforservice/'+ input_vessel.value, {
+    fetch('http://localhost:2002/api/maintenanceservice/askforservice/'+ input_vessel.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",

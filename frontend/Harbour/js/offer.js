@@ -12,6 +12,10 @@ let date_field = document.getElementById("arrivalDate");
 let additionalServicesField = document.getElementById("additionalServices");
 let offerId_field = document.getElementById("offer");
 let price_field = document.getElementById("price");
+let vesselidforoffer_input = document.getElementById("vesselidforoffer");
+let registerResponse = document.getElementById("registerResponse");
+let vesselidforconfirmation_input = document.getElementById("vesselIdForConfirmation");
+let offerConfirmationResponse = document.getElementById("offerConfirmationResponse");
 
 register_button.addEventListener('click', async() => {
     let date = date_field.value
@@ -45,16 +49,18 @@ register_button.addEventListener('click', async() => {
         },
         body : JSON.stringify(body)
     })
-        .then(response => response.json())
+        .then(response => {
+                return response.text();
+
+        })
         .then(data => {
-            //prijs en offerid in juiste value veld
-            console.log(data)
+            registerResponse.value=data;
         })
         .catch(error => console.log(error))
 });
 
 accept_button.addEventListener('click', () => {
-    fetch('http://localhost:2005/api/kapiteinsdienst/'+ vesselsize_input.value +'/offerConfirmation?confirmation=true', {
+    fetch('http://localhost:2005/api/kapiteinsdienst/'+ vesselidforconfirmation_input.value +'/offerConfirmation?confirmation=true', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",
@@ -62,15 +68,15 @@ accept_button.addEventListener('click', () => {
             "Accept" : "*/*"
         },
     })
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
-            console.log(data)
+            offerConfirmationResponse.value = data;
         })
         .catch(error => console.log(error))
 });
 
 refuse_button.addEventListener('click', () => {
-    fetch('http://localhost:2005/api/kapiteinsdienst/'+ vesselsize_input.value +'/offerConfirmation?confirmation=false', {
+    fetch('http://localhost:2005/api/kapiteinsdienst/'+ vesselidforconfirmation_input.value +'/offerConfirmation?confirmation=false', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",
@@ -78,9 +84,38 @@ refuse_button.addEventListener('click', () => {
             "Accept" : "*/*"
         },
     })
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
-            console.log(data)
+            offerConfirmationResponse.value = data;
         })
         .catch(error => console.log(error))
+});
+
+get_button.addEventListener('click', () => {
+    fetch('http://localhost:2005/api/kapiteinsdienst/offer?id='+vesselidforoffer_input.value,{
+        method: 'get',
+            headers: {
+            "Content-Type": "application/json",
+                "Connection": "keep-alive",
+                "Accept" : "*/*"
+        },
+    })
+        .then(response => {
+            if(response.status === 200){
+                return response.json();
+
+            } else {
+                offerId_field.value = "Vessel not found";
+                price_field.value = "Price not available";
+
+            }
+            })
+        .then(data => {
+            offerId_field.value = data.offerId;
+            price_field.value = data.price;
+        })
+        .catch(error => console.log(error))
+
+
+
 });
