@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="js/offer.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -21,6 +22,27 @@
     <li><a href="douane.html">Douane</a></li>
 </ul>
 <h1>Dashboard Scheepsagent</h1>
-
+<label for="vessel">Vessel id</label>
+<input type="text" class="form-control" id="vessel" required>
+<label for="arrivalDate">Date of arrival</label>
+<input type="datetime-local" class="form-control" id="arrivalDate" required>
+<label for="lengthOfStay">Length of stay</label>
+<input type="text" class="form-control" id="lengthOfStay" required>
+<label for="vesselSize">Vessel size</label>
+<input type="text" class="form-control" id="vesselSize" required>
+<label for="amountOfWaste">Amount of waste</label>
+<input type="text" class="form-control" id="amountOfWaste" required>
+<label for="additionalServices">Additional services</label>
+<textarea type="text" class="form-control" id="additionalServices" rows="3" required></textarea>
+<label for="containerList">Container list</label>
+<textarea type="text" class="form-control" id="containerList"  rows="8" required></textarea>
+<label for="offer">Offer id</label>
+<input type="text" class="form-control" id="offer" required>
+<label for="price">Price</label>
+<input type="text" class="form-control" id="price" required>
+<button type="button" class="btn btn-primary" id="register_offer">Register offer</button>
+<button type="button" class="btn btn-success" id="accept_offer">Accept offer</button>
+<button type="button" class="btn btn-danger" id="refuse_offer">Refuse offer</button>
+<button type="button" class="btn btn-primary" id="get_offer">Register offer</button>
 </body>
 </html>
