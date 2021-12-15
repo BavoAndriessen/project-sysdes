@@ -6,6 +6,7 @@ import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.VesselState;
+import be.ugent.systemdesign.vesseltrafficcontrol.infrastructure.RouteDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

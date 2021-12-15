@@ -15,28 +15,23 @@ import javax.persistence.Id;
 public class RouteDataModel {
 
     @Id
-    @Getter
     private Integer routeId;
-    @Getter
     private Size sizeCompatibility;
 
     private Integer cost;
     private String route;
     private Integer routeLength;
-    private Integer capacity;
+    private String capacity;
     private Integer destination;
 
-    public RouteDataModel(Integer id, String route, Size sizeCompatibility, Integer routeLength, Integer capacity, Integer dest) {
+    public RouteDataModel(Integer id, String route, Size sizeCompatibility, Integer routeLength, String capacity, Integer dest) {
         this.routeId = id;
         this.route = route;
         this.sizeCompatibility = sizeCompatibility;
         this.routeLength = routeLength;
         this.capacity = capacity;
         this.destination = dest;
-        this.calculateCost();
+        this.cost = 2;
     }
 
-    private void calculateCost(){
-        this.cost = 0;
-    }
 }
