@@ -2,10 +2,10 @@ package be.ugent.systemdesign.ligplaats;
 
 import be.ugent.systemdesign.ligplaats.API.messaging.Channels;
 import be.ugent.systemdesign.ligplaats.application.BerthService;
-import be.ugent.systemdesign.ligplaats.application.event.ContainersReadyAtDockEvent;
-import be.ugent.systemdesign.ligplaats.application.event.EventDispatcher;
-import be.ugent.systemdesign.ligplaats.application.event.EventHandler;
-import be.ugent.systemdesign.ligplaats.application.event.ShipReadyEvent;
+import be.ugent.systemdesign.ligplaats.application.command.CommandHandler;
+import be.ugent.systemdesign.ligplaats.application.event.*;
+import be.ugent.systemdesign.ligplaats.application.query.BerthQuery;
+import be.ugent.systemdesign.ligplaats.application.query.BerthRealModel;
 import be.ugent.systemdesign.ligplaats.domain.*;
 import be.ugent.systemdesign.ligplaats.infrastructure.BerthDataModel;
 import be.ugent.systemdesign.ligplaats.infrastructure.BerthDataModelRepository;
@@ -173,12 +173,12 @@ public class LigplaatsApplication {
 				b = new BerthDataModel(
 						i,
 						(i + 1) *2.0,
-						BerthState.AVAILABLE,
+						BerthState.AVAILABLE.name(),
 						i+1,
 						true,
 						"",
 						i+2,
-						BerthWorkerState.AVAILABLE);
+						BerthWorkerState.AVAILABLE.name());
 				l.add(b);
 			}
 			l.get(1).setVesselId("ship-10");
@@ -190,16 +190,25 @@ public class LigplaatsApplication {
 			System.out.println("location is:================================");
 			System.out.println("berth number -> " + model.getBerthNumber());
 			System.out.println("==============================================================");
-
+			System.out.println(repo.findByVesselId("ship-10").toString());
 			//repo.flush();
 		});
-	} */
+	}*/
 	@Bean
-	CommandLineRunner testBerthQuery(BerthService service, EventHandler eventHandler){
+	CommandLineRunner testBerthQuery(BerthService service, EventHandler eventHandler, CommandHandler ch, BerthRepository repo){
 		return (args -> {
+			//service.fillRepository();
 			service.fillRepository();
-			service.reserveBerth(8.0, "ship-10");
+			service.reserveBerth(8.0, "ship-1");
+			//ch.handelReserveBerth(6.0, "ship-ss");
 
+			service.findAll();
+
+			//System.out.println(service.findAll().size());
+			System.out.println(repo.findByVesselId("ship-1").toString());
+
+			//service.handelContainersReadyAtDock(new ContainersReadyAtDockEvent(repo.findByVesselId("ship-1").getBerthId()));
+			//service.handelShipArriving(new ShipArrivingEvent("ship-1"));
 		});
 	}
 

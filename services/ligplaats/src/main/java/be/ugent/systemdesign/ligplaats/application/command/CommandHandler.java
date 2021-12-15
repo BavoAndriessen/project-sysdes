@@ -13,8 +13,8 @@ public class CommandHandler {
 
     public ReserveBerthResponse handelReserveBerth(Double size, String vesselId) throws Exception {
         try{
-            berthService.reserveBerth(size,vesselId);
-            return new ReserveBerthResponse(ResponseStatus.SUCCESS,"Berth reserved",vesselId);
+            //berthService.reserveBerth(size,vesselId);
+            return berthService.reserveBerth(size, vesselId);
         }catch (Exception e){
             throw new Exception("could not reserve berth.");
         }

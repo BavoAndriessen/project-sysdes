@@ -11,17 +11,20 @@ import org.springframework.web.client.RestTemplate;
 @CrossOrigin(origins="*")
 public class MaintenanceServiceController {
 
-    @Value("${kapiteinsdienstservice}")
-    private String kapiteinsdienstservice;
+    @Value("${berthservice}")
+    private String berthservice;
 
     @GetMapping("/askforservice/{id}")
     public ResponseEntity<String> askForService(@PathVariable("id") String vesselId){
-        getLocationOfBoat(vesselId);
+        try{
+            getLocationOfBoat(vesselId);
+        } catch(Exception e){
+        }
         return new ResponseEntity<>("request maintenance for vessel "+vesselId+" received", HttpStatus.OK);
     }
 
     private void getLocationOfBoat(String vesselId){
-        String uri = "http://" + kapiteinsdienstservice + "/api/berth/?vesselId="+vesselId;
+        String uri = "http://" + berthservice + "/api/berth/?vesselId="+vesselId;
         System.out.println(uri);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);

@@ -5,6 +5,7 @@ import be.ugent.systemdesign.ligplaats.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public class BerthRepositoryImpl implements BerthRepository {
     @Override
     public List<Berth> findAllBySizeAndState(Double size, String state) {
 
-        return berthDMRepo.findBySizeAndState(size, state)
+        return berthDMRepo.findAllBySizeAndState(size, state)
                 .stream()
                 .map(elt -> mapToBerth(elt))
                 .collect(Collectors.toList());
@@ -74,7 +75,7 @@ public class BerthRepositoryImpl implements BerthRepository {
     @Override
     public Berth findByVesselId(String vesselId)
     {
-
+        System.out.println("found: " + vesselId);
         return mapToBerth(berthDMRepo.findByVesselId(vesselId));
     }
 
@@ -98,18 +99,52 @@ public class BerthRepositoryImpl implements BerthRepository {
         BerthDataModel bm = new BerthDataModel(
                 b.getBerthId(),
                 b.getSize(),
-                b.getState(),
+                b.getState().name(),
                 b.getBerthNumber(),
                 b.isDockReady(),
                 b.getVesselId(),
                 b.getWorker().getId(),
-                b.getWorker().getState()
+                b.getWorker().getState().name()
         );
 
         return bm;
     }
     public void flushRepo(){
         berthDMRepo.flush();
+
     }
 
+    @Override
+    public void fillRepository() {
+
+        berthDMRepo.flush();
+        BerthDataModel b = new BerthDataModel(1, 4.0, BerthState.AVAILABLE.name(), 1, true,"",1, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b);
+        BerthDataModel b2 = new BerthDataModel(2, 4.0, BerthState.AVAILABLE.name(), 2, true,"",2, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b2);
+        BerthDataModel b3 = new BerthDataModel(3, 6.0, BerthState.AVAILABLE.name(), 3, true,"",3, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b3);
+        BerthDataModel b4 = new BerthDataModel(4, 6.0, BerthState.AVAILABLE.name(), 4, true,"",4, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b4);
+        BerthDataModel b5 = new BerthDataModel(5, 8.0, BerthState.AVAILABLE.name(), 5, true,"",5, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b5);
+        BerthDataModel b6 = new BerthDataModel(6, 8.0, BerthState.AVAILABLE.name(), 6, true,"",6, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b6);
+        BerthDataModel b7 = new BerthDataModel(7, 10.0, BerthState.AVAILABLE.name(), 7, true,"",7, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b7);
+        BerthDataModel b8 = new BerthDataModel(8, 10.0, BerthState.AVAILABLE.name(), 8, true,"",8, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b8);
+        BerthDataModel b9 = new BerthDataModel(9, 12.0, BerthState.AVAILABLE.name(), 9, true,"",9, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b9);
+        BerthDataModel b10 = new BerthDataModel(10, 12.0, BerthState.AVAILABLE.name(), 10, true,"",10, BerthWorkerState.AVAILABLE.name());
+        berthDMRepo.save(b10);
+    }
+
+
+    @Override
+    public List<Berth> findAll() {
+        return berthDMRepo.findAll().stream()
+                .map(elt -> mapToBerth(elt))
+                .collect(Collectors.toList());
+    }
 }

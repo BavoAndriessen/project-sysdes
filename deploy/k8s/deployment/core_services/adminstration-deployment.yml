@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: administration-deployment
+  labels:
+    app: administration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: administration
+  template:
+    metadata:
+      labels:
+        app: administration
+    spec:
+      containers:
+      - name: administration
+        image: bavoandriessen/administrationservice:latest
+        args: ["--spring.datasource.url=jdbc:postgresql://administration-db-service.default.svc.cluster.local:5432/administration", "--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]

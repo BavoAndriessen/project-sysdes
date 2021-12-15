@@ -8,6 +8,7 @@ import java.util.Random;
 @Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+
 public class Berth {
     private final Integer berthId;
     private final Double size;
@@ -16,7 +17,7 @@ public class Berth {
     private BerthWorker worker;
     private boolean dockReady;
     private String vesselId;
-    public Berth(int BerthId, Double size, BerthState state, int berthNumber, BerthWorker worker, boolean dockReady,String vesselId){
+    public Berth(int BerthId, Double size, BerthState state, int berthNumber, BerthWorker worker, boolean dockReady, String vesselId){
         this.berthId = BerthId;
         this.size = size;
         this.state = state;
@@ -30,9 +31,9 @@ public class Berth {
             this.worker = worker;
         }
     }
-    public void changeStateOfBerth(BerthState newState){
-        this.state = newState;
-    }
+    //public void changeStateOfBerth(BerthState newState){
+    //    this.state = newState;
+    //}
     public boolean berthIsReady(){
         return this.state == BerthState.READY;
     }
@@ -40,12 +41,12 @@ public class Berth {
         return this.state == BerthState.AVAILABLE;
     }
 
-    public void reserveBerth(){
-        this.state = BerthState.RESERVED;
-    }
-    public void undoReservation(){
-        this.state = BerthState.AVAILABLE;
-    }
+    //public void reserveBerth(){
+     //   this.state = BerthState.RESERVED;
+    //}
+    //public void undoReservation(){
+     //   this.state = BerthState.AVAILABLE;
+    //}
     private void addWorker(){
         Random rand = new Random();
         worker = new BerthWorker(rand.nextInt(99999), BerthWorkerState.AVAILABLE, this.berthId);
@@ -58,7 +59,7 @@ public class Berth {
     public String toString() {
         return "Berth{" +
                 "BerthId=" + berthId +
-                ", size='" + size + '\'' +
+                ", size= " + size +
                 ", state=" + state.name() +
                 ", berth_number=" + berthNumber +
                 ",vesselId = " + vesselId  +'}' + "\n"+

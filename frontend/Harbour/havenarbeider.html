@@ -5,6 +5,8 @@
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="js/badgenEnLoon.js" defer></script>
+    <script src="js/scanContainer.js" defer></script>
+    <script src="js/containers.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -30,5 +32,39 @@
 <textarea class="form-control" id="paycheck"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="badge">Badge At Work</button>
 <button type="button" class="btn btn-primary" id="pay">Get Pay</button>
+
+<br>
+<br>
+<label for="containerid">Container id</label>
+<input type="text" class="form-control" id="containerid" required>
+<label for="status">Status</label>
+<select class="form-select" aria-label="Default select example" id="status">
+    <option value="REGISTERED">REGISTERED</option>
+    <option value="ARRIVED">ARRIVED</option>
+    <option value="TRANSIT_NOT_APPROVED">TRANSIT_NOT_APPROVED</option>
+    <option value="TRANSIT_APPROVED">TRANSIT_APPROVED</option>
+    <option value="READY_AT_DOCK">READY_AT_DOCK</option>
+    <option value="LOADED">LOADED</option>
+    <option value="RELEASED">RELEASED</option>
+</select>
+<br>
+<label for="containerlocationtype">Container location type</label>
+<select class="form-select" aria-label="Default select example" id="containerlocationtype">
+    <option value="SHIP">SHIP</option>
+    <option value="EXTERNAL_TRANSPORT">EXTERNAL_TRANSPORT</option>
+    <option value="TRANSIT">TRANSIT</option>
+    <option value="DOCK">DOCK</option>
+    <option value="UNKNOWN">UNKNOWN</option>
+</select>
+<br>
+<label for="locationid">Location Identifier</label>
+<input type="number" class="form-control" id="locationid" required>
+<label for="scancontainerresponse">Scan container response</label>
+<textarea class="form-control" id="scancontainerresponse"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="scancontainer">Scan container</button>
+<br>
+<br>
+<textarea class="form-control" id="transfercommandsresponse"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="gettransfercommands">Get transfer commands</button>
 </body>
 </html>
