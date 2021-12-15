@@ -1,11 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gateway-service
+  name: vtc-service
 spec:
   selector:
-    app: gateway
+    app: vtc
   ports:
   - port: 8080
     targetPort: 8080
-    

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: berth-deployment
+  labels:
+    app: berth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: berth
+  template:
+    metadata:
+      labels:
+        app: berth
+    spec:
+      containers:
+      - name: berth
+        image: bavoandriessen/ligplaats:latest
+        args: ["--spring.datasource.url=jdbc:postgresql://berth-db-service.default.svc.cluster.local:5432/berthDb", "--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]

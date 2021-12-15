@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vtc-deployment
+  labels:
+    app: vtc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vtc
+  template:
+    metadata:
+      labels:
+        app: vtc
+    spec:
+      containers:
+      - name: vtc
+        image: bavoandriessen/vesseltrafficcontrol:latest
+        imagePullPolicy: Always
+        args: ["--spring.datasource.url=jdbc:postgresql://vtc-db-service.default.svc.cluster.local:5432/routes", "--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]

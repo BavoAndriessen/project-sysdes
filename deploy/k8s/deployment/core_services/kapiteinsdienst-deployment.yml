@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kapiteinsdienst-deployment
+  labels:
+    app: kapiteinsdienst
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kapiteinsdienst
+  template:
+    metadata:
+      labels:
+        app: kapiteinsdienst
+    spec:
+      containers:
+      - name: kapiteinsdienst
+        image: bavoandriessen/kapiteinsdienst:latest
+        args: ["--spring.datasource.url=jdbc:postgresql://kapiteinsdienst-db-service.default.svc.cluster.local:5432/kapiteinsdienst", "--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local"]

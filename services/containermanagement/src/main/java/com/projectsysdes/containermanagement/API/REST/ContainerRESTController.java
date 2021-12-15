@@ -22,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/containers")
+@CrossOrigin("*")
 public class ContainerRESTController {
 
     @Autowired
