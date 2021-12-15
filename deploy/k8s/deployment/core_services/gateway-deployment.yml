@@ -16,14 +16,20 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: bavoandriessen/gateway:latest
-        args: ["--containers=container-management-service.default.svc.cluster.local:8080", 
-          "--administration=administration-service.default.svc.cluster.local:8080", 
-          "--kapiteinsdienst=kapiteinsdienst-service.default.svc.cluster.local:8080", 
-          "--berth=berth-service.default.svc.cluster.local:8080", 
-          "--maintenanceservice=maintenance-service.default.svc.cluster.local:8080", 
-          "--towingpilotage=towingpilotage-service.default.svc.cluster.local:8080", 
-          #TODO: "--vtc=vtc-service.default.svc.cluster.local:8080"
-              ]
+        image: bavoandriessen/apigateway:latest
+        env:
+        - name: CONTAINER_MANAGEMENT_HOST
+          value: "container-management-service.default.svc.cluster.local"
+        - name: ADMINISTRATION_HOST
+          value: "administration-service.default.svc.cluster.local"
+        - name: KAPITEINSDIENST_HOST
+          value: "kapiteinsdienst-service.default.svc.cluster.local"
+        - name: BERTH_HOST
+          value: "berth-service.default.svc.cluster.local"
+        - name: MAINTENANCE_HOST
+          value: "maintenance-service.default.svc.cluster.local"
+        - name: TOWINGPILOTAGE_HOST
+          value: "towingpilotage-service.default.svc.cluster.local"
+        #- name: VTC_HOST
         ports:
         - containerPort: 8080
