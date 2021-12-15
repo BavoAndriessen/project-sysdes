@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vtc-service
+spec:
+  selector:
+    app: vtc
+  ports:
+  - port: 8080
+    targetPort: 8080
