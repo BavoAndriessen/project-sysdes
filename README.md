@@ -22,3 +22,13 @@ For chrome, you can execute the following commands:
 
 `google-chrome --disable-web-security -–allow-file-access-from-files`
 
+
+
+## Deploying
+
+You can find the script to build all jars in the "deploy" folder, along with the docker-compose.yml file and the kubernetes resource files. 
+
+
+
+
+
