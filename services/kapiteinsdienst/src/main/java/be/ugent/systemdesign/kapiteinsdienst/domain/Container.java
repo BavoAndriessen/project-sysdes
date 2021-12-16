@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-//TODO enkel voor test behouden
 @AllArgsConstructor
 public class Container {
 

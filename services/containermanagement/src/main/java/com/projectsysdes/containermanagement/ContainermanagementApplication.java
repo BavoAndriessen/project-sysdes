@@ -73,7 +73,7 @@ public class ContainermanagementApplication {
 //            // scan => READY_AT_DOCK
 //            sendPOSTRequest(new ContainerScannedEvent(1, ContainerState.READY_AT_DOCK, new ContainerLocation(ContainerLocationType.EXTERNAL_TRANSPORT, 678)), "scan");
 //
-//            // TODO: verdere logica uittesten (van containerstate RELEASE bv)
+//
 //
 //            // nu zou er een event command moeten aangemaakt worden
 //            logger.info("> testing TransferCommands in repo");
