@@ -1,0 +1,19 @@
+.foto-hide{
+    alignment: center;
+    margin-left: 420px;
+    visibility: hidden;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.foto-show{
+    alignment: center;
+    margin-left: 420px;
+    visibility: visible;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+button{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}

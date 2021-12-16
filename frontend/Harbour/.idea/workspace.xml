@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45285721-ff2c-4ae7-a000-65a1beb4b847" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../deploy/ligplaats-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../deploy/ligplaats-service.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/API/REST/BerthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/API/REST/BerthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/LigplaatsApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/LigplaatsApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/application/BerthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/application/BerthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/infrastructure/BerthDataModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/infrastructure/BerthDataModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/infrastructure/BerthRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../services/ligplaats/src/main/java/be/ugent/systemdesign/ligplaats/infrastructure/BerthRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../services/ligplaats/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../services/ligplaats/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,15 +30,17 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/ugent/website_de_huizen" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -46,20 +55,14 @@
       <workItem from="1639493964355" duration="194000" />
       <workItem from="1639494173718" duration="46000" />
       <workItem from="1639494233784" duration="114000" />
+      <workItem from="1639644272032" duration="34000" />
+      <workItem from="1639644332903" duration="16000" />
+      <workItem from="1639644350110" duration="9000" />
+      <workItem from="1639644447200" duration="24000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1639494155830">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1639494155830" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1639494242355">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1639494242355" />
+    <option name="version" value="3" />
   </component>
 </project>

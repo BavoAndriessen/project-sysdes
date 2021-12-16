@@ -117,7 +117,7 @@ public class BerthRepositoryImpl implements BerthRepository {
     @Override
     public void fillRepository() {
 
-        berthDMRepo.flush();
+        berthDMRepo.deleteAll();
         BerthDataModel b = new BerthDataModel(1, 4.0, BerthState.AVAILABLE.name(), 1, true,"",1, BerthWorkerState.AVAILABLE.name());
         berthDMRepo.save(b);
         BerthDataModel b2 = new BerthDataModel(2, 4.0, BerthState.AVAILABLE.name(), 2, true,"",2, BerthWorkerState.AVAILABLE.name());
@@ -138,6 +138,7 @@ public class BerthRepositoryImpl implements BerthRepository {
         berthDMRepo.save(b9);
         BerthDataModel b10 = new BerthDataModel(10, 12.0, BerthState.AVAILABLE.name(), 10, true,"",10, BerthWorkerState.AVAILABLE.name());
         berthDMRepo.save(b10);
+        //berthDMRepo.flush();
     }
 
 

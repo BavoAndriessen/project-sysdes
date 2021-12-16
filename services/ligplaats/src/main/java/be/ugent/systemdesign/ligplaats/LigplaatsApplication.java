@@ -197,15 +197,15 @@ public class LigplaatsApplication {
 	@Bean
 	CommandLineRunner testBerthQuery(BerthService service, EventHandler eventHandler, CommandHandler ch, BerthRepository repo){
 		return (args -> {
-			//service.fillRepository();
+
 			service.fillRepository();
-			service.reserveBerth(8.0, "ship-1");
+			//service.reserveBerth(8.0, "ship-1");
 			//ch.handelReserveBerth(6.0, "ship-ss");
 
 			service.findAll();
 
 			//System.out.println(service.findAll().size());
-			System.out.println(repo.findByVesselId("ship-1").toString());
+			//System.out.println(repo.findByVesselId("ship-1").toString());
 
 			//service.handelContainersReadyAtDock(new ContainersReadyAtDockEvent(repo.findByVesselId("ship-1").getBerthId()));
 			//service.handelShipArriving(new ShipArrivingEvent("ship-1"));
