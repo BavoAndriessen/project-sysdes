@@ -10,7 +10,6 @@ button_get_container.addEventListener('click', async () => {
             "Connection": "keep-alive",
             "Accept" : "*/*",
         },
-        mode:"no-cors",
     })
         .then(response => {
             if(response.status === 200){
