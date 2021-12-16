@@ -1,3 +1,3 @@
 ## Frontend
 
-Voor het timebadgen en get paycheck bij dokwerker, havenarbeider, loods en sleepbootkapitein kan enkel staffId 1 en 5 gebruikt worden om te testen.
+To test the time badging and get paycheck functionality of the 'dokwerker', 'havenarbeider', 'loods' and 'sleepbootkapitein' dashboards, the staffId's 1 and 5 can be used.
