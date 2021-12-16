@@ -17,6 +17,9 @@ let registerResponse = document.getElementById("registerResponse");
 let vesselidforconfirmation_input = document.getElementById("vesselIdForConfirmation");
 let offerConfirmationResponse = document.getElementById("offerConfirmationResponse");
 
+let host = "193.191.169.28"
+let port = 80
+
 register_button.addEventListener('click', async() => {
     let date = date_field.value
     let servicesList = [];
@@ -40,7 +43,7 @@ register_button.addEventListener('click', async() => {
 
     console.log(JSON.stringify(body));
 
-    fetch('http://localhost:2005/api/kapiteinsdienst/registerVessel', {
+    fetch('http://' + host + ":" + port + '/api/kapiteinsdienst/registerVessel', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",
@@ -60,7 +63,7 @@ register_button.addEventListener('click', async() => {
 });
 
 accept_button.addEventListener('click', () => {
-    fetch('http://localhost:2005/api/kapiteinsdienst/'+ vesselidforconfirmation_input.value +'/offerConfirmation?confirmation=true', {
+    fetch('http://' + host + ":" + port + '/api/kapiteinsdienst/'+ vesselidforconfirmation_input.value +'/offerConfirmation?confirmation=true', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",
@@ -76,7 +79,7 @@ accept_button.addEventListener('click', () => {
 });
 
 refuse_button.addEventListener('click', () => {
-    fetch('http://localhost:2005/api/kapiteinsdienst/'+ vesselidforconfirmation_input.value +'/offerConfirmation?confirmation=false', {
+    fetch('http://' + host + ":" + port + '/api/kapiteinsdienst/'+ vesselidforconfirmation_input.value +'/offerConfirmation?confirmation=false', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",
@@ -92,7 +95,7 @@ refuse_button.addEventListener('click', () => {
 });
 
 get_button.addEventListener('click', () => {
-    fetch('http://localhost:2005/api/kapiteinsdienst/offer?id='+vesselidforoffer_input.value,{
+    fetch('http://' + host + ":" + port + '/api/kapiteinsdienst/offer?id='+vesselidforoffer_input.value,{
         method: 'get',
             headers: {
             "Content-Type": "application/json",

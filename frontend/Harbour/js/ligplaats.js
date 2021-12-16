@@ -7,7 +7,7 @@ let fillTabel = document.getElementById("get_all_berths")
 let response = document.getElementById("load_process");
 loadContainers.addEventListener('click', async () => {
     response.data = "";
-    fetch(`http://localhost:8080/api/berth/load/${berthId.value}`, {
+    fetch('http://' + host + ":" + port + '/api/berth/load/' + berthId.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
@@ -32,7 +32,7 @@ loadContainers.addEventListener('click', async () => {
 
 unloadContainers.addEventListener('click', async () => {
     response.data = "";
-    fetch(`http://localhost:8080/api/berth/unload/${berthId.value}`, {
+    fetch('http://' + host + ":" + port + '/api/berth/unload/' + berthId.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,7 @@ unloadContainers.addEventListener('click', async () => {
 });
 fillTabel.addEventListener('click', async () => {
     response.data = "";
-    fetch(`http://localhost:8080/api/berth/all`, {
+    fetch('http://' + host + ":" + port + '/api/berth/all', {
         method: 'get',
         headers: {
             "Content-Type": "application/json",

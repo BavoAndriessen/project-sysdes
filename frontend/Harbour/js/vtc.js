@@ -9,10 +9,12 @@ const gatestateresponse = document.getElementById("gatestateresponse");
 const gateid = document.getElementById("gateidforvtc");
 const changestateresponsebutton = document.getElementById("changestateresponsebutton");
 
+let port4 = 80;
+let host4 = "193.191.169.28";
 if(registervesselvtcbutton){
     registervesselvtcbutton.addEventListener('click', async () => {
         let data = createData();
-        fetch('http://localhost:2006/api/vtc/', {
+        fetch('http://' + host4 + ":" + port4 + '/api/vtc/', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -26,10 +28,9 @@ if(registervesselvtcbutton){
 
     });
 }
-
-if(gatesstatusresponsebutton){
+if(gatesstatusresponsebutton) {
     gatesstatusresponsebutton.addEventListener('click', async () => {
-        fetch('http://localhost:2006/api/vtc/commands/change_gate', {
+        fetch('http://' + host4 + ":" + port4 + '/api/vtc/commands/change_gate', {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -42,11 +43,9 @@ if(gatesstatusresponsebutton){
 
     });
 }
-
-if(changestateresponsebutton){
-
+if(changestateresponsebutton) {
     changestateresponsebutton.addEventListener('click', async () => {
-        fetch('http://localhost:2006/api/vtc/gate/'+gateid.value, {
+        fetch('http://' + host4 + ":" + port4 + '/api/vtc/gate' + gateid.value, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -59,9 +58,6 @@ if(changestateresponsebutton){
 
     });
 }
-
-
-
 function createData(){
     return JSON.stringify({"vesselId": vesselidforvtc.value,"size":vesselsizeforvtc.value,"state": vesselstateforvtc.value});
 }
