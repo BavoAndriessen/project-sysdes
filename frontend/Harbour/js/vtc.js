@@ -9,10 +9,12 @@ const gatestateresponse = document.getElementById("gatestateresponse");
 const gateid = document.getElementById("gateidforvtc");
 const changestateresponsebutton = document.getElementById("changestateresponsebutton");
 
+let port4 = 80
+let host4 = "193.191.169.28"
 
 registervesselvtcbutton.addEventListener('click', async () => {
     let data = createData();
-    fetch('http://localhost:2006/api/vtc/', {
+    fetch('http://' + host4 + ":" + port4 + '/api/vtc/', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -27,7 +29,7 @@ registervesselvtcbutton.addEventListener('click', async () => {
 });
 
 gatesstatusresponsebutton.addEventListener('click', async () => {
-    fetch('http://localhost:2006/api/vtc/commands/change_gate', {
+    fetch('http://' + host4 + ":" + port4 + '/api/vtc/commands/change_gate', {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -41,7 +43,7 @@ gatesstatusresponsebutton.addEventListener('click', async () => {
 });
 
 changestateresponsebutton.addEventListener('click', async () => {
-    fetch('http://localhost:2006/api/vtc/gate'+gateid.value, {
+    fetch('http://' + host4 + ":" + port4 + '/api/vtc/gate'+gateid.value, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",

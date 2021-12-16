@@ -1,7 +1,7 @@
 var arrivedWithContainersButton = document.getElementById("arrivedWithContainersButton");
 
-let host_2 = "localhost"
-let port_2 = 2000
+let host_2 = "193.191.169.28"
+let port_2 = 80
 
 arrivedWithContainersButton.addEventListener('click', () => {
     let containerIds_str = document.getElementById("arrivedContainerIds").value;

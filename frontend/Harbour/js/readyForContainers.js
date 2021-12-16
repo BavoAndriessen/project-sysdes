@@ -1,7 +1,7 @@
 var readyForContainersButton = document.getElementById("sendReadyForContainersButton");
 
-let host = "localhost"
-let port = 2000
+let host3 = "193.191.169.28"
+let port3 = 80
 
 readyForContainersButton.addEventListener('click', () => {
     let containerIds_str = document.getElementById("containerIds").value;
@@ -14,7 +14,7 @@ readyForContainersButton.addEventListener('click', () => {
 
     console.log(data)
     console.log(JSON.stringify(data))
-    fetch('http://' + host + ":" + port + '/api/containers/ready', {
+    fetch('http://' + host3 + ":" + port3 + '/api/containers/ready', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",

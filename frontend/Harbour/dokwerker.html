@@ -5,64 +5,104 @@
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="js/badgenEnLoon.js" defer></script>
+    <script src="js/ligplaats.js" defer></script>
     <script src="js/scanContainer.js" defer></script>
     <script src="js/vtc.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/foto.css">
 </head>
 <body>
-<ul class="nav nav-tabs">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="scheepsagent.html">Scheepsagent</a></li>
-    <li><a href="kapitein.html">Kapitein</a></li>
-    <li  class="active"><a href="dokwerker.html">Dokwerker</a></li>
-    <li><a href="extern.html">Extern Vervoersbedrijf</a></li>
-    <li><a href="havenarbeider.html">Havenarbeider</a></li>
-    <li><a href="loods.html">Loods</a></li>
-    <li><a href="sleepboot.html">Sleepbootkapitein</a></li>
-    <li><a href="kwaliteit.html">Kwaliteitscontrole</a></li>
-    <li><a href="douane.html">Douane</a></li>
-</ul>
-<h1>Dashboard Dokwerker</h1>
-<label for="staff">Staff id</label>
-<input type="text" class="form-control" id="staff" required>
-<label for="confirmation">Confirmation of badging</label>
-<input type="text" class="form-control" id="confirmation" readonly>
-<label for="paycheck">Paycheck</label>
-<textarea class="form-control" id="paycheck"  rows="3" readonly></textarea>
-<button type="button" class="btn btn-primary" id="badge">Badge At Work</button>
-<button type="button" class="btn btn-primary" id="pay">Get Pay</button>
-<br>
-<br>
-<label for="containerid">Container id</label>
-<input type="text" class="form-control" id="containerid" required>
-<label for="status">Status</label>
-<select class="form-select" aria-label="Default select example" id="status">
-    <option value="REGISTERED">REGISTERED</option>
-    <option value="ARRIVED">ARRIVED</option>
-    <option value="TRANSIT_NOT_APPROVED">TRANSIT_NOT_APPROVED</option>
-    <option value="TRANSIT_APPROVED">TRANSIT_APPROVED</option>
-    <option value="READY_AT_DOCK">READY_AT_DOCK</option>
-    <option value="LOADED">LOADED</option>
-    <option value="RELEASED">RELEASED</option>
-</select>
-<br>
-<label for="containerlocationtype">Container location type</label>
-<select class="form-select" aria-label="Default select example" id="containerlocationtype">
-    <option value="SHIP">SHIP</option>
-    <option value="EXTERNAL_TRANSPORT">EXTERNAL_TRANSPORT</option>
-    <option value="TRANSIT">TRANSIT</option>
-    <option value="DOCK">DOCK</option>
-    <option value="UNKNOWN">UNKNOWN</option>
-</select>
-<br>
-<label for="locationid">Location Identifier</label>
-<input type="number" class="form-control" id="locationid" required>
-<label for="scancontainerresponse">Scan container response</label>
-<textarea class="form-control" id="scancontainerresponse"  rows="3" readonly></textarea>
-<button type="button" class="btn btn-primary" id="scancontainer">Scan container</button>
+    <div class="container bg-light">
+        <div class="row">
+            <div class="col-6">
+                <ul class="nav nav-tabs">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="scheepsagent.html">Scheepsagent</a></li>
+                    <li><a href="kapitein.html">Kapitein</a></li>
+                    <li  class="active"><a href="dokwerker.html">Dokwerker</a></li>
+                    <li><a href="extern.html">Extern Vervoersbedrijf</a></li>
+                    <li><a href="havenarbeider.html">Havenarbeider</a></li>
+                    <li><a href="loods.html">Loods</a></li>
+                    <li><a href="sleepboot.html">Sleepbootkapitein</a></li>
+                    <li><a href="kwaliteit.html">Kwaliteitscontrole</a></li>
+                    <li><a href="douane.html">Douane</a></li>
+                </ul>
+                <h1>Dashboard Dokwerker</h1>
+                <label for="staff">Staff id</label>
+                <input type="text" class="form-control" id="staff" required>
+                <label for="confirmation">Confirmation of badging</label>
+                <input type="text" class="form-control" id="confirmation" readonly>
+                <label for="paycheck">Paycheck</label>
+                <textarea class="form-control" id="paycheck"  rows="3" readonly></textarea>
+                <button type="button" class="btn btn-primary" id="badge">Badge At Work</button>
+                <button type="button" class="btn btn-primary" id="pay">Get Pay</button>
+                <br>
+                <br>
+                <label for="containerid">Container id</label>
+                <input type="text" class="form-control" id="containerid" required>
+                <label for="status">Status</label>
+                <select class="form-select" aria-label="Default select example" id="status">
+                    <option value="REGISTERED">REGISTERED</option>
+                    <option value="ARRIVED">ARRIVED</option>
+                    <option value="TRANSIT_NOT_APPROVED">TRANSIT_NOT_APPROVED</option>
+                    <option value="TRANSIT_APPROVED">TRANSIT_APPROVED</option>
+                    <option value="READY_AT_DOCK">READY_AT_DOCK</option>
+                    <option value="LOADED">LOADED</option>
+                    <option value="RELEASED">RELEASED</option>
+                </select>
+                <br>
+                <label for="containerlocationtype">Container location type</label>
+                <select class="form-select" aria-label="Default select example" id="containerlocationtype">
+                    <option value="SHIP">SHIP</option>
+                    <option value="EXTERNAL_TRANSPORT">EXTERNAL_TRANSPORT</option>
+                    <option value="TRANSIT">TRANSIT</option>
+                    <option value="DOCK">DOCK</option>
+                    <option value="UNKNOWN">UNKNOWN</option>
+                </select>
+                <br>
+                <label for="locationid">Location Identifier</label>
+                <input type="number" class="form-control" id="locationid" required>
+                <label for="scancontainerresponse">Scan container response</label>
+                <textarea class="form-control" id="scancontainerresponse"  rows="3" readonly></textarea>
+                <button type="button" class="btn btn-primary" id="scancontainer">Scan container</button>
+        
+        
+                <div class="text-center">
+                    <H2>Load/unload Containers</H2>
+                    <input type="number" class="form-control" id="ligplaatsId">
+                    <label for="load_process">Response from dock worker:</label>
+                    <textarea class="form-control" id="load_process"  rows="3" readonly></textarea>
+                    <button type="button" class="btn btn-success" id="loadContainers" onclick="showHideFoto()">LoadContainers</button>
+                    <button type="button" class="btn btn-danger" id="unloadContainers" onclick="showHideFoto()">UnLoadContainers</button>
+                </div>
+            </div>
+        </div>
+        <div class="align-middle">
+            <img src="fotos/popeye-sailor.gif" class="foto-hide" id="poppei">
+        </div>
+        <button type="button" class="btn btn-success" id="get_all_berths">Get overview of available berths</button>
 
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">berth_id</th>
+                    <th scope="col">size</th>
+                    <th scope="col">state</th>
+                    <th scope="col">berth_number</th>
+                    <th scope="col">worker_id</th>
+                    <th scope="col">worker_state</th>
+                    <th scope="col">docked ship_id</th>
+                </tr>
+                </thead>
+                <tbody id="alle_ligplaatsen">
 
+                </tbody>
+            </table>
+        </div>
+    </div>
 <br>
 <br>
 <br>
@@ -78,7 +118,6 @@
 <input type="text" class="form-control" id="gateidforvtc" required>
 <textarea type="text" rows="3" class="form-control" id="gatestateresponse" readonly></textarea>
 <button type="button" class="btn btn-primary" id="changestateresponsebutton">Change gate state</button>
-
 
 </body>
 </html>

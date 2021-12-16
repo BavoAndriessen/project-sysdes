@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -37,7 +38,8 @@ public class BerthServiceImpl implements BerthService{
 
         if (bs.isEmpty()){
             System.out.println("failed");
-            return new ReserveBerthResponse(ResponseStatus.FAIL,"there is no berth available");
+            return new ReserveBerthResponse(ResponseStatus.FAIL,"there is no berth available with size:" +
+                    " " + size + " and status:AVAILABLE");
         }
             //pak de eerste ligplaats van de lijst.
         b = bs.get(0);
@@ -45,7 +47,7 @@ public class BerthServiceImpl implements BerthService{
         b.setVesselId(vesselId);
         System.out.println("berthId: " + b.getBerthId());
         berthRepo.save(b);
-        return new ReserveBerthResponse(ResponseStatus.SUCCESS,"berth reserved");
+        return new ReserveBerthResponse(ResponseStatus.SUCCESS,"berth reserved", vesselId);
         //} catch (Exception e) {
             //return new ReserveBerthResponse(ResponseStatus.FAIL,"berth reserved");
             //e.printStackTrace();
@@ -109,9 +111,8 @@ public class BerthServiceImpl implements BerthService{
         berth.getWorker().setState(BerthWorkerState.BUSY);
         //TimeUnit.SECONDS.sleep(3);
         System.out.println(" loading containers");
-        sendShipReady(command.getBerthId());
         berthRepo.save(berth);
-
+        TimeUnit.SECONDS.sleep(3);
         //de dok werker (super man) gaat na 3 seconden klaar zijn, hierna wordt het event ship_ready gestuud
         sendShipReady(command.getBerthId());
     }
@@ -123,8 +124,11 @@ public class BerthServiceImpl implements BerthService{
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
-        System.out.println(" unloading containers");
         berthRepo.save(berth);
+        TimeUnit.SECONDS.sleep(3);
+        System.out.println(" unloading containers");
+
+        sendShipReady(command.getBerthId());
     }
 
     @Override
@@ -186,7 +190,7 @@ public class BerthServiceImpl implements BerthService{
             setWorkerStatusAtDock(BerthWorkerState.BUSY, e.getBerthId());
             //TimeUnit.SECONDS.sleep(3);
             System.out.println("finished loading the containers, sending ship ship ready message to VTC");
-            sendShipReady(e.getBerthId());
+            //sendShipReady(e.getBerthId());
 
         }catch (Exception ex){
             throw new Exception("error in handelContainerReadyAtDock.");
