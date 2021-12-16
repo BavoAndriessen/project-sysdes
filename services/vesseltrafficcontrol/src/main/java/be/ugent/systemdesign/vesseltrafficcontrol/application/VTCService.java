@@ -40,7 +40,6 @@ public class VTCService implements IVTCService{
         }
     }
 
-    // Destination 0 is the ocean, 1-10 are the docks
     @Override
     public Response findRoute(String vesselId, Integer destination) {
         Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
