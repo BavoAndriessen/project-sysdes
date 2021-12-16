@@ -3,16 +3,15 @@ package be.ugent.systemdesign.vesseltrafficcontrol.application;
 import be.ugent.systemdesign.vesseltrafficcontrol.application.event.EventDispatcher;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Gate;
-import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.VesselState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.NavigateShipEvent;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.ShipArrivingEvent;
 import be.ugent.systemdesign.vesseltrafficcontrol.infrastructure.exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -47,6 +46,9 @@ public class VTCService implements IVTCService{
             try {
                 String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
                 eventDispatcher.publishNavigateShipEvent(new NavigateShipEvent(vesselId, routePath));
+                if(destination != 0) {
+                    eventDispatcher.publishShipArrivingEvent(new ShipArrivingEvent(vesselId, destination));
+                }
                 return new Response(ResponseStatus.SUCCESS, "Found a route via " + routePath + "for vessel with id: " + vesselId);
             } catch (RouteNotFoundException exception) {
                 return new Response(ResponseStatus.FAILED, "no route found");
