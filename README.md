@@ -30,10 +30,14 @@ For chrome, you can execute the following commands:
 You can find the script to build all jars in the "deploy" folder, along with the docker-compose.yml file and the kubernetes resource files. 
 
 
+
 =============================================================================
 
 ## ReadMe Ligplaats:
 
+### for the dokwerker HTML page (frontend): when you click again on the button "get overview of available berths" the data with be duplicated in the HTML page, that happens because it is forgotten to delete the old data from the table so the new data will be appended to the table,. you can just click on the refresh page button to get the latest data
+
+## overview of important methods:
 Ship Arriving: 
 wordt behandeld door event handler, deze gaat de ligplaats op status ready zetten. Daarna wordt er een dock_ready event opgestuurd.
 -	Params: vesselId
