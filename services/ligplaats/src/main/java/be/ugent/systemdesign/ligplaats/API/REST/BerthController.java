@@ -35,13 +35,13 @@ public class BerthController {
     @GetMapping("/unload/{berthId}")
     public String unloadContainers(@PathVariable("berthId") Integer berthId) throws Exception {
         berthService.handelUnloadContainersREST(new UnloadContainersCommand(berthId));
-        return "the containers are unloaded, ship ready event is sent to VTC. ship has left and the berth is now available again";
+        return "the containers are unloaded(thanks to Popeye), ship ready event is sent to VTC. ship has left and the berth is now available again";
     }
 
     @GetMapping("/load/{berthId}")
     public String loadContainers(@PathVariable("berthId") Integer berthId) throws Exception {
         berthService.handelLoadContainersREST(new LoadContainersCommand(berthId));
-        return "the containers are loaded, ship ready event is sent to VTC. ship has left and the berth is now available again";
+        return "the containers are loaded(thanks to Popeye), ship ready event is sent to VTC. ship has left and the berth is now available again.";
     }
     @GetMapping("/all")
     public List<Berth> getAll() throws Exception {
