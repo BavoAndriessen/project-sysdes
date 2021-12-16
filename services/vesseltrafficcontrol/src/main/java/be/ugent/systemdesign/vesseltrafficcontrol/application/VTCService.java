@@ -56,11 +56,10 @@ public class VTCService implements IVTCService{
     }
 
     @Override
-    @Async
     public Response registerVessel(Vessel vessel) {
         vessels.add(vessel);
-        while(freeDocks.isEmpty()){
-            System.out.println("no dock available");
+        if(freeDocks.isEmpty()){
+            return new Response(ResponseStatus.FAILED, "no dock ready now, try again later!");
         }
         Optional<Integer> dock = freeDocks.stream().findFirst();
         return findRoute(vessel.getVesselId(), dock.get());
