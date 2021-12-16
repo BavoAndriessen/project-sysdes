@@ -45,7 +45,7 @@ if(gatesstatusresponsebutton) {
 }
 if(changestateresponsebutton) {
     changestateresponsebutton.addEventListener('click', async () => {
-        fetch('http://' + host4 + ":" + port4 + '/api/vtc/gate' + gateid.value, {
+        fetch('http://' + host4 + ":" + port4 + '/api/vtc/gate/' + gateid.value, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
