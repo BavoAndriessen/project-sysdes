@@ -4,6 +4,8 @@
 
 ## IMPORTANT NOTICE
 
+
+
 We experienced CORS problems when using the front-end. 
 
 To be able to use the frontend, you must start your browser with security checks disabled, to disable a security policy. 
@@ -22,7 +24,7 @@ For chrome, you can execute the following commands:
 
 `google-chrome --disable-web-security -–allow-file-access-from-files`
 
-
+# to view the frontend please open the index HTML page (to be found in folder "frontend") in the bowser without security checks.
 
 
 ## Deploying
@@ -42,39 +44,49 @@ Ship Arriving:
 wordt behandeld door event handler, deze gaat de ligplaats op status ready zetten. Daarna wordt er een dock_ready event opgestuurd.
 -	Params: vesselId
 
-Dock_ready:
+
+# Dock_ready:
 send event, wordt opgestuurd wanneer ship arriving event ontvangen wordt.
 -	Params: berthId, berthNumber
-load containers:
+
+
+# load containers:
 receive command, deze moet de dock werker op status busy zetten, wacht 5 seconden en daarna stuurt een event ship_ready 
 -	Params: berthId
 
-UnloadContainers:
+
+# UnloadContainers:
 receive command is analoog met load containers.
 Containers_ready_at_dock: 
 Consume event, als dit event ontvangen is wordt de status van de werker op busy gezet.
 Hierna moet men wachten op de command load containers? 
 
-reserveBerth: 
+
+# reserveBerth: 
 receive command, maak reservatie van een berth. Deze moet de status van de ligplaats veranderen  naar RESERVED en dan vesselId invullen.
 -	Params: vesselId, vesselSize
 
 
-berthReserved:  
+
+# berthReserved:  
 send reply, wordt onmiddellijk terug gestuurd wanneer reserve berth behandeld is met dan de status van reservatie.
 -	Params: vesselId.
-undoReservation: 
+
+
+# undoReservation: 
 receive command, zet de ligplaats en dok werker op status AVAILABLE en zet de vesselId van ligplaats op lege string.
 -	Params: vesselId
 
 
-getLocationOfBoat: 
+
+# getLocationOfBoat: 
 wanneer deze query wordt ontvangen via REST, wordt als reply het nummer van ligplaats waar de schip staat, teruggegeven. Zie BerthController.
 -	Params: vesselId
-ShipReady: 
+
+
+# ShipReady: 
 send Event, hiermee wordt de dock-werker en de ligplaats op status AVAILABLE gezet, vesselId van de ligplaats wordt dan ook lege string.
 -	Params: vesselId, berthNumber
-
 
 
 # Operatie Ligplats:
@@ -86,4 +98,5 @@ Wanneer undo reservation command ontvangen wordt, wordt de status van de ligplaa
 Andere diensten kunnen de ligplaats waar een bepaalde schip staat opvragen op basis van de vesselId, hiervoor dient er een REST oproep opgestturd te worden naar de BerthController.
 
 ====================================================================================
+
 
