@@ -75,9 +75,9 @@ send Event, hiermee wordt de dock-werker en de ligplaats op status AVAILABLE gez
 Eerste wordt de reservatie gemaakt op basis van de command reserve berth, hiermee wordt de vesselId in de ligplaats gevuld en de status van de ligplaats op RESERVED gezet. Berth reserved wordt automatisch teruggestuurd naar de kapiteinsdienst met de status van de reservatie. Wanneer het event ship arriving ontvangen wordt, verandert de status van de ligplaats naar READY en wordt het event dock ready gestuurd naar VTC met dan de vesselId.
 Daarna wordt er gewacht op het event containers ready at dock.
 Load containers gebeurt dan ofwel op basis van het event containers ready at dock, ofwel via de REST API. 
-De dok werker heeft 3 seconden nodig (science fiction, ja je hebt gelijk, we  hebben  popeye aangewerft in onze zeehaven)  om de containers op te laden (in methode handelShipArriving in event handler) en daarna wordt het event ship ready naar VTC gestuurd, methode ship ready gaat dan de status van ligplaats en dok werker op AVAILABLE zetten en vesselId van klasse Berth wordt dan lege string.
+De dok werker heeft fractie van seonde nodig (science fiction, we  hebben  popeye aangewerft in onze zeehaven)  om de containers op te laden (in methode handelShipArriving in event handler) en daarna wordt het event ship ready naar VTC gestuurd, methode ship ready gaat dan de status van ligplaats en dok werker op AVAILABLE zetten en vesselId van klasse Berth wordt dan lege string.
 
-Wanneer undo reservation command ontvangen wordt, wordt de status van de ligplaats en dockerwerken weer op available gezet ne vesselId wordt dan ook weer een lege string.
+Wanneer undo reservation command ontvangen wordt, wordt de status van de ligplaats en dockerwerken onmeddillijk op available gezet ne vesselId wordt dan ook weer een lege string.
 Andere diensten kunnen de ligplaats waar een bepaalde schip staat opvragen op basis van de vesselId, hiervoor dient er een REST oproep opgestturd te worden naar de BerthController.
 
 
