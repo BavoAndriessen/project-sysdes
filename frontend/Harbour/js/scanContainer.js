@@ -6,7 +6,7 @@ let host5 = "193.191.169.28"
 let port5 = 80
 
 scan_container.addEventListener('click', async () => {
-    let data = createData();
+    let data = createScanData();
     console.log(data);
     fetch('http://' + host5 + ":" + port5 + '/api/containers/scan', {
         method: 'POST',
@@ -22,7 +22,7 @@ scan_container.addEventListener('click', async () => {
 });
 
 
-function createData(){
+function createScanData(){
     let containerid = document.getElementById("containerid");
     let status = document.getElementById("status");
     let containerlocation = document.getElementById("containerlocationtype");
