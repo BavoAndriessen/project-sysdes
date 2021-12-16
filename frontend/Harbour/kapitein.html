@@ -5,6 +5,7 @@
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="js/askService.js" defer></script>
+    <script src="js/readyForContainers.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -27,5 +28,12 @@
 <input type="text" class="form-control" id="vesselid" required>
 <textarea class="form-control" id="serviceasked"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="askservice">Ask for service</button>
+
+<h3>ready for containers</h3>
+<b>container ids</b>
+<input type="text" class="form-control" id="containerIds" required>
+<textarea class="form-control" id="response"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="sendReadyForContainersButton">Ready For Containers</button>
+
 </body>
 </html>
