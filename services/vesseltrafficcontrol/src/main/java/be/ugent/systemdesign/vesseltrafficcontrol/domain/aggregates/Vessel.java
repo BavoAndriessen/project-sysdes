@@ -17,4 +17,8 @@ public class Vessel {
         this.size = size;
         state = VesselState.MOVING;
     }
+
+    public String toString() {
+        return "id: " + vesselId + ", size: " + size;
+    }
 }

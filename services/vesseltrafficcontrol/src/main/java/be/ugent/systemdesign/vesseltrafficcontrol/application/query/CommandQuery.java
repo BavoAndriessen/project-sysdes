@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CommandQuery {
     List<ChangeGateStateCommand> findAllChangeGateStateCommands();
-    void saveChangeGateStateCommand(ChangeGateStateCommand command);
+    void deleteCommand(Integer gateId);
 }

@@ -3,16 +3,17 @@ package be.ugent.systemdesign.vesseltrafficcontrol.application;
 import be.ugent.systemdesign.vesseltrafficcontrol.application.event.EventDispatcher;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Gate;
-import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Route;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.command.ChangeGateStateCommand;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.command.CommandRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.VesselState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.NavigateShipEvent;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.events.ShipArrivingEvent;
 import be.ugent.systemdesign.vesseltrafficcontrol.infrastructure.exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -23,6 +24,9 @@ public class VTCService implements IVTCService{
 
     @Autowired
     IRouteRepository routeRepo;
+
+    @Autowired
+    CommandRepository commandRepository;
 
     @Autowired
     EventDispatcher eventDispatcher;
@@ -40,7 +44,6 @@ public class VTCService implements IVTCService{
         }
     }
 
-    // Destination 0 is the ocean, 1-10 are the docks
     @Override
     public Response findRoute(String vesselId, Integer destination) {
         Optional<Vessel> vessel = vessels.stream().filter(v -> v.getVesselId().equals(vesselId)).findFirst();
@@ -48,11 +51,16 @@ public class VTCService implements IVTCService{
             try {
                 String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
                 eventDispatcher.publishNavigateShipEvent(new NavigateShipEvent(vesselId, routePath));
-            } catch(RouteNotFoundException exception) {
+                if(destination != 0) {
+                    eventDispatcher.publishShipArrivingEvent(new ShipArrivingEvent(vesselId, destination));
+                }
+                addGateCommand(routePath);
+                return new Response(ResponseStatus.SUCCESS, "Found a route via " + routePath + " for vessel with id: " + vesselId);
+            } catch (RouteNotFoundException exception) {
                 return new Response(ResponseStatus.FAILED, "no route found");
             }
         }
-        return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
+        return new Response(ResponseStatus.FAILED, "No such vessel");
     }
 
     @Override
@@ -87,6 +95,13 @@ public class VTCService implements IVTCService{
     public Response freeDock(Integer dockNumber) {
         freeDocks.add(dockNumber);
         return new Response(ResponseStatus.SUCCESS, "dock " + dockNumber + " became available");
+    }
+
+    private void addGateCommand(String route){
+        for(String gate: route.split(";")) {
+            Integer gateId = Integer.parseInt(gate);
+            commandRepository.save(new ChangeGateStateCommand(gateId));
+        }
     }
 
     private List<Gate> fillGates(){

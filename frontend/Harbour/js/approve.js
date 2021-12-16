@@ -1,7 +1,7 @@
 var sendApproveContainersButton = document.getElementById("sendApproveContainersButton");
 
-let host = "localhost"
-let port = 2000
+let host = "193.191.169.28"
+let port = 80
 
 sendApproveContainersButton.addEventListener('click', () => {
     let containerId = document.getElementById("containerIdApprove").value;

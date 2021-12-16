@@ -6,11 +6,14 @@ import be.ugent.systemdesign.vesseltrafficcontrol.application.VTCService;
 import be.ugent.systemdesign.vesseltrafficcontrol.application.query.CommandQuery;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.command.ChangeGateStateCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,8 +27,11 @@ public class VTCRestController {
     @Autowired
     private CommandQuery commandQuery;
 
+    Logger log = LoggerFactory.getLogger(VTCRestController.class);
+
     @PostMapping
     public ResponseEntity<String> registerShip(@RequestBody Vessel vessel) {
+        log.warn(vessel.toString());
         Response response = vtcService.registerVessel(vessel);
         if(response.status == ResponseStatus.FAIL) {
             return new ResponseEntity<>(response.message, HttpStatus.CONFLICT);
@@ -36,6 +42,8 @@ public class VTCRestController {
     @PutMapping("gate/{id}")
     public ResponseEntity<String> gateStateChanged(@PathVariable("id") Integer gateId) {
         Response response = vtcService.changeGateState(gateId);
+        commandQuery.deleteCommand(gateId);
+        log.warn(commandQuery.findAllChangeGateStateCommands().toString());
         if(response.status == ResponseStatus.FAIL) {
             return new ResponseEntity<>(response.message, HttpStatus.CONFLICT);
         }
@@ -43,8 +51,12 @@ public class VTCRestController {
     }
 
     @GetMapping("/commands/change_gate")
-    public ResponseEntity<List<ChangeGateStateCommand>> getGates() {
-        return new ResponseEntity<>(commandQuery.findAllChangeGateStateCommands(), HttpStatus.OK);
+    public ResponseEntity<List<Integer>> getGates() {
+        List<Integer> gateIds = new ArrayList<>();
+        for(ChangeGateStateCommand command: commandQuery.findAllChangeGateStateCommands()) {
+            gateIds.add(command.getGateId());
+        }
+        return new ResponseEntity<>(gateIds, HttpStatus.OK);
     }
 
 

@@ -4,7 +4,6 @@ import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -13,7 +12,6 @@ public class Route {
     private final Integer routeId;
     private final Size sizeCompatiblity;
 
-    // Simple formula to calculate the cost of using this route
     private Integer cost;
     private String route;
     private Integer routeLength;
@@ -36,6 +34,7 @@ public class Route {
         this.calculateCost();
     }
 
+    // Function to calculate cost of a route
     private void calculateCost(){
         this.cost = 0;
     }

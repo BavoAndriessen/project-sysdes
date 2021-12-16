@@ -3,10 +3,13 @@ const input_doucment = document.getElementById("document");
 const input_vessel = document.getElementById("vessel");
 const input_containers = document.getElementById("containers");
 
+let host9 = "193.191.169.28"
+let port9 =  80
+
 button.addEventListener('click', async () => {
     input_containers.value = "";
     input_doucment.value = "";
-    fetch('http://localhost:2004/api/administration/documents/'+ input_vessel.value, {
+    fetch('http://' + host9 + ":" + port9 + '/api/administration/documents/'+ input_vessel.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",

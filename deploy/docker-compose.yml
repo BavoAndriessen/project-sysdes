@@ -21,8 +21,6 @@ services:
      - POSTGRES_HOST_AUTH_METHOD="password"
     ports:
      - "5000:5432"
-    # networks:
-    #  - mynet
   kapiteinsdienst-db:
     image: postgres:latest
     container_name: kapiteinsdienst-db
@@ -43,16 +41,16 @@ services:
      - POSTGRES_HOST_AUTH_METHOD="password"
     ports:
     - "5003:5432"
-  # vtc-db:
-  #   image: postgres:latest
-  #   container_name: vtc-db
-  #   environment:
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASSWORD=postgres
-  #    TODO- POSTGRES_DB=...
-  #    - POSTGRES_HOST_AUTH_METHOD="password"
-  #   ports:
-  #   - "5004:5432"
+  vtc-db:
+    image: postgres:latest
+    container_name: vtc-db
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_DB=routes
+     - POSTGRES_HOST_AUTH_METHOD="password"
+    ports:
+    - "5004:5432"
 # ------------Support services-------------
   zookeeper:
     image: confluentinc/cp-zookeeper
@@ -156,6 +154,7 @@ services:
     environment: 
       SPRING_DATASOURCE_URL: jdbc:postgresql://berth-db:5432/berthDb
     command:
+    - --spring.datasource.password=postgres
     - --spring.cloud.stream.kafka.binder.brokers=kafka
     - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
     ports:
@@ -166,16 +165,21 @@ services:
     links:
      - kafka
      - berth-db
-  # vtc: 
-  #   container_name: vtc
-  #   ports:
-  #   - "2006:8080"
-  #   build: ../services/vesseltrafficcontrol
-  #   command:
-  #   - --spring.cloud.stream.kafka.binder.brokers=kafka
-  #   - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
-  #   - TODO: --spring.datasource.url=jdbc:postgresql://vtc-db:5432/...
-# todo: checken of poorten kloppen
+  vtc: 
+    container_name: vtc
+    ports:
+    - "2006:8080"
+    build: ../services/vesseltrafficcontrol
+    command:
+    - --spring.cloud.stream.kafka.binder.brokers=kafka
+    - --spring.cloud.stream.kafka.binder.zkNodes=zookeeper
+    - --spring.datasource.url=jdbc:postgresql://vtc-db:5432/routes
+    depends_on:
+      - vtc-db
+      - kafka
+    links:
+     - kafka
+     - vtc-db
   gateway:
     container_name: gateway
     ports:
@@ -188,17 +192,7 @@ services:
       BERTH_HOST: "berth"
       MAINTENANCE_HOST: "maintenance"
       TOWINGPILOTAGE_HOST: "towingpilotage"
-      # - VTC_HOST: "vtc"
-
-      
-    # command: 
-    # - "--containers=container-management:8080"
-    # - "--administration=administration:8080"
-    # - "--kapiteinsdienst=kapiteinsdienst:8080"
-    # - "--berth=berth:8080"
-    # - "--maintenanceservice=maintenance:8080"
-    # - "--towingpilotage=towingpilotage:8080"
-    # - "--vtc=vtc:8080"
+      VTC_HOST: "vtc"
     depends_on:
     - kapiteinsdienst
     - container-management
@@ -206,7 +200,7 @@ services:
     - maintenance
     - administration
     - berth
-    # - vtc
+    - vtc
     links: 
     - kapiteinsdienst
     - container-management
@@ -214,4 +208,4 @@ services:
     - maintenance
     - administration
     - berth
-    # - vtc
+    - vtc
