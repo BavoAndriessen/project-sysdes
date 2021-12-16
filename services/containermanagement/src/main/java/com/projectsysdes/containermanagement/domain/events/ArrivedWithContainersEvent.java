@@ -15,9 +15,9 @@ public class ArrivedWithContainersEvent extends DomainEvent {
     private ContainerLocation location;
     private List<Integer> containerIds;
 
-    public ArrivedWithContainersEvent(ContainerLocation at, List<Integer> ids) {
+    public ArrivedWithContainersEvent(ContainerLocation location, List<Integer> ids) {
         super();
-        this.location=at;
+        this.location=location;
         this.containerIds = ids;
     }
 }

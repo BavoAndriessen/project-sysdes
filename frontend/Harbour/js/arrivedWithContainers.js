@@ -13,7 +13,7 @@ arrivedWithContainersButton.addEventListener('click', () => {
 
     data = {
         createdAt: null,
-        at: JSON.stringify(location),
+        location: location,
         containerIds: containerIds
     }
 
