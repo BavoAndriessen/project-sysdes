@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/background.css">
+    <script src="js/approve.js" defer></script>
     <script src="js/documentenOpvragen.js" defer></script>
     <script src="js/containerLocatie.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -36,5 +38,13 @@
 <input type="text" class="form-control" id="containerid" required>
 <textarea class="form-control" id="containerlocation"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="getcontainerlocation">Get container location</button>
+
+
+<h3>approve container</h3>
+<b>container id</b>
+<input type="text" class="form-control" id="containerIdApprove" required>
+<textarea class="form-control" id="response"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="sendApproveContainersButton">Approve Container</button>
+
 </body>
 </html>
