@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    padding: 0;
+    animation: pulse 4s forwards ease;
+    animation-fill-mode: forwards;
+}
+
+.container {
+    position: relative;
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px 40px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .5);
+}
+
+.Loading {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 10px;
+    background: #f1f1f1;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, .2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.Loading:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    animation: load 4s linear;
+    animation-fill-mode: forwards;
+
+}
+.containerimg {
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes load {
+    0% {
+        width: 0;
+        background: #a28089;
+    }
+
+    25% {
+        width: 25%;
+        background: #a0d2eb;
+    }
+
+    50% {
+        width: 50%;
+        background: #ffa8b6;
+    }
+
+    75% {
+        width: 75%;
+        background: #d0bdf4;
+    }
+
+    100% {
+        width: 100%;
+        background: #b0d2ff;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        background: #a28089;
+    }
+
+    25% {
+        background: #a0d2eb;
+    }
+
+    50% {
+        background: #ffa8b6;
+    }
+
+    75% {
+        background: #d0bdf4;
+    }
+
+    100% {
+        background: #b0d2ff;
+    }
+}
+
+
+.myanimation{
+    -webkit-animation: simple 4s linear;
+    animation-fill-mode: forwards;
+
+}
+
+@-webkit-keyframes simple {
+    100% {
+        transform: translateX(80%);
+    }
+}
+
+
+
+.rotate {
+    animation: rotation 4s ease-in;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
