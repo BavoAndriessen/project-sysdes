@@ -31,11 +31,8 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public ReserveBerthResponse reserveBerth(Double size, String vesselId) throws Exception {
         Berth b;
-        //try {
         System.out.println("reserve berth opgeroepen");
-        //Random rand = new Random();
         List<Berth> bs = berthRepo.findAllBySizeAndState(size, BerthState.AVAILABLE.name());
-
         if (bs.isEmpty()){
             System.out.println("failed");
             return new ReserveBerthResponse(ResponseStatus.FAIL,"there is no berth available with size:" +
@@ -48,10 +45,7 @@ public class BerthServiceImpl implements BerthService{
         System.out.println("berthId: " + b.getBerthId());
         berthRepo.save(b);
         return new ReserveBerthResponse(ResponseStatus.SUCCESS,"berth reserved", vesselId);
-        //} catch (Exception e) {
-            //return new ReserveBerthResponse(ResponseStatus.FAIL,"berth reserved");
-            //e.printStackTrace();
-        //}
+
     }
 
     @Override
@@ -59,14 +53,14 @@ public class BerthServiceImpl implements BerthService{
         try {
             System.out.println("undoReservation berth opgeroepen");
             Berth b =  berthRepo.findByVesselId(vesselId);
-            //System.out.println("found vessel with id : " + vesselId);
+
             b.setVesselId("");
-            //System.out.println("vessel name removed from berth");
+
             b.setState(BerthState.AVAILABLE);
             b.getWorker().setState(BerthWorkerState.AVAILABLE);
-            //System.out.println("status changed");
+
             berthRepo.save(b);
-            //System.out.println("status is saved");
+
         }catch (Exception e){
             throw new RuntimeException("reservation could not be undone");
         }
@@ -109,11 +103,8 @@ public class BerthServiceImpl implements BerthService{
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
-        //TimeUnit.SECONDS.sleep(3);
         System.out.println(" loading containers");
         berthRepo.save(berth);
-        TimeUnit.SECONDS.sleep(3);
-        //de dok werker (super man) gaat na 3 seconden klaar zijn, hierna wordt het event ship_ready gestuud
         sendShipReady(command.getBerthId());
     }
 
@@ -125,7 +116,7 @@ public class BerthServiceImpl implements BerthService{
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
         berthRepo.save(berth);
-        TimeUnit.SECONDS.sleep(3);
+        //TimeUnit.SECONDS.sleep(1);
         System.out.println(" unloading containers");
 
         sendShipReady(command.getBerthId());
