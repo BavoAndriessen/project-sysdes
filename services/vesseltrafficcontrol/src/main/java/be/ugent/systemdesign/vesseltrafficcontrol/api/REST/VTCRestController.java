@@ -25,7 +25,7 @@ public class VTCRestController {
     private CommandQuery commandQuery;
 
     @PostMapping
-    public ResponseEntity<String> registerShip(Vessel vessel) {
+    public ResponseEntity<String> registerShip(@RequestBody Vessel vessel) {
         Response response = vtcService.registerVessel(vessel);
         if(response.status == ResponseStatus.FAIL) {
             return new ResponseEntity<>(response.message, HttpStatus.CONFLICT);

@@ -1,33 +1,39 @@
-var readyForContainersButton = document.getElementById("sendReadyForContainersButton");
+var arrivedWithContainersButton = document.getElementById("arrivedWithContainersButton");
 
-let host = "localhost"
-let port = 2000
+let host_2 = "localhost"
+let port_2 = 2000
 
-readyForContainersButton.addEventListener('click', () => {
-    let containerIds_str = document.getElementById("containerIds").value;
+arrivedWithContainersButton.addEventListener('click', () => {
+    let containerIds_str = document.getElementById("arrivedContainerIds").value;
     let containerIds = containerIds_str.split(",");
+
+    var location = {}
+    location.locationType = document.getElementById("arrivedLocationType").value
+    location.locationIdentifier = document.getElementById("arrivedLocationIdentifier").value
 
     data = {
         createdAt: null,
+        at: JSON.stringify(location),
         containerIds: containerIds
     }
 
     console.log(data)
     console.log(JSON.stringify(data))
-    fetch('http://' + host + ":" + port + '/api/containers/arrived', {
+
+    fetch('http://' + host_2 + ":" + port_2 + '/api/containers/arrived', {
         method: 'post',
         headers: {
             "Content-Type": "application/json",
             "Connection": "keep-alive",
             "Accept" : "*/*",
-            "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(data)
     })
         .then(response => response.text())
         .then(resp_txt => {
             console.log(resp_txt)
-            document.getElementById("response").innerText=resp_txt
+            document.getElementById("arrivedResponse").innerText=resp_txt
         })
         .catch(error => console.log(error))
 })

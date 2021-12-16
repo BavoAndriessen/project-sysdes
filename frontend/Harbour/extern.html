@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="js/readyForContainers.js" defer></script>
+    <script src="js/arrivedWithContainers.js" defer></script>
 </head>
 <body>
 <ul class="nav nav-tabs">
@@ -23,9 +24,23 @@
 </ul>
 <h1>Dashboard Extern Vervoersbedrijf</h1>
 
+<h3>ready for containers</h3>
+<b>container ids</b>
 <input type="text" class="form-control" id="containerIds" required>
 <textarea class="form-control" id="response"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="sendReadyForContainersButton">Ready For Containers</button>
+
+
+<h3>arrived with containers</h3>
+<b>container ids(command separated: ",")</b>
+<input type="text" class="form-control" id="arrivedContainerIds" required>
+<b>location type</b>
+<input type="text" class="form-control" id="arrivedLocationType" required>
+<b>location identifier</b>
+<input type="text" class="form-control" id="arrivedLocationIdentifier" required>
+<textarea class="form-control" id="arrivedResponse"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="arrivedWithContainersButton">Ready For Containers</button>
+
 
 </body>
 </html>

@@ -35,6 +35,9 @@ public class VTCService implements IVTCService{
         vessels = new ArrayList<>();
         gates = fillGates();
         freeDocks = new HashSet<>();
+        for(int i = 1; i<11; i++) {
+            freeDocks.add(i);
+        }
     }
 
     // Destination 0 is the ocean, 1-10 are the docks
@@ -53,11 +56,10 @@ public class VTCService implements IVTCService{
     }
 
     @Override
-    @Async
     public Response registerVessel(Vessel vessel) {
         vessels.add(vessel);
-        while(freeDocks.isEmpty()){
-            System.out.println("no dock available");
+        if(freeDocks.isEmpty()){
+            return new Response(ResponseStatus.FAILED, "no dock ready now, try again later!");
         }
         Optional<Integer> dock = freeDocks.stream().findFirst();
         return findRoute(vessel.getVesselId(), dock.get());

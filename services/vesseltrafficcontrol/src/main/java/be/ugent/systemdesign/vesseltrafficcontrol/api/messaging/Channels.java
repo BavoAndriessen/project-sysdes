@@ -10,10 +10,10 @@ public interface Channels {
     static final String NAVIGATE_SHIP = "navigate_ship";
     static final String SHIP_ARRIVING = "ship_arriving";
 
-    @Input(NAVIGATE_SHIP)
+    @Output(NAVIGATE_SHIP)
     MessageChannel navigateShip();
 
-    @Input(SHIP_ARRIVING)
+    @Output(SHIP_ARRIVING)
     MessageChannel shipArriving();
 
     // input channel
@@ -21,12 +21,12 @@ public interface Channels {
     static final String DOCK_READY = "dock_ready";
     static final String SHIP_READY = "ship_ready";
 
-    @Output(ARRIVED)
+    @Input(ARRIVED)
     MessageChannel arrived();
 
-    @Output(DOCK_READY)
+    @Input(DOCK_READY)
     MessageChannel dockReady();
 
-    @Output(SHIP_READY)
+    @Input(SHIP_READY)
     MessageChannel shipReady();
 }

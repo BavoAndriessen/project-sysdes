@@ -7,6 +7,7 @@
     <script src="js/badgenEnLoon.js" defer></script>
     <script src="js/ligplaats.js" defer></script>
     <script src="js/scanContainer.js" defer></script>
+    <script src="js/vtc.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/foto.css">
@@ -102,5 +103,21 @@
             </table>
         </div>
     </div>
+<br>
+<br>
+<br>
+<br>
+<textarea type="text" rows="3" class="form-control" id="getgatesresponse" readonly></textarea>
+<button type="button" class="btn btn-primary" id="getgatesresponsebutton">Get gates</button>
+
+<br>
+<br>
+<br>
+<br>
+<label for="gateidforvtc">Gate id</label>
+<input type="text" class="form-control" id="gateidforvtc" required>
+<textarea type="text" rows="3" class="form-control" id="gatestateresponse" readonly></textarea>
+<button type="button" class="btn btn-primary" id="changestateresponsebutton">Change gate state</button>
+
 </body>
 </html>
