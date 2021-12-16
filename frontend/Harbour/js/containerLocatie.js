@@ -2,8 +2,12 @@ const button_get_container = document.getElementById("getcontainerlocation");
 const input_container = document.getElementById("containerid");
 const location_response = document.getElementById("containerlocation");
 
+let host8 = "193.191.169.28"
+let port8 = 80
+
+
 button_get_container.addEventListener('click', async () => {
-    fetch('http://localhost:2000/api/containers/'+ input_container.value + '/location', {
+    fetch('http://' + host8 + ":" + port8 + '/api/containers/'+ input_container.value + '/location', {
         method: 'get',
         headers: {
             "Content-Type": "application/json",

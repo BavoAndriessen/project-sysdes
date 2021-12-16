@@ -4,8 +4,11 @@ const input_staff = document.getElementById("staff");
 const input_confirmation = document.getElementById("confirmation");
 const input_pay = document.getElementById("paycheck");
 
+let host = "193.191.169.28"
+let port = 80
+
 button.addEventListener('click', async () => {
-    fetch('http://localhost:2004/api/administration/staff/'+ input_staff.value + '?time=' + getTimeNow(), {
+    fetch('http://' + host + ":" + port + '/api/administration/staff/'+ input_staff.value + '?time=' + getTimeNow(), {
         method: 'put',
         headers: {
             "Content-Type": "application/json",
@@ -19,7 +22,7 @@ button.addEventListener('click', async () => {
 });
 
 button_pay.addEventListener('click', async () => {
-    fetch('http://localhost:2004/api/administration/staff/'+ input_staff.value, {
+    fetch('http://' + host + ":" + port + '/api/administration/staff/'+ input_staff.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
