@@ -28,8 +28,16 @@
 <input type="datetime-local" class="form-control" id="arrivalDate" required>
 <label for="lengthOfStay">Length of stay</label>
 <input type="text" class="form-control" id="lengthOfStay" required>
+
 <label for="vesselSize">Vessel size</label>
-<input type="text" class="form-control" id="vesselSize" required>
+<select class="form-select" aria-label="Default select example" id="vesselSize">
+    <option value="4">4</option>
+    <option value="6">6</option>
+    <option value="8">8</option>
+    <option value="10">10</option>
+    <option value="12">12</option>
+</select>
+<br>
 <label for="amountOfWaste">Amount of waste</label>
 <input type="text" class="form-control" id="amountOfWaste" required>
 <label for="additionalServices">Additional services</label>
