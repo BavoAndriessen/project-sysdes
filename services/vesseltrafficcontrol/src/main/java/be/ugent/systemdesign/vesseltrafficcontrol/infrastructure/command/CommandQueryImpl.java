@@ -20,7 +20,8 @@ public class CommandQueryImpl implements CommandQuery {
     }
 
     @Override
-    public void saveChangeGateStateCommand(ChangeGateStateCommand command) {
-        repository.save(command);
+    public void deleteCommand(Integer gateId) {
+        repository.remove(gateId);
     }
+
 }

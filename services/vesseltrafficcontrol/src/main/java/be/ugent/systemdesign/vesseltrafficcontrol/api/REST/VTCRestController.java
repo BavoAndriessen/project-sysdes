@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,6 +42,8 @@ public class VTCRestController {
     @PutMapping("gate/{id}")
     public ResponseEntity<String> gateStateChanged(@PathVariable("id") Integer gateId) {
         Response response = vtcService.changeGateState(gateId);
+        commandQuery.deleteCommand(gateId);
+        log.warn(commandQuery.findAllChangeGateStateCommands().toString());
         if(response.status == ResponseStatus.FAIL) {
             return new ResponseEntity<>(response.message, HttpStatus.CONFLICT);
         }
@@ -48,8 +51,12 @@ public class VTCRestController {
     }
 
     @GetMapping("/commands/change_gate")
-    public ResponseEntity<List<ChangeGateStateCommand>> getGates() {
-        return new ResponseEntity<>(commandQuery.findAllChangeGateStateCommands(), HttpStatus.OK);
+    public ResponseEntity<List<Integer>> getGates() {
+        List<Integer> gateIds = new ArrayList<>();
+        for(ChangeGateStateCommand command: commandQuery.findAllChangeGateStateCommands()) {
+            gateIds.add(command.getGateId());
+        }
+        return new ResponseEntity<>(gateIds, HttpStatus.OK);
     }
 
 

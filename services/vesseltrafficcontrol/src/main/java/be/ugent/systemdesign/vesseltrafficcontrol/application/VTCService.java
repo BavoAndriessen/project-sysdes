@@ -4,6 +4,8 @@ import be.ugent.systemdesign.vesseltrafficcontrol.application.event.EventDispatc
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.IRouteRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Gate;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.command.ChangeGateStateCommand;
+import be.ugent.systemdesign.vesseltrafficcontrol.domain.command.CommandRepository;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateState;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.GateType;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.enums.Size;
@@ -22,6 +24,9 @@ public class VTCService implements IVTCService{
 
     @Autowired
     IRouteRepository routeRepo;
+
+    @Autowired
+    CommandRepository commandRepository;
 
     @Autowired
     EventDispatcher eventDispatcher;
@@ -49,7 +54,8 @@ public class VTCService implements IVTCService{
                 if(destination != 0) {
                     eventDispatcher.publishShipArrivingEvent(new ShipArrivingEvent(vesselId, destination));
                 }
-                return new Response(ResponseStatus.SUCCESS, "Found a route via " + routePath + "for vessel with id: " + vesselId);
+                addGateCommand(routePath);
+                return new Response(ResponseStatus.SUCCESS, "Found a route via " + routePath + " for vessel with id: " + vesselId);
             } catch (RouteNotFoundException exception) {
                 return new Response(ResponseStatus.FAILED, "no route found");
             }
@@ -89,6 +95,13 @@ public class VTCService implements IVTCService{
     public Response freeDock(Integer dockNumber) {
         freeDocks.add(dockNumber);
         return new Response(ResponseStatus.SUCCESS, "dock " + dockNumber + " became available");
+    }
+
+    private void addGateCommand(String route){
+        for(String gate: route.split(";")) {
+            Integer gateId = Integer.parseInt(gate);
+            commandRepository.save(new ChangeGateStateCommand(gateId));
+        }
     }
 
     private List<Gate> fillGates(){
