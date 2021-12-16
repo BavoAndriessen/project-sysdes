@@ -35,6 +35,9 @@ public class VTCService implements IVTCService{
         vessels = new ArrayList<>();
         gates = fillGates();
         freeDocks = new HashSet<>();
+        for(int i = 1; i<11; i++) {
+            freeDocks.add(i);
+        }
     }
 
     // Destination 0 is the ocean, 1-10 are the docks

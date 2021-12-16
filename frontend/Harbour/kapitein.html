@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="js/askService.js" defer></script>
     <script src="js/readyForContainers.js" defer></script>
+    <script src="js/vtc.js" defer></script>
     <script src="js/arrivedWithContainers.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -36,6 +37,7 @@
 <textarea class="form-control" id="response"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="sendReadyForContainersButton">Ready For Containers</button>
 
+
 <h3>arrived with containers</h3>
 <b>container ids(command separated: ",")</b>
 <input type="text" class="form-control" id="arrivedContainerIds" required>
@@ -46,6 +48,27 @@
 <textarea class="form-control" id="arrivedResponse"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="arrivedWithContainersButton">Ready For Containers</button>
 
+
+<br>
+<br>
+<h3>VTC register vessel</h3>
+
+<label for="vesselidforvtc">Vessel id</label>
+<input type="text" class="form-control" id="vesselidforvtc" required>
+<label for="vesselsize">Vessel size</label>
+<select class="form-select" aria-label="Default select example" id="vesselsize">
+    <option value="SMALL">SMALL</option>
+    <option value="MEDIUM">MEDIUM</option>
+    <option value="LARGE">LARGE</option>
+</select>
+<label for="vesselstate">Vessel state</label>
+<select class="form-select" aria-label="Default select example" id="vesselstate">
+    <option value="IDLE">IDLE</option>
+    <option value="MOVING">MOVING</option>
+</select>
+<textarea type="text" class="form-control"  rows="3" id="vesselregisterresponse" readonly></textarea>
+<br>
+<button type="button" class="btn btn-primary" id="registervesselvtc">Register vessel vtc</button>
 
 </body>
 </html>
