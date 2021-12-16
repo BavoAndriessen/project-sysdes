@@ -47,11 +47,12 @@ public class VTCService implements IVTCService{
             try {
                 String routePath = routeRepo.findOne(vessel.get().getSize(), destination);
                 eventDispatcher.publishNavigateShipEvent(new NavigateShipEvent(vesselId, routePath));
-            } catch(RouteNotFoundException exception) {
+                return new Response(ResponseStatus.SUCCESS, "Found a route via " + routePath + "for vessel with id: " + vesselId);
+            } catch (RouteNotFoundException exception) {
                 return new Response(ResponseStatus.FAILED, "no route found");
             }
         }
-        return new Response(ResponseStatus.SUCCESS, "Found a route for vessel with id: " + vesselId);
+        return new Response(ResponseStatus.FAILED, "No such vessel");
     }
 
     @Override

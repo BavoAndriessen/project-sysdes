@@ -6,6 +6,8 @@ import be.ugent.systemdesign.vesseltrafficcontrol.application.VTCService;
 import be.ugent.systemdesign.vesseltrafficcontrol.application.query.CommandQuery;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.aggregates.Vessel;
 import be.ugent.systemdesign.vesseltrafficcontrol.domain.command.ChangeGateStateCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,11 @@ public class VTCRestController {
     @Autowired
     private CommandQuery commandQuery;
 
+    Logger log = LoggerFactory.getLogger(VTCRestController.class);
+
     @PostMapping
     public ResponseEntity<String> registerShip(@RequestBody Vessel vessel) {
+        log.warn(vessel.toString());
         Response response = vtcService.registerVessel(vessel);
         if(response.status == ResponseStatus.FAIL) {
             return new ResponseEntity<>(response.message, HttpStatus.CONFLICT);
