@@ -23,6 +23,9 @@ For chrome, you can execute the following commands:
 `google-chrome --disable-web-security -–allow-file-access-from-files`
 
 
+## not working functionality
+the functionality of aprroving a container does not always work correctly.  
+
 
 ## Deploying
 
