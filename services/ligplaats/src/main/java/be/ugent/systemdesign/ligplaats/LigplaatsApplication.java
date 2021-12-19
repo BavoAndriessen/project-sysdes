@@ -201,8 +201,8 @@ public class LigplaatsApplication {
 			service.fillRepository();
 			//service.reserveBerth(8.0, "ship-1");
 			//ch.handelReserveBerth(6.0, "ship-ss");
-
-			service.findAll();
+			//ch.handelReserveBerth(8.0,"ship1234");
+			//service.findAll();
 
 			//System.out.println(service.findAll().size());
 			//System.out.println(repo.findByVesselId("ship-1").toString());
