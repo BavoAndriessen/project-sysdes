@@ -5,13 +5,17 @@ let berthId = document.getElementById("ligplaatsId");
 let tabel = document.getElementById("get_all_berths");
 let fillTabel = document.getElementById("get_all_berths")
 let response = document.getElementById("load_process");
-let port0 = 8080
-let host0 = "localhost"
+
+let port1 = 8080
+let host1 = "localhost"
+
+let host0 = "193.191.169.28"
+let port0 =  80
 
 
 loadContainers.addEventListener('click', async () => {
     response.data = "";
-    fetch('http://' + host + ":" + port + '/api/berth/load/' + berthId.value, {
+    fetch('http://' + host0 + ":" + port0 + '/api/berth/load/' + berthId.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
@@ -36,7 +40,7 @@ loadContainers.addEventListener('click', async () => {
 
 unloadContainers.addEventListener('click', async () => {
     response.data = "";
-    fetch('http://' + host + ":" + port + '/api/berth/unload/' + berthId.value, {
+    fetch('http://' + host0 + ":" + port0 + '/api/berth/unload/' + berthId.value, {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
@@ -60,7 +64,7 @@ unloadContainers.addEventListener('click', async () => {
 });
 fillTabel.addEventListener('click', async () => {
     response.data = "";
-    fetch('http://' + host + ":" + port + '/api/berth/all', {
+    fetch('http://' + host0 + ":" + port0 + '/api/berth/all', {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
