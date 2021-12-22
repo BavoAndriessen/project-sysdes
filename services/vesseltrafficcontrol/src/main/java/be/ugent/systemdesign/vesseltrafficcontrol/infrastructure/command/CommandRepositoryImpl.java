@@ -25,6 +25,11 @@ public class CommandRepositoryImpl implements CommandRepository {
     }
 
     @Override
+    public boolean findById(Integer id) {
+        return repository.findById(id).isPresent();
+    }
+
+    @Override
     public void save(ChangeGateStateCommand changeGateStateCommandDataModel) {
         repository.save(toChangeGateStateCommandDataModel(changeGateStateCommandDataModel));
     }

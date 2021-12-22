@@ -100,7 +100,9 @@ public class VTCService implements IVTCService{
     private void addGateCommand(String route){
         for(String gate: route.split(";")) {
             Integer gateId = Integer.parseInt(gate);
-            commandRepository.save(new ChangeGateStateCommand(gateId));
+            if(!commandRepository.findById(gateId)) {
+                commandRepository.save(new ChangeGateStateCommand(gateId));
+            }
         }
     }
 
