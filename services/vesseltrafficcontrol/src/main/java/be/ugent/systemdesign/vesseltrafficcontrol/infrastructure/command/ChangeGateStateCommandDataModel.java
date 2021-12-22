@@ -15,6 +15,6 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class ChangeGateStateCommandDataModel extends DomainCommandDataModel{
 
-    @Column(unique = true)
+    @Column
     private Integer gateId;
 }

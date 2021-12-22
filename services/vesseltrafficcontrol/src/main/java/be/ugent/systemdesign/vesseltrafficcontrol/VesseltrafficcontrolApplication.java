@@ -30,7 +30,7 @@ public class VesseltrafficcontrolApplication {
     public static void main(String[] args) {
         SpringApplication.run(VesseltrafficcontrolApplication.class, args);
     }
-
+/*
     @Bean
     public CommandLineRunner populateDatabase(IRouteRepository repository) {
             return (args) -> {
@@ -92,6 +92,6 @@ public class VesseltrafficcontrolApplication {
                 log.warn("Route found via {}", path3);
             };
     }
-
+*/
 
 }

@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins="*")
@@ -51,8 +53,8 @@ public class VTCRestController {
     }
 
     @GetMapping("/commands/change_gate")
-    public ResponseEntity<List<Integer>> getGates() {
-        List<Integer> gateIds = new ArrayList<>();
+    public ResponseEntity<Set<Integer>> getGates() {
+        Set<Integer> gateIds = new HashSet<>();
         for(ChangeGateStateCommand command: commandQuery.findAllChangeGateStateCommands()) {
             gateIds.add(command.getGateId());
         }
