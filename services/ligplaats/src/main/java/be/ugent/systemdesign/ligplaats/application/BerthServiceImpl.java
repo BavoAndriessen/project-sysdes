@@ -31,10 +31,10 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public ReserveBerthResponse reserveBerth(Double size, String vesselId) throws Exception {
         Berth b;
-        System.out.println("reserve berth opgeroepen");
+        logger.info("reserving berth for vessel with id: " + vesselId);
         List<Berth> bs = berthRepo.findAllBySizeAndState(size, BerthState.AVAILABLE.name());
         if (bs.isEmpty()){
-            System.out.println("failed");
+            logger.error("failed to reserve berth for vessel with id: "+vesselId);
             return new ReserveBerthResponse(ResponseStatus.FAIL,"there is no berth available with size:" +
                     " " + size + " and status:AVAILABLE");
         }
@@ -51,7 +51,7 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public void undoReservation(String vesselId) throws Exception {
         try {
-            System.out.println("undoReservation berth opgeroepen");
+            logger.info("removing the reservation for vessel with id: "+vesselId);
             Berth b =  berthRepo.findByVesselId(vesselId);
 
             b.setVesselId("");
@@ -62,6 +62,7 @@ public class BerthServiceImpl implements BerthService{
             berthRepo.save(b);
 
         }catch (Exception e){
+            logger.error("could not cancel the reservation for vessel with id: "+vesselId);
             throw new RuntimeException("reservation could not be undone");
         }
 
@@ -70,9 +71,9 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public void setBerthReady(String vesselId) throws Exception {
         try{
-            System.out.println("setBerthReady berth opgeroepen");
+            logger.info("setting the berth on status ready");
             Berth b = berthRepo.findByVesselId(vesselId);
-            System.out.println("found ligplaats with vesselId" +  b.getVesselId());
+            logger.info("found ligplaats with vesselId" +  b.getVesselId());
             b.setState(BerthState.READY);
             berthRepo.save(b);
         }catch (Exception e){
@@ -83,6 +84,7 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public void setWorkerStatusAtDock(BerthWorkerState state,Integer berthId) throws Exception {
         try {
+            logger.info("setting the status worker at berth witrh id: " + berthId + " to status " + state.name());
             Berth b = berthRepo.findById(berthId);
             b.getWorker().setState(state);
             berthRepo.save(b);
@@ -92,19 +94,22 @@ public class BerthServiceImpl implements BerthService{
 
 
         }catch (Exception e){
+            logger.error("BerthServiceImpl -> setWorkerAtBerthAvailable -> can't set status of worker");
             throw new Exception("BerthServiceImpl -> setWorkerAtBerthAvailable -> can't set worker available.");
         }
     }
 
     @Override
     public void handelLoadContainersREST(LoadContainersCommand command) throws Exception {
+        logger.info("handling load containers command via REST");
         Berth berth = berthRepo.findById(command.getBerthId());
         if (berth.getWorker().getState() == BerthWorkerState.BUSY){
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
-        System.out.println(" loading containers");
+        logger.info(" loading containers");
         berthRepo.save(berth);
+        logger.info("containers are loaded, sending ship ready event to VTC");
         sendShipReady(command.getBerthId());
     }
 
@@ -112,13 +117,14 @@ public class BerthServiceImpl implements BerthService{
     public void handelUnloadContainersREST(UnloadContainersCommand command) throws Exception {
         Berth berth = berthRepo.findById(command.getBerthId());
         if (berth.getWorker().getState() == BerthWorkerState.BUSY){
+            logger.error("worker is busy.");
             throw new Exception("worker is already busy");
         }
         berth.getWorker().setState(BerthWorkerState.BUSY);
         berthRepo.save(berth);
         //TimeUnit.SECONDS.sleep(1);
-        System.out.println(" unloading containers");
 
+        logger.info("containers are unloaded, sending ship ready event to VTC");
         sendShipReady(command.getBerthId());
     }
 
@@ -133,8 +139,9 @@ public class BerthServiceImpl implements BerthService{
         Berth b = berthRepo.findById(berthId);
         String vesselId = b.getVesselId();
         int berthNumber = b.getBerthNumber();
-
+        logger.info("sending ship ready event.");
         eventDispatcher.sendShipReadyEvent(new ShipReadyEvent(vesselId, berthNumber));
+        logger.info("ship ready event sent.");
         //waanneer de schip klaar staat, gaat die dan vertrekken en wordt de ligplaats en de dock werker
         //op status AVAILABLE gezet, dit is analoog aan undo reservatio, maar men heeft undoReservation
         //niet getriggerd want anders wordt een event naar kapiteins dienst gestuurd dat de reservatie ongedaan is
@@ -147,6 +154,7 @@ public class BerthServiceImpl implements BerthService{
 
     @Override
     public void sendDockReady(String vesselId) throws Exception {
+        logger.info("sending dock ready event to VTC.");
         Berth b = berthRepo.findByVesselId(vesselId);
         int berthNumber = b.getBerthNumber();
         Integer berthId = b.getBerthId();
@@ -162,13 +170,13 @@ public class BerthServiceImpl implements BerthService{
     public void handelShipArriving(ShipArrivingEvent e) throws Exception {
         try {
             logger.info("handling ship arriving event ");
-            System.out.println(e.getVesselId());
             setBerthReady(e.getVesselId());
             logger.info("berth ready for ship with id{ " + e.getVesselId() + "}.");
             logger.info("sending ship ready event");
             //TimeUnit.SECONDS.sleep(3);
             sendDockReady(e.getVesselId());
         }catch (Exception ex){
+            logger.error("berth can't be ready now.");
             throw new Exception("berth can't be ready now.");
         }
     }
@@ -176,12 +184,10 @@ public class BerthServiceImpl implements BerthService{
     @Override
     public void handelContainersReadyAtDock(ContainersReadyAtDockEvent e) throws Exception {
         try {
-            //bs.handelLoadContainersREST(new LoadContainersCommand(e.getBerthId()));
-            logger.info("handling containers ready ay dock event ");
+
+            logger.info("handling containers ready ay dock event, changing the status of worker");
             setWorkerStatusAtDock(BerthWorkerState.BUSY, e.getBerthId());
             //TimeUnit.SECONDS.sleep(3);
-            System.out.println("finished loading the containers, sending ship ship ready message to VTC");
-            //sendShipReady(e.getBerthId());
 
         }catch (Exception ex){
             throw new Exception("error in handelContainerReadyAtDock.");

@@ -18,8 +18,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class BerthDataModel {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer berthId;
+
     private Double size;
     private String state;
     private int berthNumber;
