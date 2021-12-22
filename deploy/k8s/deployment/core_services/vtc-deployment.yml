@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: vtc
-        image: bavoandriessen/vesseltrafficcontrol:latest
+        image: ahmad4ugent/vesseltrafficcontrol:latest
 #        imagePullPolicy: Always
         args: ["--spring.datasource.url=jdbc:postgresql://vtc-db-service.default.svc.cluster.local:5432/routes", "--spring.cloud.stream.kafka.binder.brokers=kafka-service.default.svc.cluster.local", "--server.port=8080"]
