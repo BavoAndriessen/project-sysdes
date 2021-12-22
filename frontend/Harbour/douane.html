@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Harbour</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="js/approve.js" defer></script>
     <script src="js/documentenOpvragen.js" defer></script>
     <script src="js/containerLocatie.js" defer></script>
+    <script src="js/scanContainer.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -33,17 +33,33 @@
 <button type="button" class="btn btn-primary" id="documenten_kwaliteit">Get documents</button>
 <br>
 <br>
-<label for="containerid">Container id</label>
-<input type="text" class="form-control" id="containerid" required>
+<label for="containeridLocation">Container id</label>
+<input type="text" class="form-control" id="containeridLocation" required>
 <textarea class="form-control" id="containerlocation"  rows="3" readonly></textarea>
 <button type="button" class="btn btn-primary" id="getcontainerlocation">Get container location</button>
+<br>
+<br>
 
-
-<h3>approve container</h3>
-<b>container id</b>
-<input type="text" class="form-control" id="containerIdApprove" required>
-<textarea class="form-control" id="response"  rows="3" readonly></textarea>
-<button type="button" class="btn btn-primary" id="sendApproveContainersButton">Approve Container</button>
+<br>
+<br>
+<label for="containerid">Container id</label>
+<input type="text" class="form-control" id="containerid" required>
+<label for="status">Status</label>
+<select class="form-select" aria-label="Default select example" id="status">
+    <option value="TRANSIT_APPROVED">TRANSIT_APPROVED</option>
+</select>
+<br>
+<label for="containerlocationtype">Container location type</label>
+<select class="form-select" aria-label="Default select example" id="containerlocationtype">
+    <option value="TRANSIT">TRANSIT</option>
+</select>
+<br>
+<label for="locationid">Location Identifier</label>
+<input type="number" class="form-control" id="locationid" required>
+<label for="scancontainerresponse">Scan container response</label>
+<textarea class="form-control" id="scancontainerresponse"  rows="3" readonly></textarea>
+<button type="button" class="btn btn-primary" id="scancontainer">Scan container</button>
+<br>
 
 </body>
 </html>
