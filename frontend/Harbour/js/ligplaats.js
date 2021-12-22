@@ -6,8 +6,12 @@ let tabel = document.getElementById("get_all_berths");
 let fillTabel = document.getElementById("get_all_berths")
 let response = document.getElementById("load_process");
 
+let port1 = 8080
+let host1 = "localhost"
+
 let host0 = "193.191.169.28"
 let port0 =  80
+
 
 loadContainers.addEventListener('click', async () => {
     response.data = "";
@@ -88,7 +92,7 @@ let i = 0;
 function zetInTabel(response){
     document.getElementById("alle_ligplaatsen");
     ligpaatsen = response;
-
+    clearTable();
     for (let ligplaats of ligpaatsen) {
         i = i + 1;
         let tr = document.createElement("tr");
@@ -131,5 +135,13 @@ function showHideFoto(){
     else {
         img.classList.remove("foto-show");
         img.classList.add("foto-hide");
+    }
+}
+
+function clearTable(){
+    let body = document.getElementById("alle_ligplaatsen");
+    //const myNode = document.getElementById("foo");
+    while (body.lastElementChild) {
+        body.removeChild(body.lastElementChild);
     }
 }
