@@ -30,6 +30,7 @@ spec:
           value: "maintenance-service.default.svc.cluster.local"
         - name: TOWINGPILOTAGE_HOST
           value: "towingpilotage-service.default.svc.cluster.local"
-        #- name: VTC_HOST
+        - name: VTC_HOST
+          value: "vtc-service.default.svc.cluster.local"
         ports:
         - containerPort: 8080

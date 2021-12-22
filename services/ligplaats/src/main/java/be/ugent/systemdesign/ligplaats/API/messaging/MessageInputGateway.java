@@ -40,7 +40,7 @@ public class MessageInputGateway {
         return response;
     }
     @StreamListener(Channels.UNDO_BERTH_RESERVATION_EVENT)
-    public void handelDockReadyEvent(UndoReservationCommand command) throws Exception {
+    public void handelUndoReservationCommand(UndoReservationCommand command) throws Exception {
         commandHandler.handelUndoReservation(command.getVesselId());
     }
 }

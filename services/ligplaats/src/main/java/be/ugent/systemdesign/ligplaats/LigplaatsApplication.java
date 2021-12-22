@@ -206,9 +206,9 @@ public class LigplaatsApplication {
 
 			//System.out.println(service.findAll().size());
 			//System.out.println(repo.findByVesselId("ship-1").toString());
-
-			//service.handelContainersReadyAtDock(new ContainersReadyAtDockEvent(repo.findByVesselId("ship-1").getBerthId()));
 			//service.handelShipArriving(new ShipArrivingEvent("ship-1"));
+			//service.handelContainersReadyAtDock(new ContainersReadyAtDockEvent(repo.findByVesselId("ship-1").getBerthId()));
+			//service.undoReservation("ship-ss");
 		});
 	}
 

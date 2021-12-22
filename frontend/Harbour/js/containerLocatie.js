@@ -1,5 +1,5 @@
 const button_get_container = document.getElementById("getcontainerlocation");
-const input_container = document.getElementById("containerid");
+const input_container = document.getElementById("containeridLocation");
 const location_response = document.getElementById("containerlocation");
 
 let host8 = "193.191.169.28"
